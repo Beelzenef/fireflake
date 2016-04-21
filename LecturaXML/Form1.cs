@@ -21,13 +21,14 @@ namespace LecturaXML
         #region Menu principal
 
         Libro lib1 = null;
-        bool guardado = false;
+        bool guardado = true;
         string ruta = string.Empty;
 
         private void guardarToolStripMenuItem_Click(object sender, EventArgs e)
         {
             lib1 = new Libro(txtB_Titulo.Text, txtB_Subtitulo.Text, txtB_Genero.Text, txtB_Autor.Text);
             GestionXML.GuardarXML(ruta, lib1);
+            guardado = true;
         }
 
         private void guardarComoToolStripMenuItem_Click(object sender, EventArgs e)
@@ -44,7 +45,10 @@ namespace LecturaXML
         {
             if (oFD_AbrirXML.ShowDialog() != DialogResult.OK)
                 return;
-            GestionXML.AbrirXML(oFD_AbrirXML.FileName);
+            ruta = oFD_AbrirXML.FileName;
+            dataSetXML.ReadXml(ruta);
+            dataGV_Escenas.DataSource = dataSetXML;
+            dataGV_Escenas.DataMember = "escena";
         }
 
         #endregion
@@ -71,5 +75,19 @@ namespace LecturaXML
 
         #endregion
 
+        private void DatosCambiados(object sender, EventArgs e)
+        {
+            guardado = false;
+        }
+
+        private void CambioFilas(object sender, DataGridViewRowsAddedEventArgs e)
+        {
+            // Cuando se modifican datos a mano, no cuando Abrir: guardado = false;
+        }
+
+        private void CambioCelda(object sender, DataGridViewCellEventArgs e)
+        {
+            // Cuando se modifican datos a mano, no cuando Abrir: guardado = false;
+        }
     }
 }

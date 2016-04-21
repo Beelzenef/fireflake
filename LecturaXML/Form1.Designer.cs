@@ -62,11 +62,12 @@
             this.btn_SubirEsc = new System.Windows.Forms.Button();
             this.btn_BorrarEsc = new System.Windows.Forms.Button();
             this.btn_AnadirEsc = new System.Windows.Forms.Button();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.dataGV_Escenas = new System.Windows.Forms.DataGridView();
             this.tbP_Paso9 = new System.Windows.Forms.TabPage();
             this.tbP_Generar = new System.Windows.Forms.TabPage();
             this.sFD_GuardarXML = new System.Windows.Forms.SaveFileDialog();
             this.oFD_AbrirXML = new System.Windows.Forms.OpenFileDialog();
+            this.dataSetXML = new System.Data.DataSet();
             this.menu_Inicio.SuspendLayout();
             this.tbC_Pasos.SuspendLayout();
             this.tbP_Paso1.SuspendLayout();
@@ -75,7 +76,8 @@
             this.grB_Subtitulo.SuspendLayout();
             this.grb_Titulo.SuspendLayout();
             this.tbP_Paso8.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGV_Escenas)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataSetXML)).BeginInit();
             this.SuspendLayout();
             // 
             // menu_Inicio
@@ -228,6 +230,7 @@
             this.txtB_Genero.Name = "txtB_Genero";
             this.txtB_Genero.Size = new System.Drawing.Size(266, 24);
             this.txtB_Genero.TabIndex = 0;
+            this.txtB_Genero.TextChanged += new System.EventHandler(this.DatosCambiados);
             // 
             // grB_Autor
             // 
@@ -246,6 +249,7 @@
             this.txtB_Autor.Name = "txtB_Autor";
             this.txtB_Autor.Size = new System.Drawing.Size(266, 24);
             this.txtB_Autor.TabIndex = 0;
+            this.txtB_Autor.TextChanged += new System.EventHandler(this.DatosCambiados);
             // 
             // grB_Subtitulo
             // 
@@ -264,6 +268,7 @@
             this.txtB_Subtitulo.Name = "txtB_Subtitulo";
             this.txtB_Subtitulo.Size = new System.Drawing.Size(266, 24);
             this.txtB_Subtitulo.TabIndex = 0;
+            this.txtB_Subtitulo.TextChanged += new System.EventHandler(this.DatosCambiados);
             // 
             // grb_Titulo
             // 
@@ -282,6 +287,7 @@
             this.txtB_Titulo.Name = "txtB_Titulo";
             this.txtB_Titulo.Size = new System.Drawing.Size(266, 24);
             this.txtB_Titulo.TabIndex = 0;
+            this.txtB_Titulo.TextChanged += new System.EventHandler(this.DatosCambiados);
             // 
             // tbP_Paso2
             // 
@@ -349,7 +355,7 @@
             this.tbP_Paso8.Controls.Add(this.btn_SubirEsc);
             this.tbP_Paso8.Controls.Add(this.btn_BorrarEsc);
             this.tbP_Paso8.Controls.Add(this.btn_AnadirEsc);
-            this.tbP_Paso8.Controls.Add(this.dataGridView1);
+            this.tbP_Paso8.Controls.Add(this.dataGV_Escenas);
             this.tbP_Paso8.Location = new System.Drawing.Point(4, 22);
             this.tbP_Paso8.Name = "tbP_Paso8";
             this.tbP_Paso8.Size = new System.Drawing.Size(557, 277);
@@ -397,13 +403,15 @@
             this.btn_AnadirEsc.Text = "Añadir";
             this.btn_AnadirEsc.UseVisualStyleBackColor = true;
             // 
-            // dataGridView1
+            // dataGV_Escenas
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(17, 69);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(524, 190);
-            this.dataGridView1.TabIndex = 0;
+            this.dataGV_Escenas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGV_Escenas.Location = new System.Drawing.Point(17, 69);
+            this.dataGV_Escenas.Name = "dataGV_Escenas";
+            this.dataGV_Escenas.Size = new System.Drawing.Size(524, 190);
+            this.dataGV_Escenas.TabIndex = 0;
+            this.dataGV_Escenas.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.CambioCelda);
+            this.dataGV_Escenas.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.CambioFilas);
             // 
             // tbP_Paso9
             // 
@@ -427,6 +435,10 @@
             // oFD_AbrirXML
             // 
             this.oFD_AbrirXML.FileName = "openFileDialog1";
+            // 
+            // dataSetXML
+            // 
+            this.dataSetXML.DataSetName = "NewDataSet";
             // 
             // Form1
             // 
@@ -455,7 +467,8 @@
             this.grb_Titulo.ResumeLayout(false);
             this.grb_Titulo.PerformLayout();
             this.tbP_Paso8.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGV_Escenas)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataSetXML)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -496,11 +509,12 @@
         private System.Windows.Forms.GroupBox grb_Titulo;
         private System.Windows.Forms.SaveFileDialog sFD_GuardarXML;
         private System.Windows.Forms.OpenFileDialog oFD_AbrirXML;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView dataGV_Escenas;
         private System.Windows.Forms.Button btn_BajarEsc;
         private System.Windows.Forms.Button btn_SubirEsc;
         private System.Windows.Forms.Button btn_BorrarEsc;
         private System.Windows.Forms.Button btn_AnadirEsc;
+        private System.Data.DataSet dataSetXML;
     }
 }
 
