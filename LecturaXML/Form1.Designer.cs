@@ -58,6 +58,11 @@
             this.tbP_Paso6 = new System.Windows.Forms.TabPage();
             this.tbP_Paso7 = new System.Windows.Forms.TabPage();
             this.tbP_Paso8 = new System.Windows.Forms.TabPage();
+            this.btn_BajarEsc = new System.Windows.Forms.Button();
+            this.btn_SubirEsc = new System.Windows.Forms.Button();
+            this.btn_BorrarEsc = new System.Windows.Forms.Button();
+            this.btn_AnadirEsc = new System.Windows.Forms.Button();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.tbP_Paso9 = new System.Windows.Forms.TabPage();
             this.tbP_Generar = new System.Windows.Forms.TabPage();
             this.sFD_GuardarXML = new System.Windows.Forms.SaveFileDialog();
@@ -69,6 +74,8 @@
             this.grB_Autor.SuspendLayout();
             this.grB_Subtitulo.SuspendLayout();
             this.grb_Titulo.SuspendLayout();
+            this.tbP_Paso8.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // menu_Inicio
@@ -119,6 +126,7 @@
             this.guardarComoToolStripMenuItem.Name = "guardarComoToolStripMenuItem";
             this.guardarComoToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
             this.guardarComoToolStripMenuItem.Text = "Guardar como...";
+            this.guardarComoToolStripMenuItem.Click += new System.EventHandler(this.guardarComoToolStripMenuItem_Click);
             // 
             // edicionToolStripMenuItem
             // 
@@ -337,12 +345,65 @@
             // 
             // tbP_Paso8
             // 
+            this.tbP_Paso8.Controls.Add(this.btn_BajarEsc);
+            this.tbP_Paso8.Controls.Add(this.btn_SubirEsc);
+            this.tbP_Paso8.Controls.Add(this.btn_BorrarEsc);
+            this.tbP_Paso8.Controls.Add(this.btn_AnadirEsc);
+            this.tbP_Paso8.Controls.Add(this.dataGridView1);
             this.tbP_Paso8.Location = new System.Drawing.Point(4, 22);
             this.tbP_Paso8.Name = "tbP_Paso8";
             this.tbP_Paso8.Size = new System.Drawing.Size(557, 277);
             this.tbP_Paso8.TabIndex = 9;
             this.tbP_Paso8.Text = "Paso 8";
             this.tbP_Paso8.UseVisualStyleBackColor = true;
+            // 
+            // btn_BajarEsc
+            // 
+            this.btn_BajarEsc.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_BajarEsc.Location = new System.Drawing.Point(286, 17);
+            this.btn_BajarEsc.Name = "btn_BajarEsc";
+            this.btn_BajarEsc.Size = new System.Drawing.Size(78, 33);
+            this.btn_BajarEsc.TabIndex = 4;
+            this.btn_BajarEsc.Text = "Bajar";
+            this.btn_BajarEsc.UseVisualStyleBackColor = true;
+            // 
+            // btn_SubirEsc
+            // 
+            this.btn_SubirEsc.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_SubirEsc.Location = new System.Drawing.Point(202, 17);
+            this.btn_SubirEsc.Name = "btn_SubirEsc";
+            this.btn_SubirEsc.Size = new System.Drawing.Size(78, 33);
+            this.btn_SubirEsc.TabIndex = 3;
+            this.btn_SubirEsc.Text = "Subir";
+            this.btn_SubirEsc.UseVisualStyleBackColor = true;
+            // 
+            // btn_BorrarEsc
+            // 
+            this.btn_BorrarEsc.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_BorrarEsc.Location = new System.Drawing.Point(118, 17);
+            this.btn_BorrarEsc.Name = "btn_BorrarEsc";
+            this.btn_BorrarEsc.Size = new System.Drawing.Size(78, 33);
+            this.btn_BorrarEsc.TabIndex = 2;
+            this.btn_BorrarEsc.Text = "Eliminar";
+            this.btn_BorrarEsc.UseVisualStyleBackColor = true;
+            // 
+            // btn_AnadirEsc
+            // 
+            this.btn_AnadirEsc.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_AnadirEsc.Location = new System.Drawing.Point(34, 17);
+            this.btn_AnadirEsc.Name = "btn_AnadirEsc";
+            this.btn_AnadirEsc.Size = new System.Drawing.Size(78, 33);
+            this.btn_AnadirEsc.TabIndex = 1;
+            this.btn_AnadirEsc.Text = "Añadir";
+            this.btn_AnadirEsc.UseVisualStyleBackColor = true;
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(17, 69);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.Size = new System.Drawing.Size(524, 190);
+            this.dataGridView1.TabIndex = 0;
             // 
             // tbP_Paso9
             // 
@@ -380,6 +441,7 @@
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "Snowflake pocoPro";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CerrandoApp);
             this.menu_Inicio.ResumeLayout(false);
             this.menu_Inicio.PerformLayout();
             this.tbC_Pasos.ResumeLayout(false);
@@ -392,6 +454,8 @@
             this.grB_Subtitulo.PerformLayout();
             this.grb_Titulo.ResumeLayout(false);
             this.grb_Titulo.PerformLayout();
+            this.tbP_Paso8.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -432,6 +496,11 @@
         private System.Windows.Forms.GroupBox grb_Titulo;
         private System.Windows.Forms.SaveFileDialog sFD_GuardarXML;
         private System.Windows.Forms.OpenFileDialog oFD_AbrirXML;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.Button btn_BajarEsc;
+        private System.Windows.Forms.Button btn_SubirEsc;
+        private System.Windows.Forms.Button btn_BorrarEsc;
+        private System.Windows.Forms.Button btn_AnadirEsc;
     }
 }
 
