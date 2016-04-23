@@ -30,7 +30,7 @@ namespace LecturaXML
 
         public static void AbrirXML(string ruta)
         {
-
+           
         }
         
     }

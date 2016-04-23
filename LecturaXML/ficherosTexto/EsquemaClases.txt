@@ -1,0 +1,31 @@
+﻿Clase Libro
+Campos
+	Titulo
+	Subtitulo
+	Autor
+	Genero
+	List<Personaje>
+	List<Capitulo>
+
+Clase Personajes
+Campos
+	Nombre
+	Historia
+	Conflicto
+	Motivaciones
+	Objetivo
+	Epifania
+
+Clase Escena
+Campos
+	NumEscena
+	POV
+	Capitulo
+	Resumen
+
+Clase Capitulo
+Campos
+	ID
+	TotalEscenas
+	Contenido
+	List<Escena>

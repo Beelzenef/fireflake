@@ -53,15 +53,24 @@
             this.txtB_Titulo = new System.Windows.Forms.TextBox();
             this.tbP_Paso2 = new System.Windows.Forms.TabPage();
             this.tbP_Paso3 = new System.Windows.Forms.TabPage();
+            this.grB_HistoriaProta = new System.Windows.Forms.GroupBox();
+            this.txtB_historiaProta = new System.Windows.Forms.TextBox();
+            this.grB_EpifProta = new System.Windows.Forms.GroupBox();
+            this.txtB_epifProta = new System.Windows.Forms.TextBox();
+            this.grB_ConflicProta = new System.Windows.Forms.GroupBox();
+            this.txtB_conflicProta = new System.Windows.Forms.TextBox();
+            this.grB_MotivProta = new System.Windows.Forms.GroupBox();
+            this.txtB_motivProta = new System.Windows.Forms.TextBox();
+            this.grB_ObjetivoProta = new System.Windows.Forms.GroupBox();
+            this.txtB_objProta = new System.Windows.Forms.TextBox();
+            this.grB_nombreProta = new System.Windows.Forms.GroupBox();
+            this.txtB_nombreProta = new System.Windows.Forms.TextBox();
             this.tbP_Paso4 = new System.Windows.Forms.TabPage();
             this.tbP_Paso5 = new System.Windows.Forms.TabPage();
             this.tbP_Paso6 = new System.Windows.Forms.TabPage();
             this.tbP_Paso7 = new System.Windows.Forms.TabPage();
             this.tbP_Paso8 = new System.Windows.Forms.TabPage();
-            this.btn_BajarEsc = new System.Windows.Forms.Button();
-            this.btn_SubirEsc = new System.Windows.Forms.Button();
             this.btn_BorrarEsc = new System.Windows.Forms.Button();
-            this.btn_AnadirEsc = new System.Windows.Forms.Button();
             this.dataGV_Escenas = new System.Windows.Forms.DataGridView();
             this.tbP_Paso9 = new System.Windows.Forms.TabPage();
             this.tbP_Generar = new System.Windows.Forms.TabPage();
@@ -75,6 +84,13 @@
             this.grB_Autor.SuspendLayout();
             this.grB_Subtitulo.SuspendLayout();
             this.grb_Titulo.SuspendLayout();
+            this.tbP_Paso3.SuspendLayout();
+            this.grB_HistoriaProta.SuspendLayout();
+            this.grB_EpifProta.SuspendLayout();
+            this.grB_ConflicProta.SuspendLayout();
+            this.grB_MotivProta.SuspendLayout();
+            this.grB_ObjetivoProta.SuspendLayout();
+            this.grB_nombreProta.SuspendLayout();
             this.tbP_Paso8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGV_Escenas)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataSetXML)).BeginInit();
@@ -301,6 +317,12 @@
             // 
             // tbP_Paso3
             // 
+            this.tbP_Paso3.Controls.Add(this.grB_HistoriaProta);
+            this.tbP_Paso3.Controls.Add(this.grB_EpifProta);
+            this.tbP_Paso3.Controls.Add(this.grB_ConflicProta);
+            this.tbP_Paso3.Controls.Add(this.grB_MotivProta);
+            this.tbP_Paso3.Controls.Add(this.grB_ObjetivoProta);
+            this.tbP_Paso3.Controls.Add(this.grB_nombreProta);
             this.tbP_Paso3.Location = new System.Drawing.Point(4, 22);
             this.tbP_Paso3.Name = "tbP_Paso3";
             this.tbP_Paso3.Padding = new System.Windows.Forms.Padding(3);
@@ -308,6 +330,115 @@
             this.tbP_Paso3.TabIndex = 4;
             this.tbP_Paso3.Text = "Paso 3";
             this.tbP_Paso3.UseVisualStyleBackColor = true;
+            // 
+            // grB_HistoriaProta
+            // 
+            this.grB_HistoriaProta.Controls.Add(this.txtB_historiaProta);
+            this.grB_HistoriaProta.Location = new System.Drawing.Point(302, 25);
+            this.grB_HistoriaProta.Name = "grB_HistoriaProta";
+            this.grB_HistoriaProta.Size = new System.Drawing.Size(249, 157);
+            this.grB_HistoriaProta.TabIndex = 9;
+            this.grB_HistoriaProta.TabStop = false;
+            this.grB_HistoriaProta.Text = "Breve historia";
+            // 
+            // txtB_historiaProta
+            // 
+            this.txtB_historiaProta.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtB_historiaProta.Location = new System.Drawing.Point(6, 19);
+            this.txtB_historiaProta.Multiline = true;
+            this.txtB_historiaProta.Name = "txtB_historiaProta";
+            this.txtB_historiaProta.Size = new System.Drawing.Size(232, 132);
+            this.txtB_historiaProta.TabIndex = 0;
+            // 
+            // grB_EpifProta
+            // 
+            this.grB_EpifProta.Controls.Add(this.txtB_epifProta);
+            this.grB_EpifProta.Location = new System.Drawing.Point(21, 217);
+            this.grB_EpifProta.Name = "grB_EpifProta";
+            this.grB_EpifProta.Size = new System.Drawing.Size(262, 54);
+            this.grB_EpifProta.TabIndex = 8;
+            this.grB_EpifProta.TabStop = false;
+            this.grB_EpifProta.Text = "Epifania";
+            // 
+            // txtB_epifProta
+            // 
+            this.txtB_epifProta.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtB_epifProta.Location = new System.Drawing.Point(34, 19);
+            this.txtB_epifProta.Name = "txtB_epifProta";
+            this.txtB_epifProta.Size = new System.Drawing.Size(207, 24);
+            this.txtB_epifProta.TabIndex = 0;
+            // 
+            // grB_ConflicProta
+            // 
+            this.grB_ConflicProta.Controls.Add(this.txtB_conflicProta);
+            this.grB_ConflicProta.Location = new System.Drawing.Point(21, 162);
+            this.grB_ConflicProta.Name = "grB_ConflicProta";
+            this.grB_ConflicProta.Size = new System.Drawing.Size(262, 54);
+            this.grB_ConflicProta.TabIndex = 7;
+            this.grB_ConflicProta.TabStop = false;
+            this.grB_ConflicProta.Text = "Conflicto";
+            // 
+            // txtB_conflicProta
+            // 
+            this.txtB_conflicProta.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtB_conflicProta.Location = new System.Drawing.Point(34, 19);
+            this.txtB_conflicProta.Name = "txtB_conflicProta";
+            this.txtB_conflicProta.Size = new System.Drawing.Size(207, 24);
+            this.txtB_conflicProta.TabIndex = 0;
+            // 
+            // grB_MotivProta
+            // 
+            this.grB_MotivProta.Controls.Add(this.txtB_motivProta);
+            this.grB_MotivProta.Location = new System.Drawing.Point(21, 110);
+            this.grB_MotivProta.Name = "grB_MotivProta";
+            this.grB_MotivProta.Size = new System.Drawing.Size(262, 54);
+            this.grB_MotivProta.TabIndex = 8;
+            this.grB_MotivProta.TabStop = false;
+            this.grB_MotivProta.Text = "Motivaciones";
+            // 
+            // txtB_motivProta
+            // 
+            this.txtB_motivProta.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtB_motivProta.Location = new System.Drawing.Point(34, 19);
+            this.txtB_motivProta.Name = "txtB_motivProta";
+            this.txtB_motivProta.Size = new System.Drawing.Size(207, 24);
+            this.txtB_motivProta.TabIndex = 0;
+            // 
+            // grB_ObjetivoProta
+            // 
+            this.grB_ObjetivoProta.Controls.Add(this.txtB_objProta);
+            this.grB_ObjetivoProta.Location = new System.Drawing.Point(21, 58);
+            this.grB_ObjetivoProta.Name = "grB_ObjetivoProta";
+            this.grB_ObjetivoProta.Size = new System.Drawing.Size(262, 54);
+            this.grB_ObjetivoProta.TabIndex = 9;
+            this.grB_ObjetivoProta.TabStop = false;
+            this.grB_ObjetivoProta.Text = "Objetivo(s)";
+            // 
+            // txtB_objProta
+            // 
+            this.txtB_objProta.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtB_objProta.Location = new System.Drawing.Point(34, 19);
+            this.txtB_objProta.Name = "txtB_objProta";
+            this.txtB_objProta.Size = new System.Drawing.Size(207, 24);
+            this.txtB_objProta.TabIndex = 0;
+            // 
+            // grB_nombreProta
+            // 
+            this.grB_nombreProta.Controls.Add(this.txtB_nombreProta);
+            this.grB_nombreProta.Location = new System.Drawing.Point(21, 6);
+            this.grB_nombreProta.Name = "grB_nombreProta";
+            this.grB_nombreProta.Size = new System.Drawing.Size(262, 54);
+            this.grB_nombreProta.TabIndex = 6;
+            this.grB_nombreProta.TabStop = false;
+            this.grB_nombreProta.Text = "Nombre";
+            // 
+            // txtB_nombreProta
+            // 
+            this.txtB_nombreProta.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtB_nombreProta.Location = new System.Drawing.Point(34, 19);
+            this.txtB_nombreProta.Name = "txtB_nombreProta";
+            this.txtB_nombreProta.Size = new System.Drawing.Size(207, 24);
+            this.txtB_nombreProta.TabIndex = 0;
             // 
             // tbP_Paso4
             // 
@@ -351,10 +482,7 @@
             // 
             // tbP_Paso8
             // 
-            this.tbP_Paso8.Controls.Add(this.btn_BajarEsc);
-            this.tbP_Paso8.Controls.Add(this.btn_SubirEsc);
             this.tbP_Paso8.Controls.Add(this.btn_BorrarEsc);
-            this.tbP_Paso8.Controls.Add(this.btn_AnadirEsc);
             this.tbP_Paso8.Controls.Add(this.dataGV_Escenas);
             this.tbP_Paso8.Location = new System.Drawing.Point(4, 22);
             this.tbP_Paso8.Name = "tbP_Paso8";
@@ -363,52 +491,23 @@
             this.tbP_Paso8.Text = "Paso 8";
             this.tbP_Paso8.UseVisualStyleBackColor = true;
             // 
-            // btn_BajarEsc
-            // 
-            this.btn_BajarEsc.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_BajarEsc.Location = new System.Drawing.Point(286, 17);
-            this.btn_BajarEsc.Name = "btn_BajarEsc";
-            this.btn_BajarEsc.Size = new System.Drawing.Size(78, 33);
-            this.btn_BajarEsc.TabIndex = 4;
-            this.btn_BajarEsc.Text = "Bajar";
-            this.btn_BajarEsc.UseVisualStyleBackColor = true;
-            // 
-            // btn_SubirEsc
-            // 
-            this.btn_SubirEsc.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_SubirEsc.Location = new System.Drawing.Point(202, 17);
-            this.btn_SubirEsc.Name = "btn_SubirEsc";
-            this.btn_SubirEsc.Size = new System.Drawing.Size(78, 33);
-            this.btn_SubirEsc.TabIndex = 3;
-            this.btn_SubirEsc.Text = "Subir";
-            this.btn_SubirEsc.UseVisualStyleBackColor = true;
-            // 
             // btn_BorrarEsc
             // 
             this.btn_BorrarEsc.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_BorrarEsc.Location = new System.Drawing.Point(118, 17);
+            this.btn_BorrarEsc.Location = new System.Drawing.Point(26, 233);
             this.btn_BorrarEsc.Name = "btn_BorrarEsc";
             this.btn_BorrarEsc.Size = new System.Drawing.Size(78, 33);
             this.btn_BorrarEsc.TabIndex = 2;
             this.btn_BorrarEsc.Text = "Eliminar";
             this.btn_BorrarEsc.UseVisualStyleBackColor = true;
-            // 
-            // btn_AnadirEsc
-            // 
-            this.btn_AnadirEsc.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_AnadirEsc.Location = new System.Drawing.Point(34, 17);
-            this.btn_AnadirEsc.Name = "btn_AnadirEsc";
-            this.btn_AnadirEsc.Size = new System.Drawing.Size(78, 33);
-            this.btn_AnadirEsc.TabIndex = 1;
-            this.btn_AnadirEsc.Text = "Añadir";
-            this.btn_AnadirEsc.UseVisualStyleBackColor = true;
+            this.btn_BorrarEsc.Click += new System.EventHandler(this.EliminarFila);
             // 
             // dataGV_Escenas
             // 
             this.dataGV_Escenas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGV_Escenas.Location = new System.Drawing.Point(17, 69);
+            this.dataGV_Escenas.Location = new System.Drawing.Point(17, 13);
             this.dataGV_Escenas.Name = "dataGV_Escenas";
-            this.dataGV_Escenas.Size = new System.Drawing.Size(524, 190);
+            this.dataGV_Escenas.Size = new System.Drawing.Size(524, 214);
             this.dataGV_Escenas.TabIndex = 0;
             this.dataGV_Escenas.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.CambioCelda);
             this.dataGV_Escenas.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.CambioFilas);
@@ -432,9 +531,15 @@
             this.tbP_Generar.Text = "Generar";
             this.tbP_Generar.UseVisualStyleBackColor = true;
             // 
+            // sFD_GuardarXML
+            // 
+            this.sFD_GuardarXML.FileName = "FicheroXML";
+            this.sFD_GuardarXML.Filter = "XML|*.xml";
+            // 
             // oFD_AbrirXML
             // 
-            this.oFD_AbrirXML.FileName = "openFileDialog1";
+            this.oFD_AbrirXML.FileName = "FicheroXML";
+            this.oFD_AbrirXML.Filter = "XML|*.xml";
             // 
             // dataSetXML
             // 
@@ -466,6 +571,19 @@
             this.grB_Subtitulo.PerformLayout();
             this.grb_Titulo.ResumeLayout(false);
             this.grb_Titulo.PerformLayout();
+            this.tbP_Paso3.ResumeLayout(false);
+            this.grB_HistoriaProta.ResumeLayout(false);
+            this.grB_HistoriaProta.PerformLayout();
+            this.grB_EpifProta.ResumeLayout(false);
+            this.grB_EpifProta.PerformLayout();
+            this.grB_ConflicProta.ResumeLayout(false);
+            this.grB_ConflicProta.PerformLayout();
+            this.grB_MotivProta.ResumeLayout(false);
+            this.grB_MotivProta.PerformLayout();
+            this.grB_ObjetivoProta.ResumeLayout(false);
+            this.grB_ObjetivoProta.PerformLayout();
+            this.grB_nombreProta.ResumeLayout(false);
+            this.grB_nombreProta.PerformLayout();
             this.tbP_Paso8.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGV_Escenas)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataSetXML)).EndInit();
@@ -510,11 +628,20 @@
         private System.Windows.Forms.SaveFileDialog sFD_GuardarXML;
         private System.Windows.Forms.OpenFileDialog oFD_AbrirXML;
         private System.Windows.Forms.DataGridView dataGV_Escenas;
-        private System.Windows.Forms.Button btn_BajarEsc;
-        private System.Windows.Forms.Button btn_SubirEsc;
         private System.Windows.Forms.Button btn_BorrarEsc;
-        private System.Windows.Forms.Button btn_AnadirEsc;
         private System.Data.DataSet dataSetXML;
+        private System.Windows.Forms.GroupBox grB_EpifProta;
+        private System.Windows.Forms.TextBox txtB_epifProta;
+        private System.Windows.Forms.GroupBox grB_ConflicProta;
+        private System.Windows.Forms.TextBox txtB_conflicProta;
+        private System.Windows.Forms.GroupBox grB_MotivProta;
+        private System.Windows.Forms.TextBox txtB_motivProta;
+        private System.Windows.Forms.GroupBox grB_ObjetivoProta;
+        private System.Windows.Forms.TextBox txtB_objProta;
+        private System.Windows.Forms.GroupBox grB_nombreProta;
+        private System.Windows.Forms.TextBox txtB_nombreProta;
+        private System.Windows.Forms.GroupBox grB_HistoriaProta;
+        private System.Windows.Forms.TextBox txtB_historiaProta;
     }
 }
 

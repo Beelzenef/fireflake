@@ -84,6 +84,11 @@ Texto - letra y tamaño
 
 Generar RTF (Button)
 
-Clase libro
+Clase Libro
 Coleccion Escenas
 Coleccion Personajes
+
+¿Como añadir una ficha Personaje para cada personaje?
+¿Guardar diferentes géneros (si existen)?
+
+Subir y bajar filas de DataGridView

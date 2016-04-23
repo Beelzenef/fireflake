@@ -15,7 +15,6 @@ namespace LecturaXML
         public Form1()
         {
             InitializeComponent();
-            
         }
 
         #region Menu principal
@@ -75,6 +74,7 @@ namespace LecturaXML
 
         #endregion
 
+        #region Cambio de datos
         private void DatosCambiados(object sender, EventArgs e)
         {
             guardado = false;
@@ -89,5 +89,26 @@ namespace LecturaXML
         {
             // Cuando se modifican datos a mano, no cuando Abrir: guardado = false;
         }
+        #endregion
+
+        #region Gestionando DGV
+
+        private void EliminarFila(object sender, EventArgs e)
+        {
+            try
+            {
+                dataGV_Escenas.Rows.RemoveAt(dataGV_Escenas.CurrentCell.RowIndex);
+
+            }
+            catch
+            {
+                MessageBox.Show("¡No hay más filas que eliminar!");
+            }
+        }
+
+
+
+        #endregion
+
     }
 }
