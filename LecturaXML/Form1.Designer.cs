@@ -52,6 +52,10 @@
             this.grb_Titulo = new System.Windows.Forms.GroupBox();
             this.txtB_Titulo = new System.Windows.Forms.TextBox();
             this.tbP_Paso2 = new System.Windows.Forms.TabPage();
+            this.grB_ActosPrin = new System.Windows.Forms.GroupBox();
+            this.lsB_ActosPrin = new System.Windows.Forms.ListBox();
+            this.grB_Final = new System.Windows.Forms.GroupBox();
+            this.txtB_Final = new System.Windows.Forms.TextBox();
             this.tbP_Paso3 = new System.Windows.Forms.TabPage();
             this.grB_HistoriaProta = new System.Windows.Forms.GroupBox();
             this.txtB_historiaProta = new System.Windows.Forms.TextBox();
@@ -66,9 +70,27 @@
             this.grB_nombreProta = new System.Windows.Forms.GroupBox();
             this.txtB_nombreProta = new System.Windows.Forms.TextBox();
             this.tbP_Paso4 = new System.Windows.Forms.TabPage();
+            this.grB_AActosPrin = new System.Windows.Forms.GroupBox();
+            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.grB_AFinal = new System.Windows.Forms.GroupBox();
+            this.txtB_AFinal = new System.Windows.Forms.TextBox();
             this.tbP_Paso5 = new System.Windows.Forms.TabPage();
             this.tbP_Paso6 = new System.Windows.Forms.TabPage();
             this.tbP_Paso7 = new System.Windows.Forms.TabPage();
+            this.grB_ListaPJs = new System.Windows.Forms.GroupBox();
+            this.lsB_ListaPJs = new System.Windows.Forms.ListBox();
+            this.grB_HistoriaPJ = new System.Windows.Forms.GroupBox();
+            this.txtB_HistoriaPJ = new System.Windows.Forms.TextBox();
+            this.grB_EpifPJ = new System.Windows.Forms.GroupBox();
+            this.txtB_EpifPJ = new System.Windows.Forms.TextBox();
+            this.grB_ConfPJ = new System.Windows.Forms.GroupBox();
+            this.txtB_ConfPJ = new System.Windows.Forms.TextBox();
+            this.grB_MotivPJ = new System.Windows.Forms.GroupBox();
+            this.txtB_MotivPJ = new System.Windows.Forms.TextBox();
+            this.grB_ObjPJ = new System.Windows.Forms.GroupBox();
+            this.txtB_ObjPJ = new System.Windows.Forms.TextBox();
+            this.grB_NombrePJ = new System.Windows.Forms.GroupBox();
+            this.txtB_NombrePJ = new System.Windows.Forms.TextBox();
             this.tbP_Paso8 = new System.Windows.Forms.TabPage();
             this.btn_BorrarEsc = new System.Windows.Forms.Button();
             this.dataGV_Escenas = new System.Windows.Forms.DataGridView();
@@ -84,6 +106,9 @@
             this.grB_Autor.SuspendLayout();
             this.grB_Subtitulo.SuspendLayout();
             this.grb_Titulo.SuspendLayout();
+            this.tbP_Paso2.SuspendLayout();
+            this.grB_ActosPrin.SuspendLayout();
+            this.grB_Final.SuspendLayout();
             this.tbP_Paso3.SuspendLayout();
             this.grB_HistoriaProta.SuspendLayout();
             this.grB_EpifProta.SuspendLayout();
@@ -91,6 +116,17 @@
             this.grB_MotivProta.SuspendLayout();
             this.grB_ObjetivoProta.SuspendLayout();
             this.grB_nombreProta.SuspendLayout();
+            this.tbP_Paso4.SuspendLayout();
+            this.grB_AActosPrin.SuspendLayout();
+            this.grB_AFinal.SuspendLayout();
+            this.tbP_Paso7.SuspendLayout();
+            this.grB_ListaPJs.SuspendLayout();
+            this.grB_HistoriaPJ.SuspendLayout();
+            this.grB_EpifPJ.SuspendLayout();
+            this.grB_ConfPJ.SuspendLayout();
+            this.grB_MotivPJ.SuspendLayout();
+            this.grB_ObjPJ.SuspendLayout();
+            this.grB_NombrePJ.SuspendLayout();
             this.tbP_Paso8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGV_Escenas)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataSetXML)).BeginInit();
@@ -104,7 +140,7 @@
             this.ayudaToolStripMenuItem});
             this.menu_Inicio.Location = new System.Drawing.Point(0, 0);
             this.menu_Inicio.Name = "menu_Inicio";
-            this.menu_Inicio.Size = new System.Drawing.Size(589, 24);
+            this.menu_Inicio.Size = new System.Drawing.Size(889, 24);
             this.menu_Inicio.TabIndex = 3;
             this.menu_Inicio.Text = "menuStrip1";
             // 
@@ -190,7 +226,7 @@
             this.tbC_Pasos.Location = new System.Drawing.Point(12, 27);
             this.tbC_Pasos.Name = "tbC_Pasos";
             this.tbC_Pasos.SelectedIndex = 0;
-            this.tbC_Pasos.Size = new System.Drawing.Size(565, 303);
+            this.tbC_Pasos.Size = new System.Drawing.Size(828, 341);
             this.tbC_Pasos.TabIndex = 4;
             // 
             // tbP_Inicio
@@ -198,7 +234,7 @@
             this.tbP_Inicio.Location = new System.Drawing.Point(4, 22);
             this.tbP_Inicio.Name = "tbP_Inicio";
             this.tbP_Inicio.Padding = new System.Windows.Forms.Padding(3);
-            this.tbP_Inicio.Size = new System.Drawing.Size(557, 277);
+            this.tbP_Inicio.Size = new System.Drawing.Size(820, 315);
             this.tbP_Inicio.TabIndex = 0;
             this.tbP_Inicio.Text = "Inicio";
             this.tbP_Inicio.UseVisualStyleBackColor = true;
@@ -209,7 +245,7 @@
             this.tbP_Autor.Location = new System.Drawing.Point(4, 22);
             this.tbP_Autor.Name = "tbP_Autor";
             this.tbP_Autor.Padding = new System.Windows.Forms.Padding(3);
-            this.tbP_Autor.Size = new System.Drawing.Size(557, 277);
+            this.tbP_Autor.Size = new System.Drawing.Size(820, 315);
             this.tbP_Autor.TabIndex = 1;
             this.tbP_Autor.Text = "Autor";
             this.tbP_Autor.UseVisualStyleBackColor = true;
@@ -224,7 +260,7 @@
             this.tbP_Paso1.Location = new System.Drawing.Point(4, 22);
             this.tbP_Paso1.Name = "tbP_Paso1";
             this.tbP_Paso1.Padding = new System.Windows.Forms.Padding(3);
-            this.tbP_Paso1.Size = new System.Drawing.Size(557, 277);
+            this.tbP_Paso1.Size = new System.Drawing.Size(820, 315);
             this.tbP_Paso1.TabIndex = 2;
             this.tbP_Paso1.Text = "Paso 1";
             this.tbP_Paso1.UseVisualStyleBackColor = true;
@@ -307,13 +343,55 @@
             // 
             // tbP_Paso2
             // 
+            this.tbP_Paso2.Controls.Add(this.grB_ActosPrin);
+            this.tbP_Paso2.Controls.Add(this.grB_Final);
             this.tbP_Paso2.Location = new System.Drawing.Point(4, 22);
             this.tbP_Paso2.Name = "tbP_Paso2";
             this.tbP_Paso2.Padding = new System.Windows.Forms.Padding(3);
-            this.tbP_Paso2.Size = new System.Drawing.Size(557, 277);
+            this.tbP_Paso2.Size = new System.Drawing.Size(820, 315);
             this.tbP_Paso2.TabIndex = 3;
             this.tbP_Paso2.Text = "Paso 2";
             this.tbP_Paso2.UseVisualStyleBackColor = true;
+            // 
+            // grB_ActosPrin
+            // 
+            this.grB_ActosPrin.Controls.Add(this.lsB_ActosPrin);
+            this.grB_ActosPrin.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.grB_ActosPrin.Location = new System.Drawing.Point(84, 16);
+            this.grB_ActosPrin.Name = "grB_ActosPrin";
+            this.grB_ActosPrin.Size = new System.Drawing.Size(427, 161);
+            this.grB_ActosPrin.TabIndex = 3;
+            this.grB_ActosPrin.TabStop = false;
+            this.grB_ActosPrin.Text = "groupBox2";
+            // 
+            // lsB_ActosPrin
+            // 
+            this.lsB_ActosPrin.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lsB_ActosPrin.FormattingEnabled = true;
+            this.lsB_ActosPrin.ItemHeight = 18;
+            this.lsB_ActosPrin.Location = new System.Drawing.Point(6, 23);
+            this.lsB_ActosPrin.Name = "lsB_ActosPrin";
+            this.lsB_ActosPrin.Size = new System.Drawing.Size(403, 130);
+            this.lsB_ActosPrin.TabIndex = 0;
+            // 
+            // grB_Final
+            // 
+            this.grB_Final.Controls.Add(this.txtB_Final);
+            this.grB_Final.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.grB_Final.Location = new System.Drawing.Point(90, 183);
+            this.grB_Final.Name = "grB_Final";
+            this.grB_Final.Size = new System.Drawing.Size(427, 63);
+            this.grB_Final.TabIndex = 2;
+            this.grB_Final.TabStop = false;
+            this.grB_Final.Text = "groupBox1";
+            // 
+            // txtB_Final
+            // 
+            this.txtB_Final.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtB_Final.Location = new System.Drawing.Point(21, 23);
+            this.txtB_Final.Name = "txtB_Final";
+            this.txtB_Final.Size = new System.Drawing.Size(388, 24);
+            this.txtB_Final.TabIndex = 1;
             // 
             // tbP_Paso3
             // 
@@ -326,7 +404,7 @@
             this.tbP_Paso3.Location = new System.Drawing.Point(4, 22);
             this.tbP_Paso3.Name = "tbP_Paso3";
             this.tbP_Paso3.Padding = new System.Windows.Forms.Padding(3);
-            this.tbP_Paso3.Size = new System.Drawing.Size(557, 277);
+            this.tbP_Paso3.Size = new System.Drawing.Size(820, 315);
             this.tbP_Paso3.TabIndex = 4;
             this.tbP_Paso3.Text = "Paso 3";
             this.tbP_Paso3.UseVisualStyleBackColor = true;
@@ -334,7 +412,7 @@
             // grB_HistoriaProta
             // 
             this.grB_HistoriaProta.Controls.Add(this.txtB_historiaProta);
-            this.grB_HistoriaProta.Location = new System.Drawing.Point(302, 25);
+            this.grB_HistoriaProta.Location = new System.Drawing.Point(421, 35);
             this.grB_HistoriaProta.Name = "grB_HistoriaProta";
             this.grB_HistoriaProta.Size = new System.Drawing.Size(249, 157);
             this.grB_HistoriaProta.TabIndex = 9;
@@ -353,7 +431,7 @@
             // grB_EpifProta
             // 
             this.grB_EpifProta.Controls.Add(this.txtB_epifProta);
-            this.grB_EpifProta.Location = new System.Drawing.Point(21, 217);
+            this.grB_EpifProta.Location = new System.Drawing.Point(140, 227);
             this.grB_EpifProta.Name = "grB_EpifProta";
             this.grB_EpifProta.Size = new System.Drawing.Size(262, 54);
             this.grB_EpifProta.TabIndex = 8;
@@ -371,7 +449,7 @@
             // grB_ConflicProta
             // 
             this.grB_ConflicProta.Controls.Add(this.txtB_conflicProta);
-            this.grB_ConflicProta.Location = new System.Drawing.Point(21, 162);
+            this.grB_ConflicProta.Location = new System.Drawing.Point(140, 172);
             this.grB_ConflicProta.Name = "grB_ConflicProta";
             this.grB_ConflicProta.Size = new System.Drawing.Size(262, 54);
             this.grB_ConflicProta.TabIndex = 7;
@@ -389,7 +467,7 @@
             // grB_MotivProta
             // 
             this.grB_MotivProta.Controls.Add(this.txtB_motivProta);
-            this.grB_MotivProta.Location = new System.Drawing.Point(21, 110);
+            this.grB_MotivProta.Location = new System.Drawing.Point(140, 120);
             this.grB_MotivProta.Name = "grB_MotivProta";
             this.grB_MotivProta.Size = new System.Drawing.Size(262, 54);
             this.grB_MotivProta.TabIndex = 8;
@@ -407,7 +485,7 @@
             // grB_ObjetivoProta
             // 
             this.grB_ObjetivoProta.Controls.Add(this.txtB_objProta);
-            this.grB_ObjetivoProta.Location = new System.Drawing.Point(21, 58);
+            this.grB_ObjetivoProta.Location = new System.Drawing.Point(140, 68);
             this.grB_ObjetivoProta.Name = "grB_ObjetivoProta";
             this.grB_ObjetivoProta.Size = new System.Drawing.Size(262, 54);
             this.grB_ObjetivoProta.TabIndex = 9;
@@ -425,7 +503,7 @@
             // grB_nombreProta
             // 
             this.grB_nombreProta.Controls.Add(this.txtB_nombreProta);
-            this.grB_nombreProta.Location = new System.Drawing.Point(21, 6);
+            this.grB_nombreProta.Location = new System.Drawing.Point(140, 16);
             this.grB_nombreProta.Name = "grB_nombreProta";
             this.grB_nombreProta.Size = new System.Drawing.Size(262, 54);
             this.grB_nombreProta.TabIndex = 6;
@@ -442,20 +520,60 @@
             // 
             // tbP_Paso4
             // 
+            this.tbP_Paso4.Controls.Add(this.grB_AActosPrin);
+            this.tbP_Paso4.Controls.Add(this.grB_AFinal);
             this.tbP_Paso4.Location = new System.Drawing.Point(4, 22);
             this.tbP_Paso4.Name = "tbP_Paso4";
             this.tbP_Paso4.Padding = new System.Windows.Forms.Padding(3);
-            this.tbP_Paso4.Size = new System.Drawing.Size(557, 277);
+            this.tbP_Paso4.Size = new System.Drawing.Size(820, 315);
             this.tbP_Paso4.TabIndex = 5;
             this.tbP_Paso4.Text = "Paso 4";
             this.tbP_Paso4.UseVisualStyleBackColor = true;
+            // 
+            // grB_AActosPrin
+            // 
+            this.grB_AActosPrin.Controls.Add(this.textBox3);
+            this.grB_AActosPrin.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.grB_AActosPrin.Location = new System.Drawing.Point(41, 19);
+            this.grB_AActosPrin.Name = "grB_AActosPrin";
+            this.grB_AActosPrin.Size = new System.Drawing.Size(315, 287);
+            this.grB_AActosPrin.TabIndex = 1;
+            this.grB_AActosPrin.TabStop = false;
+            this.grB_AActosPrin.Text = "Amplía tus argumentos pricipales";
+            // 
+            // textBox3
+            // 
+            this.textBox3.Location = new System.Drawing.Point(6, 23);
+            this.textBox3.Multiline = true;
+            this.textBox3.Name = "textBox3";
+            this.textBox3.Size = new System.Drawing.Size(303, 258);
+            this.textBox3.TabIndex = 0;
+            // 
+            // grB_AFinal
+            // 
+            this.grB_AFinal.Controls.Add(this.txtB_AFinal);
+            this.grB_AFinal.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.grB_AFinal.Location = new System.Drawing.Point(375, 19);
+            this.grB_AFinal.Name = "grB_AFinal";
+            this.grB_AFinal.Size = new System.Drawing.Size(315, 287);
+            this.grB_AFinal.TabIndex = 0;
+            this.grB_AFinal.TabStop = false;
+            this.grB_AFinal.Text = "Amplia tu final";
+            // 
+            // txtB_AFinal
+            // 
+            this.txtB_AFinal.Location = new System.Drawing.Point(6, 23);
+            this.txtB_AFinal.Multiline = true;
+            this.txtB_AFinal.Name = "txtB_AFinal";
+            this.txtB_AFinal.Size = new System.Drawing.Size(303, 258);
+            this.txtB_AFinal.TabIndex = 0;
             // 
             // tbP_Paso5
             // 
             this.tbP_Paso5.Location = new System.Drawing.Point(4, 22);
             this.tbP_Paso5.Name = "tbP_Paso5";
             this.tbP_Paso5.Padding = new System.Windows.Forms.Padding(3);
-            this.tbP_Paso5.Size = new System.Drawing.Size(557, 277);
+            this.tbP_Paso5.Size = new System.Drawing.Size(820, 315);
             this.tbP_Paso5.TabIndex = 6;
             this.tbP_Paso5.Text = "Paso 5";
             this.tbP_Paso5.UseVisualStyleBackColor = true;
@@ -465,20 +583,157 @@
             this.tbP_Paso6.Location = new System.Drawing.Point(4, 22);
             this.tbP_Paso6.Name = "tbP_Paso6";
             this.tbP_Paso6.Padding = new System.Windows.Forms.Padding(3);
-            this.tbP_Paso6.Size = new System.Drawing.Size(557, 277);
+            this.tbP_Paso6.Size = new System.Drawing.Size(820, 315);
             this.tbP_Paso6.TabIndex = 7;
             this.tbP_Paso6.Text = "Paso 6";
             this.tbP_Paso6.UseVisualStyleBackColor = true;
             // 
             // tbP_Paso7
             // 
+            this.tbP_Paso7.Controls.Add(this.grB_ListaPJs);
+            this.tbP_Paso7.Controls.Add(this.grB_HistoriaPJ);
+            this.tbP_Paso7.Controls.Add(this.grB_EpifPJ);
+            this.tbP_Paso7.Controls.Add(this.grB_ConfPJ);
+            this.tbP_Paso7.Controls.Add(this.grB_MotivPJ);
+            this.tbP_Paso7.Controls.Add(this.grB_ObjPJ);
+            this.tbP_Paso7.Controls.Add(this.grB_NombrePJ);
             this.tbP_Paso7.Location = new System.Drawing.Point(4, 22);
             this.tbP_Paso7.Name = "tbP_Paso7";
             this.tbP_Paso7.Padding = new System.Windows.Forms.Padding(3);
-            this.tbP_Paso7.Size = new System.Drawing.Size(557, 277);
+            this.tbP_Paso7.Size = new System.Drawing.Size(820, 315);
             this.tbP_Paso7.TabIndex = 8;
             this.tbP_Paso7.Text = "Paso 7";
             this.tbP_Paso7.UseVisualStyleBackColor = true;
+            // 
+            // grB_ListaPJs
+            // 
+            this.grB_ListaPJs.Controls.Add(this.lsB_ListaPJs);
+            this.grB_ListaPJs.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.grB_ListaPJs.Location = new System.Drawing.Point(16, 65);
+            this.grB_ListaPJs.Name = "grB_ListaPJs";
+            this.grB_ListaPJs.Size = new System.Drawing.Size(260, 216);
+            this.grB_ListaPJs.TabIndex = 16;
+            this.grB_ListaPJs.TabStop = false;
+            this.grB_ListaPJs.Text = "groupBox2";
+            // 
+            // lsB_ListaPJs
+            // 
+            this.lsB_ListaPJs.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lsB_ListaPJs.FormattingEnabled = true;
+            this.lsB_ListaPJs.ItemHeight = 18;
+            this.lsB_ListaPJs.Location = new System.Drawing.Point(6, 23);
+            this.lsB_ListaPJs.Name = "lsB_ListaPJs";
+            this.lsB_ListaPJs.Size = new System.Drawing.Size(248, 184);
+            this.lsB_ListaPJs.TabIndex = 0;
+            // 
+            // grB_HistoriaPJ
+            // 
+            this.grB_HistoriaPJ.Controls.Add(this.txtB_HistoriaPJ);
+            this.grB_HistoriaPJ.Location = new System.Drawing.Point(563, 46);
+            this.grB_HistoriaPJ.Name = "grB_HistoriaPJ";
+            this.grB_HistoriaPJ.Size = new System.Drawing.Size(249, 157);
+            this.grB_HistoriaPJ.TabIndex = 14;
+            this.grB_HistoriaPJ.TabStop = false;
+            this.grB_HistoriaPJ.Text = "Breve historia";
+            // 
+            // txtB_HistoriaPJ
+            // 
+            this.txtB_HistoriaPJ.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtB_HistoriaPJ.Location = new System.Drawing.Point(6, 19);
+            this.txtB_HistoriaPJ.Multiline = true;
+            this.txtB_HistoriaPJ.Name = "txtB_HistoriaPJ";
+            this.txtB_HistoriaPJ.Size = new System.Drawing.Size(232, 132);
+            this.txtB_HistoriaPJ.TabIndex = 0;
+            // 
+            // grB_EpifPJ
+            // 
+            this.grB_EpifPJ.Controls.Add(this.txtB_EpifPJ);
+            this.grB_EpifPJ.Location = new System.Drawing.Point(282, 238);
+            this.grB_EpifPJ.Name = "grB_EpifPJ";
+            this.grB_EpifPJ.Size = new System.Drawing.Size(262, 54);
+            this.grB_EpifPJ.TabIndex = 12;
+            this.grB_EpifPJ.TabStop = false;
+            this.grB_EpifPJ.Text = "Epifania";
+            // 
+            // txtB_EpifPJ
+            // 
+            this.txtB_EpifPJ.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtB_EpifPJ.Location = new System.Drawing.Point(34, 19);
+            this.txtB_EpifPJ.Name = "txtB_EpifPJ";
+            this.txtB_EpifPJ.Size = new System.Drawing.Size(207, 24);
+            this.txtB_EpifPJ.TabIndex = 0;
+            // 
+            // grB_ConfPJ
+            // 
+            this.grB_ConfPJ.Controls.Add(this.txtB_ConfPJ);
+            this.grB_ConfPJ.Location = new System.Drawing.Point(282, 183);
+            this.grB_ConfPJ.Name = "grB_ConfPJ";
+            this.grB_ConfPJ.Size = new System.Drawing.Size(262, 54);
+            this.grB_ConfPJ.TabIndex = 11;
+            this.grB_ConfPJ.TabStop = false;
+            this.grB_ConfPJ.Text = "Conflicto";
+            // 
+            // txtB_ConfPJ
+            // 
+            this.txtB_ConfPJ.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtB_ConfPJ.Location = new System.Drawing.Point(34, 19);
+            this.txtB_ConfPJ.Name = "txtB_ConfPJ";
+            this.txtB_ConfPJ.Size = new System.Drawing.Size(207, 24);
+            this.txtB_ConfPJ.TabIndex = 0;
+            // 
+            // grB_MotivPJ
+            // 
+            this.grB_MotivPJ.Controls.Add(this.txtB_MotivPJ);
+            this.grB_MotivPJ.Location = new System.Drawing.Point(282, 131);
+            this.grB_MotivPJ.Name = "grB_MotivPJ";
+            this.grB_MotivPJ.Size = new System.Drawing.Size(262, 54);
+            this.grB_MotivPJ.TabIndex = 13;
+            this.grB_MotivPJ.TabStop = false;
+            this.grB_MotivPJ.Text = "Motivaciones";
+            // 
+            // txtB_MotivPJ
+            // 
+            this.txtB_MotivPJ.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtB_MotivPJ.Location = new System.Drawing.Point(34, 19);
+            this.txtB_MotivPJ.Name = "txtB_MotivPJ";
+            this.txtB_MotivPJ.Size = new System.Drawing.Size(207, 24);
+            this.txtB_MotivPJ.TabIndex = 0;
+            // 
+            // grB_ObjPJ
+            // 
+            this.grB_ObjPJ.Controls.Add(this.txtB_ObjPJ);
+            this.grB_ObjPJ.Location = new System.Drawing.Point(282, 79);
+            this.grB_ObjPJ.Name = "grB_ObjPJ";
+            this.grB_ObjPJ.Size = new System.Drawing.Size(262, 54);
+            this.grB_ObjPJ.TabIndex = 15;
+            this.grB_ObjPJ.TabStop = false;
+            this.grB_ObjPJ.Text = "Objetivo(s)";
+            // 
+            // txtB_ObjPJ
+            // 
+            this.txtB_ObjPJ.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtB_ObjPJ.Location = new System.Drawing.Point(34, 19);
+            this.txtB_ObjPJ.Name = "txtB_ObjPJ";
+            this.txtB_ObjPJ.Size = new System.Drawing.Size(207, 24);
+            this.txtB_ObjPJ.TabIndex = 0;
+            // 
+            // grB_NombrePJ
+            // 
+            this.grB_NombrePJ.Controls.Add(this.txtB_NombrePJ);
+            this.grB_NombrePJ.Location = new System.Drawing.Point(282, 27);
+            this.grB_NombrePJ.Name = "grB_NombrePJ";
+            this.grB_NombrePJ.Size = new System.Drawing.Size(262, 54);
+            this.grB_NombrePJ.TabIndex = 10;
+            this.grB_NombrePJ.TabStop = false;
+            this.grB_NombrePJ.Text = "Nombre";
+            // 
+            // txtB_NombrePJ
+            // 
+            this.txtB_NombrePJ.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtB_NombrePJ.Location = new System.Drawing.Point(34, 19);
+            this.txtB_NombrePJ.Name = "txtB_NombrePJ";
+            this.txtB_NombrePJ.Size = new System.Drawing.Size(207, 24);
+            this.txtB_NombrePJ.TabIndex = 0;
             // 
             // tbP_Paso8
             // 
@@ -486,7 +741,7 @@
             this.tbP_Paso8.Controls.Add(this.dataGV_Escenas);
             this.tbP_Paso8.Location = new System.Drawing.Point(4, 22);
             this.tbP_Paso8.Name = "tbP_Paso8";
-            this.tbP_Paso8.Size = new System.Drawing.Size(557, 277);
+            this.tbP_Paso8.Size = new System.Drawing.Size(820, 315);
             this.tbP_Paso8.TabIndex = 9;
             this.tbP_Paso8.Text = "Paso 8";
             this.tbP_Paso8.UseVisualStyleBackColor = true;
@@ -516,7 +771,7 @@
             // 
             this.tbP_Paso9.Location = new System.Drawing.Point(4, 22);
             this.tbP_Paso9.Name = "tbP_Paso9";
-            this.tbP_Paso9.Size = new System.Drawing.Size(557, 277);
+            this.tbP_Paso9.Size = new System.Drawing.Size(820, 315);
             this.tbP_Paso9.TabIndex = 10;
             this.tbP_Paso9.Text = "Paso 9";
             this.tbP_Paso9.UseVisualStyleBackColor = true;
@@ -526,7 +781,7 @@
             this.tbP_Generar.Location = new System.Drawing.Point(4, 22);
             this.tbP_Generar.Name = "tbP_Generar";
             this.tbP_Generar.Padding = new System.Windows.Forms.Padding(3);
-            this.tbP_Generar.Size = new System.Drawing.Size(557, 277);
+            this.tbP_Generar.Size = new System.Drawing.Size(820, 315);
             this.tbP_Generar.TabIndex = 11;
             this.tbP_Generar.Text = "Generar";
             this.tbP_Generar.UseVisualStyleBackColor = true;
@@ -550,7 +805,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(589, 342);
+            this.ClientSize = new System.Drawing.Size(889, 380);
             this.Controls.Add(this.tbC_Pasos);
             this.Controls.Add(this.menu_Inicio);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -571,6 +826,10 @@
             this.grB_Subtitulo.PerformLayout();
             this.grb_Titulo.ResumeLayout(false);
             this.grb_Titulo.PerformLayout();
+            this.tbP_Paso2.ResumeLayout(false);
+            this.grB_ActosPrin.ResumeLayout(false);
+            this.grB_Final.ResumeLayout(false);
+            this.grB_Final.PerformLayout();
             this.tbP_Paso3.ResumeLayout(false);
             this.grB_HistoriaProta.ResumeLayout(false);
             this.grB_HistoriaProta.PerformLayout();
@@ -584,6 +843,25 @@
             this.grB_ObjetivoProta.PerformLayout();
             this.grB_nombreProta.ResumeLayout(false);
             this.grB_nombreProta.PerformLayout();
+            this.tbP_Paso4.ResumeLayout(false);
+            this.grB_AActosPrin.ResumeLayout(false);
+            this.grB_AActosPrin.PerformLayout();
+            this.grB_AFinal.ResumeLayout(false);
+            this.grB_AFinal.PerformLayout();
+            this.tbP_Paso7.ResumeLayout(false);
+            this.grB_ListaPJs.ResumeLayout(false);
+            this.grB_HistoriaPJ.ResumeLayout(false);
+            this.grB_HistoriaPJ.PerformLayout();
+            this.grB_EpifPJ.ResumeLayout(false);
+            this.grB_EpifPJ.PerformLayout();
+            this.grB_ConfPJ.ResumeLayout(false);
+            this.grB_ConfPJ.PerformLayout();
+            this.grB_MotivPJ.ResumeLayout(false);
+            this.grB_MotivPJ.PerformLayout();
+            this.grB_ObjPJ.ResumeLayout(false);
+            this.grB_ObjPJ.PerformLayout();
+            this.grB_NombrePJ.ResumeLayout(false);
+            this.grB_NombrePJ.PerformLayout();
             this.tbP_Paso8.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGV_Escenas)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataSetXML)).EndInit();
@@ -642,6 +920,28 @@
         private System.Windows.Forms.TextBox txtB_nombreProta;
         private System.Windows.Forms.GroupBox grB_HistoriaProta;
         private System.Windows.Forms.TextBox txtB_historiaProta;
+        private System.Windows.Forms.GroupBox grB_ActosPrin;
+        private System.Windows.Forms.ListBox lsB_ActosPrin;
+        private System.Windows.Forms.GroupBox grB_Final;
+        private System.Windows.Forms.TextBox txtB_Final;
+        private System.Windows.Forms.GroupBox grB_AActosPrin;
+        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.GroupBox grB_AFinal;
+        private System.Windows.Forms.TextBox txtB_AFinal;
+        private System.Windows.Forms.GroupBox grB_ListaPJs;
+        private System.Windows.Forms.ListBox lsB_ListaPJs;
+        private System.Windows.Forms.GroupBox grB_HistoriaPJ;
+        private System.Windows.Forms.TextBox txtB_HistoriaPJ;
+        private System.Windows.Forms.GroupBox grB_EpifPJ;
+        private System.Windows.Forms.TextBox txtB_EpifPJ;
+        private System.Windows.Forms.GroupBox grB_ConfPJ;
+        private System.Windows.Forms.TextBox txtB_ConfPJ;
+        private System.Windows.Forms.GroupBox grB_MotivPJ;
+        private System.Windows.Forms.TextBox txtB_MotivPJ;
+        private System.Windows.Forms.GroupBox grB_ObjPJ;
+        private System.Windows.Forms.TextBox txtB_ObjPJ;
+        private System.Windows.Forms.GroupBox grB_NombrePJ;
+        private System.Windows.Forms.TextBox txtB_NombrePJ;
     }
 }
 
