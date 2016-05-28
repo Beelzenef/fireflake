@@ -9,12 +9,14 @@ namespace LecturaXML
     class Libro
     {
 
-        #region Campo
+        #region Campos
 
         string autor;
         string titulo;
         string subtitulo;
         string genero;
+
+        List<Personaje> listaPersonajes;
 
         #endregion
 
@@ -50,10 +52,11 @@ namespace LecturaXML
 
         public Libro(string titu, string subtit, string generrrro, string autorr)
         {
-            this.Titulo = titu;
-            this.Subtitulo = subtit;
-            this.Genero = generrrro;
-            this.Autor = autorr;
+            Titulo = titu;
+            Subtitulo = subtit;
+            Genero = generrrro;
+            Autor = autorr;
+            listaPersonajes = new List<Personaje>();
         }
 
         #endregion

@@ -99,8 +99,11 @@
             this.sFD_GuardarXML = new System.Windows.Forms.SaveFileDialog();
             this.oFD_AbrirXML = new System.Windows.Forms.OpenFileDialog();
             this.dataSetXML = new System.Data.DataSet();
+            this.button1 = new System.Windows.Forms.Button();
+            this.btn_NuevoLibro = new System.Windows.Forms.Button();
             this.menu_Inicio.SuspendLayout();
             this.tbC_Pasos.SuspendLayout();
+            this.tbP_Inicio.SuspendLayout();
             this.tbP_Paso1.SuspendLayout();
             this.grB_Generos.SuspendLayout();
             this.grB_Autor.SuspendLayout();
@@ -231,6 +234,7 @@
             // 
             // tbP_Inicio
             // 
+            this.tbP_Inicio.Controls.Add(this.btn_NuevoLibro);
             this.tbP_Inicio.Location = new System.Drawing.Point(4, 22);
             this.tbP_Inicio.Name = "tbP_Inicio";
             this.tbP_Inicio.Padding = new System.Windows.Forms.Padding(3);
@@ -590,6 +594,7 @@
             // 
             // tbP_Paso7
             // 
+            this.tbP_Paso7.Controls.Add(this.button1);
             this.tbP_Paso7.Controls.Add(this.grB_ListaPJs);
             this.tbP_Paso7.Controls.Add(this.grB_HistoriaPJ);
             this.tbP_Paso7.Controls.Add(this.grB_EpifPJ);
@@ -609,9 +614,9 @@
             // 
             this.grB_ListaPJs.Controls.Add(this.lsB_ListaPJs);
             this.grB_ListaPJs.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.grB_ListaPJs.Location = new System.Drawing.Point(16, 65);
+            this.grB_ListaPJs.Location = new System.Drawing.Point(16, 17);
             this.grB_ListaPJs.Name = "grB_ListaPJs";
-            this.grB_ListaPJs.Size = new System.Drawing.Size(260, 216);
+            this.grB_ListaPJs.Size = new System.Drawing.Size(260, 220);
             this.grB_ListaPJs.TabIndex = 16;
             this.grB_ListaPJs.TabStop = false;
             this.grB_ListaPJs.Text = "groupBox2";
@@ -800,6 +805,26 @@
             // 
             this.dataSetXML.DataSetName = "NewDataSet";
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(83, 251);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(96, 38);
+            this.button1.TabIndex = 1;
+            this.button1.Text = "Añadir";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.AnadirPersonaje_Click);
+            // 
+            // btn_NuevoLibro
+            // 
+            this.btn_NuevoLibro.Location = new System.Drawing.Point(444, 76);
+            this.btn_NuevoLibro.Name = "btn_NuevoLibro";
+            this.btn_NuevoLibro.Size = new System.Drawing.Size(75, 23);
+            this.btn_NuevoLibro.TabIndex = 0;
+            this.btn_NuevoLibro.Text = "button2";
+            this.btn_NuevoLibro.UseVisualStyleBackColor = true;
+            this.btn_NuevoLibro.Click += new System.EventHandler(this.btn_NuevoLibro_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -817,6 +842,7 @@
             this.menu_Inicio.ResumeLayout(false);
             this.menu_Inicio.PerformLayout();
             this.tbC_Pasos.ResumeLayout(false);
+            this.tbP_Inicio.ResumeLayout(false);
             this.tbP_Paso1.ResumeLayout(false);
             this.grB_Generos.ResumeLayout(false);
             this.grB_Generos.PerformLayout();
@@ -942,6 +968,8 @@
         private System.Windows.Forms.TextBox txtB_ObjPJ;
         private System.Windows.Forms.GroupBox grB_NombrePJ;
         private System.Windows.Forms.TextBox txtB_NombrePJ;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btn_NuevoLibro;
     }
 }
 

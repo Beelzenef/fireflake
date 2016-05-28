@@ -110,5 +110,26 @@ namespace LecturaXML
 
         #endregion
 
+        Libro libro;
+
+        private void AnadirPersonaje_Click(object sender, EventArgs e)
+        {
+            Personaje pj = new Personaje(
+                txtB_NombrePJ.Text,
+                txtB_HistoriaPJ.Text,
+                txtB_MotivPJ.Text,
+                txtB_ObjPJ.Text,
+                txtB_EpifPJ.Text,
+                txtB_ConfPJ.Text
+                );
+
+            
+            lsB_ListaPJs.Items.Add(pj.Nombre);
+        }
+
+        private void btn_NuevoLibro_Click(object sender, EventArgs e)
+        {
+            libro = new Libro(txtB_Titulo.Text, txtB_Subtitulo.Text, txtB_Genero.Text, txtB_Autor.Text);
+        }
     }
 }

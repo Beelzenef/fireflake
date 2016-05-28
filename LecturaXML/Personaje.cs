@@ -95,7 +95,21 @@ namespace LecturaXML
             {
                 epifania = value;
             }
-        } 
+        }
+
+        #endregion
+
+        #region Constructor
+
+        public Personaje(string nomb, string hist, string motiv, string objetv, string epif, string conflict)
+        {
+            Nombre = nomb;
+            Historia = hist;
+            Motivaciones = motiv;
+            Objetivo = objetv;
+            Epifania = epif;
+            Conflicto = conflict;
+        }
 
         #endregion
     }
