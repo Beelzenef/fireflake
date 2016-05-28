@@ -99,7 +99,7 @@
             this.sFD_GuardarXML = new System.Windows.Forms.SaveFileDialog();
             this.oFD_AbrirXML = new System.Windows.Forms.OpenFileDialog();
             this.dataSetXML = new System.Data.DataSet();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btn_AnadirPersonaje = new System.Windows.Forms.Button();
             this.btn_NuevoLibro = new System.Windows.Forms.Button();
             this.menu_Inicio.SuspendLayout();
             this.tbC_Pasos.SuspendLayout();
@@ -594,7 +594,7 @@
             // 
             // tbP_Paso7
             // 
-            this.tbP_Paso7.Controls.Add(this.button1);
+            this.tbP_Paso7.Controls.Add(this.btn_AnadirPersonaje);
             this.tbP_Paso7.Controls.Add(this.grB_ListaPJs);
             this.tbP_Paso7.Controls.Add(this.grB_HistoriaPJ);
             this.tbP_Paso7.Controls.Add(this.grB_EpifPJ);
@@ -617,7 +617,7 @@
             this.grB_ListaPJs.Location = new System.Drawing.Point(16, 17);
             this.grB_ListaPJs.Name = "grB_ListaPJs";
             this.grB_ListaPJs.Size = new System.Drawing.Size(260, 220);
-            this.grB_ListaPJs.TabIndex = 16;
+            this.grB_ListaPJs.TabIndex = 17;
             this.grB_ListaPJs.TabStop = false;
             this.grB_ListaPJs.Text = "groupBox2";
             // 
@@ -626,6 +626,8 @@
             this.lsB_ListaPJs.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lsB_ListaPJs.FormattingEnabled = true;
             this.lsB_ListaPJs.ItemHeight = 18;
+            this.lsB_ListaPJs.Items.AddRange(new object[] {
+            "<Nuevo personaje>"});
             this.lsB_ListaPJs.Location = new System.Drawing.Point(6, 23);
             this.lsB_ListaPJs.Name = "lsB_ListaPJs";
             this.lsB_ListaPJs.Size = new System.Drawing.Size(248, 184);
@@ -637,7 +639,7 @@
             this.grB_HistoriaPJ.Location = new System.Drawing.Point(563, 46);
             this.grB_HistoriaPJ.Name = "grB_HistoriaPJ";
             this.grB_HistoriaPJ.Size = new System.Drawing.Size(249, 157);
-            this.grB_HistoriaPJ.TabIndex = 14;
+            this.grB_HistoriaPJ.TabIndex = 16;
             this.grB_HistoriaPJ.TabStop = false;
             this.grB_HistoriaPJ.Text = "Breve historia";
             // 
@@ -656,7 +658,7 @@
             this.grB_EpifPJ.Location = new System.Drawing.Point(282, 238);
             this.grB_EpifPJ.Name = "grB_EpifPJ";
             this.grB_EpifPJ.Size = new System.Drawing.Size(262, 54);
-            this.grB_EpifPJ.TabIndex = 12;
+            this.grB_EpifPJ.TabIndex = 15;
             this.grB_EpifPJ.TabStop = false;
             this.grB_EpifPJ.Text = "Epifania";
             // 
@@ -674,7 +676,7 @@
             this.grB_ConfPJ.Location = new System.Drawing.Point(282, 183);
             this.grB_ConfPJ.Name = "grB_ConfPJ";
             this.grB_ConfPJ.Size = new System.Drawing.Size(262, 54);
-            this.grB_ConfPJ.TabIndex = 11;
+            this.grB_ConfPJ.TabIndex = 14;
             this.grB_ConfPJ.TabStop = false;
             this.grB_ConfPJ.Text = "Conflicto";
             // 
@@ -710,7 +712,7 @@
             this.grB_ObjPJ.Location = new System.Drawing.Point(282, 79);
             this.grB_ObjPJ.Name = "grB_ObjPJ";
             this.grB_ObjPJ.Size = new System.Drawing.Size(262, 54);
-            this.grB_ObjPJ.TabIndex = 15;
+            this.grB_ObjPJ.TabIndex = 11;
             this.grB_ObjPJ.TabStop = false;
             this.grB_ObjPJ.Text = "Objetivo(s)";
             // 
@@ -805,15 +807,16 @@
             // 
             this.dataSetXML.DataSetName = "NewDataSet";
             // 
-            // button1
+            // btn_AnadirPersonaje
             // 
-            this.button1.Location = new System.Drawing.Point(83, 251);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(96, 38);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "Añadir";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.AnadirPersonaje_Click);
+            this.btn_AnadirPersonaje.Enabled = false;
+            this.btn_AnadirPersonaje.Location = new System.Drawing.Point(83, 251);
+            this.btn_AnadirPersonaje.Name = "btn_AnadirPersonaje";
+            this.btn_AnadirPersonaje.Size = new System.Drawing.Size(96, 38);
+            this.btn_AnadirPersonaje.TabIndex = 1;
+            this.btn_AnadirPersonaje.Text = "Añadir";
+            this.btn_AnadirPersonaje.UseVisualStyleBackColor = true;
+            this.btn_AnadirPersonaje.Click += new System.EventHandler(this.AnadirPersonaje_Click);
             // 
             // btn_NuevoLibro
             // 
@@ -968,7 +971,7 @@
         private System.Windows.Forms.TextBox txtB_ObjPJ;
         private System.Windows.Forms.GroupBox grB_NombrePJ;
         private System.Windows.Forms.TextBox txtB_NombrePJ;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btn_AnadirPersonaje;
         private System.Windows.Forms.Button btn_NuevoLibro;
     }
 }

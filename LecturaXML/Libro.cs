@@ -16,7 +16,8 @@ namespace LecturaXML
         string subtitulo;
         string genero;
 
-        List<Personaje> listaPersonajes;
+        public List<Personaje> listaPersonajes;
+        List<Escena> listaEscenas;
 
         #endregion
 
@@ -57,9 +58,19 @@ namespace LecturaXML
             Genero = generrrro;
             Autor = autorr;
             listaPersonajes = new List<Personaje>();
+            listaEscenas = new List<Escena>();
         }
 
         #endregion
 
+        public void AnadirPersonaje(Personaje unPJ)
+        {
+            listaPersonajes.Add(unPJ);
+        }
+
+        public void AnadirEscena(Escena unaEscena)
+        {
+            listaEscenas.Add(unaEscena);
+        }
     }
 }

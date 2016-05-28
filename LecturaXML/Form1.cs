@@ -110,26 +110,78 @@ namespace LecturaXML
 
         #endregion
 
+        #region Gestion de nuevo libro
+
         Libro libro;
-
-        private void AnadirPersonaje_Click(object sender, EventArgs e)
-        {
-            Personaje pj = new Personaje(
-                txtB_NombrePJ.Text,
-                txtB_HistoriaPJ.Text,
-                txtB_MotivPJ.Text,
-                txtB_ObjPJ.Text,
-                txtB_EpifPJ.Text,
-                txtB_ConfPJ.Text
-                );
-
-            
-            lsB_ListaPJs.Items.Add(pj.Nombre);
-        }
 
         private void btn_NuevoLibro_Click(object sender, EventArgs e)
         {
             libro = new Libro(txtB_Titulo.Text, txtB_Subtitulo.Text, txtB_Genero.Text, txtB_Autor.Text);
+            btn_AnadirPersonaje.Enabled = true;
+        } 
+        #endregion
+
+        #region Gestionando lista de personajes
+
+        private void AnadirPersonaje_Click(object sender, EventArgs e)
+        {
+            if (lsB_ListaPJs.SelectedIndex == lsB_ListaPJs.Items.Count - 1)
+            {
+                Personaje pj = new Personaje(
+                    txtB_NombrePJ.Text,
+                    txtB_HistoriaPJ.Text,
+                    txtB_MotivPJ.Text,
+                    txtB_ObjPJ.Text,
+                    txtB_EpifPJ.Text,
+                    txtB_ConfPJ.Text
+                    );
+
+                libro.AnadirPersonaje(pj);
+                lsB_ListaPJs.Items.Insert(lsB_ListaPJs.Items.Count - 1, pj.Nombre);
+            }
+            else
+            {
+                ActualizarPersonaje(lsB_ListaPJs.SelectedIndex);
+            }
+
         }
+
+        /// <summary>
+        /// Actualizando personaje con los nuevos parámetros añadidos, modificando los
+        /// textboxes que completan la Clase Personaje
+        /// </summary>
+        /// <param name="indice">Indice de personaje seleccionada en lista</param>
+        private void ActualizarPersonaje(int indice)
+        {
+            libro.listaPersonajes[indice].Nombre = txtB_NombrePJ.Text;
+            libro.listaPersonajes[indice].Historia = txtB_HistoriaPJ.Text;
+            libro.listaPersonajes[indice].Motivaciones = txtB_MotivPJ.Text;
+            libro.listaPersonajes[indice].Objetivo = txtB_ObjPJ.Text;
+            libro.listaPersonajes[indice].Epifania = txtB_EpifPJ.Text;
+            libro.listaPersonajes[indice].Conflicto = txtB_ConfPJ.Text;
+        }
+
+        private void lsB_ListaPJs_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            CambiarIndex(lsB_ListaPJs.SelectedIndex);
+        }
+
+        /// <summary>
+        /// Cambiando los campos de cada personaje a medida que son seleccionadas en la lista
+        /// </summary>
+        /// <param name="indice">Indice de personaje seleccionada en lista</param>
+        private void CambiarIndex(int indice)
+        {
+            if (indice != lsB_ListaPJs.Items.Count - 1)
+            {
+                txtB_NombrePJ.Text = libro.listaPersonajes[indice].Nombre;
+                txtB_HistoriaPJ.Text = libro.listaPersonajes[indice].Historia;
+                txtB_MotivPJ.Text = libro.listaPersonajes[indice].Motivaciones;
+                txtB_ObjPJ.Text = libro.listaPersonajes[indice].Objetivo;
+                txtB_EpifPJ.Text = libro.listaPersonajes[indice].Epifania;
+                txtB_ConfPJ.Text = libro.listaPersonajes[indice].Conflicto;
+            }
+        }
+        #endregion
     }
 }
