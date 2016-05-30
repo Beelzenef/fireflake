@@ -58,6 +58,7 @@
             this.grB_Final = new System.Windows.Forms.GroupBox();
             this.txtB_Final = new System.Windows.Forms.TextBox();
             this.tbP_Paso3 = new System.Windows.Forms.TabPage();
+            this.btn_AnadirProta = new System.Windows.Forms.Button();
             this.grB_HistoriaProta = new System.Windows.Forms.GroupBox();
             this.txtB_historiaProta = new System.Windows.Forms.TextBox();
             this.grB_EpifProta = new System.Windows.Forms.GroupBox();
@@ -101,7 +102,6 @@
             this.sFD_GuardarXML = new System.Windows.Forms.SaveFileDialog();
             this.oFD_AbrirXML = new System.Windows.Forms.OpenFileDialog();
             this.dataSetXML = new System.Data.DataSet();
-            this.btn_AnadirProta = new System.Windows.Forms.Button();
             this.menu_Inicio.SuspendLayout();
             this.tbC_Pasos.SuspendLayout();
             this.tbP_Inicio.SuspendLayout();
@@ -424,6 +424,16 @@
             this.tbP_Paso3.TabIndex = 4;
             this.tbP_Paso3.Text = "Paso 3";
             this.tbP_Paso3.UseVisualStyleBackColor = true;
+            // 
+            // btn_AnadirProta
+            // 
+            this.btn_AnadirProta.Location = new System.Drawing.Point(474, 213);
+            this.btn_AnadirProta.Name = "btn_AnadirProta";
+            this.btn_AnadirProta.Size = new System.Drawing.Size(93, 43);
+            this.btn_AnadirProta.TabIndex = 10;
+            this.btn_AnadirProta.Text = "Añadir";
+            this.btn_AnadirProta.UseVisualStyleBackColor = true;
+            this.btn_AnadirProta.Click += new System.EventHandler(this.btn_AnadirProta_Click);
             // 
             // grB_HistoriaProta
             // 
@@ -818,27 +828,19 @@
             // 
             // sFD_GuardarXML
             // 
-            this.sFD_GuardarXML.FileName = "FicheroXML";
-            this.sFD_GuardarXML.Filter = "XML|*.xml";
+            this.sFD_GuardarXML.DefaultExt = "xffb";
+            this.sFD_GuardarXML.FileName = "Proyecto FFlake";
+            this.sFD_GuardarXML.Filter = "XFFB|*.xffb";
             // 
             // oFD_AbrirXML
             // 
-            this.oFD_AbrirXML.FileName = "FicheroXML";
-            this.oFD_AbrirXML.Filter = "XML|*.xml";
+            this.oFD_AbrirXML.DefaultExt = "xffb";
+            this.oFD_AbrirXML.FileName = "Proyecto FFlake";
+            this.oFD_AbrirXML.Filter = "XFFB|*.xffb";
             // 
             // dataSetXML
             // 
             this.dataSetXML.DataSetName = "NewDataSet";
-            // 
-            // btn_AnadirProta
-            // 
-            this.btn_AnadirProta.Location = new System.Drawing.Point(474, 213);
-            this.btn_AnadirProta.Name = "btn_AnadirProta";
-            this.btn_AnadirProta.Size = new System.Drawing.Size(93, 43);
-            this.btn_AnadirProta.TabIndex = 10;
-            this.btn_AnadirProta.Text = "Añadir";
-            this.btn_AnadirProta.UseVisualStyleBackColor = true;
-            this.btn_AnadirProta.Click += new System.EventHandler(this.btn_AnadirProta_Click);
             // 
             // Form1
             // 

@@ -14,12 +14,14 @@ namespace LecturaXML
 
         Libro lib1 = null;
         bool guardado = true;
-        string ruta = string.Empty;
+        string rutaFicheroOperando = string.Empty;
 
         private void guardarToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            lib1 = new Libro(txtB_Titulo.Text, txtB_Subtitulo.Text, txtB_Genero.Text, txtB_Autor.Text);
-            GestionXML.GuardarXML(ruta, lib1);
+            if (sFD_GuardarXML.ShowDialog() != DialogResult.OK)
+                return;
+            rutaFicheroOperando = sFD_GuardarXML.FileName;
+            GestionXML.GuardarXML(rutaFicheroOperando, lib1);
             guardado = true;
         }
 
@@ -27,9 +29,8 @@ namespace LecturaXML
         {
             if (sFD_GuardarXML.ShowDialog() != DialogResult.OK)
                 return;
-            ruta = sFD_GuardarXML.FileName;
-            lib1 = new Libro(txtB_Titulo.Text, txtB_Subtitulo.Text, txtB_Genero.Text, txtB_Autor.Text);
-            GestionXML.GuardarXML(ruta, lib1);
+            rutaFicheroOperando = sFD_GuardarXML.FileName;
+            GestionXML.GuardarXML(rutaFicheroOperando, lib1);
             guardado = true;
         }
 
@@ -37,10 +38,8 @@ namespace LecturaXML
         {
             if (oFD_AbrirXML.ShowDialog() != DialogResult.OK)
                 return;
-            ruta = oFD_AbrirXML.FileName;
-            dataSetXML.ReadXml(ruta);
-            dataGV_Escenas.DataSource = dataSetXML;
-            dataGV_Escenas.DataMember = "escena";
+            rutaFicheroOperando = oFD_AbrirXML.FileName;
+            this.Text = GestionXML.AbrirXML(rutaFicheroOperando);
         }
 
         #endregion
@@ -59,7 +58,7 @@ namespace LecturaXML
                 confirmarGuardarSalir = MessageBox.Show("¡Fichero no guardado!, ¿quieres guardar?", cadenaSalida, btns);
                 if (confirmarGuardarSalir == DialogResult.Yes)
                 {
-                    GestionXML.GuardarXML(ruta, lib1);
+                    GestionXML.GuardarXML(rutaFicheroOperando, lib1);
                 }
             }
 
@@ -182,9 +181,8 @@ namespace LecturaXML
             Personaje protaTMP = new Personaje(txtB_nombreProta.Text, txtB_historiaProta.Text, txtB_motivProta.Text,
                                                 txtB_objProta.Text, txtB_epifProta.Text, txtB_conflicProta.Text);
             lib1.AnadirProtagonista(protaTMP);
-        } 
-        
-        #endregion
+        }
 
+        #endregion
     }
 }
