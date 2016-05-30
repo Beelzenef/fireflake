@@ -41,6 +41,7 @@
             this.documentacionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tbC_Pasos = new System.Windows.Forms.TabControl();
             this.tbP_Inicio = new System.Windows.Forms.TabPage();
+            this.btn_NuevoLibro = new System.Windows.Forms.Button();
             this.tbP_Autor = new System.Windows.Forms.TabPage();
             this.tbP_Paso1 = new System.Windows.Forms.TabPage();
             this.grB_Generos = new System.Windows.Forms.GroupBox();
@@ -77,6 +78,7 @@
             this.tbP_Paso5 = new System.Windows.Forms.TabPage();
             this.tbP_Paso6 = new System.Windows.Forms.TabPage();
             this.tbP_Paso7 = new System.Windows.Forms.TabPage();
+            this.btn_AnadirPersonaje = new System.Windows.Forms.Button();
             this.grB_ListaPJs = new System.Windows.Forms.GroupBox();
             this.lsB_ListaPJs = new System.Windows.Forms.ListBox();
             this.grB_HistoriaPJ = new System.Windows.Forms.GroupBox();
@@ -99,8 +101,7 @@
             this.sFD_GuardarXML = new System.Windows.Forms.SaveFileDialog();
             this.oFD_AbrirXML = new System.Windows.Forms.OpenFileDialog();
             this.dataSetXML = new System.Data.DataSet();
-            this.btn_AnadirPersonaje = new System.Windows.Forms.Button();
-            this.btn_NuevoLibro = new System.Windows.Forms.Button();
+            this.btn_AnadirProta = new System.Windows.Forms.Button();
             this.menu_Inicio.SuspendLayout();
             this.tbC_Pasos.SuspendLayout();
             this.tbP_Inicio.SuspendLayout();
@@ -242,6 +243,16 @@
             this.tbP_Inicio.TabIndex = 0;
             this.tbP_Inicio.Text = "Inicio";
             this.tbP_Inicio.UseVisualStyleBackColor = true;
+            // 
+            // btn_NuevoLibro
+            // 
+            this.btn_NuevoLibro.Location = new System.Drawing.Point(514, 183);
+            this.btn_NuevoLibro.Name = "btn_NuevoLibro";
+            this.btn_NuevoLibro.Size = new System.Drawing.Size(89, 50);
+            this.btn_NuevoLibro.TabIndex = 0;
+            this.btn_NuevoLibro.Text = "button2";
+            this.btn_NuevoLibro.UseVisualStyleBackColor = true;
+            this.btn_NuevoLibro.Click += new System.EventHandler(this.btn_NuevoLibro_Click);
             // 
             // tbP_Autor
             // 
@@ -399,6 +410,7 @@
             // 
             // tbP_Paso3
             // 
+            this.tbP_Paso3.Controls.Add(this.btn_AnadirProta);
             this.tbP_Paso3.Controls.Add(this.grB_HistoriaProta);
             this.tbP_Paso3.Controls.Add(this.grB_EpifProta);
             this.tbP_Paso3.Controls.Add(this.grB_ConflicProta);
@@ -610,6 +622,17 @@
             this.tbP_Paso7.Text = "Paso 7";
             this.tbP_Paso7.UseVisualStyleBackColor = true;
             // 
+            // btn_AnadirPersonaje
+            // 
+            this.btn_AnadirPersonaje.Enabled = false;
+            this.btn_AnadirPersonaje.Location = new System.Drawing.Point(83, 251);
+            this.btn_AnadirPersonaje.Name = "btn_AnadirPersonaje";
+            this.btn_AnadirPersonaje.Size = new System.Drawing.Size(96, 38);
+            this.btn_AnadirPersonaje.TabIndex = 1;
+            this.btn_AnadirPersonaje.Text = "Añadir";
+            this.btn_AnadirPersonaje.UseVisualStyleBackColor = true;
+            this.btn_AnadirPersonaje.Click += new System.EventHandler(this.AnadirPersonaje_Click);
+            // 
             // grB_ListaPJs
             // 
             this.grB_ListaPJs.Controls.Add(this.lsB_ListaPJs);
@@ -807,26 +830,15 @@
             // 
             this.dataSetXML.DataSetName = "NewDataSet";
             // 
-            // btn_AnadirPersonaje
+            // btn_AnadirProta
             // 
-            this.btn_AnadirPersonaje.Enabled = false;
-            this.btn_AnadirPersonaje.Location = new System.Drawing.Point(83, 251);
-            this.btn_AnadirPersonaje.Name = "btn_AnadirPersonaje";
-            this.btn_AnadirPersonaje.Size = new System.Drawing.Size(96, 38);
-            this.btn_AnadirPersonaje.TabIndex = 1;
-            this.btn_AnadirPersonaje.Text = "Añadir";
-            this.btn_AnadirPersonaje.UseVisualStyleBackColor = true;
-            this.btn_AnadirPersonaje.Click += new System.EventHandler(this.AnadirPersonaje_Click);
-            // 
-            // btn_NuevoLibro
-            // 
-            this.btn_NuevoLibro.Location = new System.Drawing.Point(444, 76);
-            this.btn_NuevoLibro.Name = "btn_NuevoLibro";
-            this.btn_NuevoLibro.Size = new System.Drawing.Size(75, 23);
-            this.btn_NuevoLibro.TabIndex = 0;
-            this.btn_NuevoLibro.Text = "button2";
-            this.btn_NuevoLibro.UseVisualStyleBackColor = true;
-            this.btn_NuevoLibro.Click += new System.EventHandler(this.btn_NuevoLibro_Click);
+            this.btn_AnadirProta.Location = new System.Drawing.Point(474, 213);
+            this.btn_AnadirProta.Name = "btn_AnadirProta";
+            this.btn_AnadirProta.Size = new System.Drawing.Size(93, 43);
+            this.btn_AnadirProta.TabIndex = 10;
+            this.btn_AnadirProta.Text = "Añadir";
+            this.btn_AnadirProta.UseVisualStyleBackColor = true;
+            this.btn_AnadirProta.Click += new System.EventHandler(this.btn_AnadirProta_Click);
             // 
             // Form1
             // 
@@ -973,6 +985,7 @@
         private System.Windows.Forms.TextBox txtB_NombrePJ;
         private System.Windows.Forms.Button btn_AnadirPersonaje;
         private System.Windows.Forms.Button btn_NuevoLibro;
+        private System.Windows.Forms.Button btn_AnadirProta;
     }
 }
 

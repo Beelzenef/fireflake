@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace LecturaXML
@@ -112,11 +105,9 @@ namespace LecturaXML
 
         #region Gestion de nuevo libro
 
-        Libro libro;
-
         private void btn_NuevoLibro_Click(object sender, EventArgs e)
         {
-            libro = new Libro(txtB_Titulo.Text, txtB_Subtitulo.Text, txtB_Genero.Text, txtB_Autor.Text);
+            lib1 = new Libro(txtB_Titulo.Text, txtB_Subtitulo.Text, txtB_Genero.Text, txtB_Autor.Text);
             btn_AnadirPersonaje.Enabled = true;
         } 
         #endregion
@@ -136,7 +127,7 @@ namespace LecturaXML
                     txtB_ConfPJ.Text
                     );
 
-                libro.AnadirPersonaje(pj);
+                lib1.AnadirPersonaje(pj);
                 lsB_ListaPJs.Items.Insert(lsB_ListaPJs.Items.Count - 1, pj.Nombre);
             }
             else
@@ -153,12 +144,12 @@ namespace LecturaXML
         /// <param name="indice">Indice de personaje seleccionada en lista</param>
         private void ActualizarPersonaje(int indice)
         {
-            libro.listaPersonajes[indice].Nombre = txtB_NombrePJ.Text;
-            libro.listaPersonajes[indice].Historia = txtB_HistoriaPJ.Text;
-            libro.listaPersonajes[indice].Motivaciones = txtB_MotivPJ.Text;
-            libro.listaPersonajes[indice].Objetivo = txtB_ObjPJ.Text;
-            libro.listaPersonajes[indice].Epifania = txtB_EpifPJ.Text;
-            libro.listaPersonajes[indice].Conflicto = txtB_ConfPJ.Text;
+            lib1.listaPersonajes[indice].Nombre = txtB_NombrePJ.Text;
+            lib1.listaPersonajes[indice].Historia = txtB_HistoriaPJ.Text;
+            lib1.listaPersonajes[indice].Motivaciones = txtB_MotivPJ.Text;
+            lib1.listaPersonajes[indice].Objetivo = txtB_ObjPJ.Text;
+            lib1.listaPersonajes[indice].Epifania = txtB_EpifPJ.Text;
+            lib1.listaPersonajes[indice].Conflicto = txtB_ConfPJ.Text;
         }
 
         private void lsB_ListaPJs_SelectedIndexChanged(object sender, EventArgs e)
@@ -174,14 +165,26 @@ namespace LecturaXML
         {
             if (indice != lsB_ListaPJs.Items.Count - 1)
             {
-                txtB_NombrePJ.Text = libro.listaPersonajes[indice].Nombre;
-                txtB_HistoriaPJ.Text = libro.listaPersonajes[indice].Historia;
-                txtB_MotivPJ.Text = libro.listaPersonajes[indice].Motivaciones;
-                txtB_ObjPJ.Text = libro.listaPersonajes[indice].Objetivo;
-                txtB_EpifPJ.Text = libro.listaPersonajes[indice].Epifania;
-                txtB_ConfPJ.Text = libro.listaPersonajes[indice].Conflicto;
+                txtB_NombrePJ.Text = lib1.listaPersonajes[indice].Nombre;
+                txtB_HistoriaPJ.Text = lib1.listaPersonajes[indice].Historia;
+                txtB_MotivPJ.Text = lib1.listaPersonajes[indice].Motivaciones;
+                txtB_ObjPJ.Text = lib1.listaPersonajes[indice].Objetivo;
+                txtB_EpifPJ.Text = lib1.listaPersonajes[indice].Epifania;
+                txtB_ConfPJ.Text = lib1.listaPersonajes[indice].Conflicto;
             }
         }
         #endregion
+
+        #region Gestion de protagonista
+
+        private void btn_AnadirProta_Click(object sender, EventArgs e)
+        {
+            Personaje protaTMP = new Personaje(txtB_nombreProta.Text, txtB_historiaProta.Text, txtB_motivProta.Text,
+                                                txtB_objProta.Text, txtB_epifProta.Text, txtB_conflicProta.Text);
+            lib1.AnadirProtagonista(protaTMP);
+        } 
+        
+        #endregion
+
     }
 }

@@ -19,6 +19,8 @@ namespace LecturaXML
         public List<Personaje> listaPersonajes;
         List<Escena> listaEscenas;
 
+        Personaje Protagonista;
+
         #endregion
 
         #region Propiedades
@@ -71,6 +73,11 @@ namespace LecturaXML
         public void AnadirEscena(Escena unaEscena)
         {
             listaEscenas.Add(unaEscena);
+        }
+
+        public void AnadirProtagonista(Personaje prota)
+        {
+            Protagonista = prota;
         }
     }
 }
