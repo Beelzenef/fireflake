@@ -19,7 +19,7 @@ namespace LecturaXML
         public List<Personaje> listaPersonajes;
         List<Escena> listaEscenas;
 
-        Personaje Protagonista;
+        Personaje _protagonista;
 
         #endregion
 
@@ -49,32 +49,81 @@ namespace LecturaXML
             set { genero = value; }
         }
 
-        #endregion
-
-        #region Constructores
-
-        public Libro(string titu, string subtit, string generrrro, string autorr)
+        public Personaje Protagonista
         {
-            Titulo = titu;
-            Subtitulo = subtit;
-            Genero = generrrro;
-            Autor = autorr;
-            listaPersonajes = new List<Personaje>();
-            listaEscenas = new List<Escena>();
+            get { return _protagonista; }
+            set { _protagonista = value; }
         }
 
         #endregion
 
+        #region Constructores
+
+        public Libro()
+        {
+            listaEscenas = new List<Escena>();
+            listaPersonajes = new List<Personaje>();
+        }
+
+        #endregion
+
+        #region Gestion personajes
+
+        /// <summary>
+        /// Añadiendo personaje a la lista de personajes
+        /// </summary>
+        /// <param name="unPJ">Personaje a añadir</param>
         public void AnadirPersonaje(Personaje unPJ)
         {
             listaPersonajes.Add(unPJ);
         }
 
+        /// <summary>
+        /// Eliminar un personaje de la lista de personajes
+        /// </summary>
+        /// <param name="unPJ">Personaje a eliminar</param>
+        public void EliminarPersonaje(Personaje unPJ)
+        {
+            listaPersonajes.Remove(unPJ);
+        }
+
+        #endregion
+
+        #region Gestion de escenas
+
+        /// <summary>
+        /// Añadiendo escenas a la lista
+        /// </summary>
+        /// <param name="unaEscena">La escena a añadir</param>
         public void AnadirEscena(Escena unaEscena)
         {
             listaEscenas.Add(unaEscena);
         }
 
+        /// <summary>
+        /// Eliminación de una escena por identificador
+        /// </summary>
+        /// <param name="idEscena">Identificador de escena para su búsqueda</param>
+        /// <returns>Devuelve T|F dependiendo de si el borrado ha tenido éxito o no</returns>
+        public bool EliminarEscena(int idEscena)
+        {
+            for (int i = 0; i < listaEscenas.Count; i++)
+            {
+                if (listaEscenas[i].NumEscena == idEscena)
+                {
+                    listaEscenas.Remove(listaEscenas[i]);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Añadiendo un protagonista al libro en cuestion
+        /// </summary>
+        /// <param name="prota">Protagonista creado</param>
         public void AnadirProtagonista(Personaje prota)
         {
             Protagonista = prota;

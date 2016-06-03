@@ -106,7 +106,7 @@ namespace LecturaXML
 
         private void btn_NuevoLibro_Click(object sender, EventArgs e)
         {
-            lib1 = new Libro(txtB_Titulo.Text, txtB_Subtitulo.Text, txtB_Genero.Text, txtB_Autor.Text);
+            lib1 = new Libro();
             btn_AnadirPersonaje.Enabled = true;
         } 
         #endregion
