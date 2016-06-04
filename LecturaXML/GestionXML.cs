@@ -13,6 +13,9 @@ namespace LecturaXML
 
         static public void GuardarXML(string ruta, Libro unlibro)
         {
+            // Convirtiendo el fichero a XFFB
+            string rutaXFFB = Path.ChangeExtension(ruta, ".xffb");
+
             XmlDocument escritor = new XmlDocument();
 
             // Declaracion de raíz del documento
@@ -29,7 +32,7 @@ namespace LecturaXML
 
             librete.AppendChild(autor);
 
-            escritor.Save(ruta);
+            escritor.Save(rutaXFFB);
 
         }
 

@@ -18,27 +18,27 @@ namespace LecturaXML
 
         private void guardarToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (sFD_GuardarXML.ShowDialog() != DialogResult.OK)
+            if (sFD_GuardarProyecto.ShowDialog() != DialogResult.OK)
                 return;
-            rutaFicheroOperando = sFD_GuardarXML.FileName;
+            rutaFicheroOperando = sFD_GuardarProyecto.FileName;
             GestionXML.GuardarXML(rutaFicheroOperando, lib1);
             guardado = true;
         }
 
         private void guardarComoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (sFD_GuardarXML.ShowDialog() != DialogResult.OK)
+            if (sFD_GuardarProyecto.ShowDialog() != DialogResult.OK)
                 return;
-            rutaFicheroOperando = sFD_GuardarXML.FileName;
+            rutaFicheroOperando = sFD_GuardarProyecto.FileName;
             GestionXML.GuardarXML(rutaFicheroOperando, lib1);
             guardado = true;
         }
 
         private void abrirToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (oFD_AbrirXML.ShowDialog() != DialogResult.OK)
+            if (oFD_AbrirProyecto.ShowDialog() != DialogResult.OK)
                 return;
-            rutaFicheroOperando = oFD_AbrirXML.FileName;
+            rutaFicheroOperando = oFD_AbrirProyecto.FileName;
             this.Text = GestionXML.AbrirXML(rutaFicheroOperando);
         }
 

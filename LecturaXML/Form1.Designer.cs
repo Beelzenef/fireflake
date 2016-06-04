@@ -99,8 +99,8 @@
             this.dataGV_Escenas = new System.Windows.Forms.DataGridView();
             this.tbP_Paso9 = new System.Windows.Forms.TabPage();
             this.tbP_Generar = new System.Windows.Forms.TabPage();
-            this.sFD_GuardarXML = new System.Windows.Forms.SaveFileDialog();
-            this.oFD_AbrirXML = new System.Windows.Forms.OpenFileDialog();
+            this.sFD_GuardarProyecto = new System.Windows.Forms.SaveFileDialog();
+            this.oFD_AbrirProyecto = new System.Windows.Forms.OpenFileDialog();
             this.dataSetXML = new System.Data.DataSet();
             this.menu_Inicio.SuspendLayout();
             this.tbC_Pasos.SuspendLayout();
@@ -826,17 +826,15 @@
             this.tbP_Generar.Text = "Generar";
             this.tbP_Generar.UseVisualStyleBackColor = true;
             // 
-            // sFD_GuardarXML
+            // sFD_GuardarProyecto
             // 
-            this.sFD_GuardarXML.DefaultExt = "xffb";
-            this.sFD_GuardarXML.FileName = "Proyecto FFlake";
-            this.sFD_GuardarXML.Filter = "XFFB|*.xffb";
+            this.sFD_GuardarProyecto.FileName = "Proyecto FFlake";
             // 
-            // oFD_AbrirXML
+            // oFD_AbrirProyecto
             // 
-            this.oFD_AbrirXML.DefaultExt = "xffb";
-            this.oFD_AbrirXML.FileName = "Proyecto FFlake";
-            this.oFD_AbrirXML.Filter = "XFFB|*.xffb";
+            this.oFD_AbrirProyecto.DefaultExt = "XFFB";
+            this.oFD_AbrirProyecto.FileName = "Proyecto FFlake";
+            this.oFD_AbrirProyecto.Filter = "FireFlake | *.xffb";
             // 
             // dataSetXML
             // 
@@ -854,7 +852,7 @@
             this.MainMenuStrip = this.menu_Inicio;
             this.MaximizeBox = false;
             this.Name = "Form1";
-            this.Text = "Snowflake pocoPro";
+            this.Text = "FireFlake";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CerrandoApp);
             this.menu_Inicio.ResumeLayout(false);
             this.menu_Inicio.PerformLayout();
@@ -946,8 +944,8 @@
         private System.Windows.Forms.GroupBox grB_Subtitulo;
         private System.Windows.Forms.TextBox txtB_Subtitulo;
         private System.Windows.Forms.GroupBox grb_Titulo;
-        private System.Windows.Forms.SaveFileDialog sFD_GuardarXML;
-        private System.Windows.Forms.OpenFileDialog oFD_AbrirXML;
+        private System.Windows.Forms.SaveFileDialog sFD_GuardarProyecto;
+        private System.Windows.Forms.OpenFileDialog oFD_AbrirProyecto;
         private System.Windows.Forms.DataGridView dataGV_Escenas;
         private System.Windows.Forms.Button btn_BorrarEsc;
         private System.Data.DataSet dataSetXML;
