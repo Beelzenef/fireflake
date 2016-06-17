@@ -45,7 +45,6 @@
             this.tbP_Autor = new System.Windows.Forms.TabPage();
             this.tbP_Paso1 = new System.Windows.Forms.TabPage();
             this.grB_Generos = new System.Windows.Forms.GroupBox();
-            this.txtB_Genero = new System.Windows.Forms.TextBox();
             this.grB_Autor = new System.Windows.Forms.GroupBox();
             this.txtB_Autor = new System.Windows.Forms.TextBox();
             this.grB_Subtitulo = new System.Windows.Forms.GroupBox();
@@ -102,6 +101,7 @@
             this.sFD_GuardarProyecto = new System.Windows.Forms.SaveFileDialog();
             this.oFD_AbrirProyecto = new System.Windows.Forms.OpenFileDialog();
             this.dataSetXML = new System.Data.DataSet();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.menu_Inicio.SuspendLayout();
             this.tbC_Pasos.SuspendLayout();
             this.tbP_Inicio.SuspendLayout();
@@ -282,22 +282,13 @@
             // 
             // grB_Generos
             // 
-            this.grB_Generos.Controls.Add(this.txtB_Genero);
+            this.grB_Generos.Controls.Add(this.comboBox1);
             this.grB_Generos.Location = new System.Drawing.Point(155, 193);
             this.grB_Generos.Name = "grB_Generos";
             this.grB_Generos.Size = new System.Drawing.Size(379, 54);
             this.grB_Generos.TabIndex = 5;
             this.grB_Generos.TabStop = false;
             this.grB_Generos.Text = "Genero(s)";
-            // 
-            // txtB_Genero
-            // 
-            this.txtB_Genero.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtB_Genero.Location = new System.Drawing.Point(61, 16);
-            this.txtB_Genero.Name = "txtB_Genero";
-            this.txtB_Genero.Size = new System.Drawing.Size(266, 24);
-            this.txtB_Genero.TabIndex = 0;
-            this.txtB_Genero.TextChanged += new System.EventHandler(this.DatosCambiados);
             // 
             // grB_Autor
             // 
@@ -840,6 +831,22 @@
             // 
             this.dataSetXML.DataSetName = "NewDataSet";
             // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "Fantasía",
+            "Ciencia ficción",
+            "Terror",
+            "Cyberpunk",
+            "Aventura",
+            "Misterio",
+            "..."});
+            this.comboBox1.Location = new System.Drawing.Point(61, 22);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(266, 26);
+            this.comboBox1.TabIndex = 0;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -860,7 +867,6 @@
             this.tbP_Inicio.ResumeLayout(false);
             this.tbP_Paso1.ResumeLayout(false);
             this.grB_Generos.ResumeLayout(false);
-            this.grB_Generos.PerformLayout();
             this.grB_Autor.ResumeLayout(false);
             this.grB_Autor.PerformLayout();
             this.grB_Subtitulo.ResumeLayout(false);
@@ -938,7 +944,6 @@
         private System.Windows.Forms.TabPage tbP_Paso9;
         private System.Windows.Forms.TabPage tbP_Generar;
         private System.Windows.Forms.GroupBox grB_Generos;
-        private System.Windows.Forms.TextBox txtB_Genero;
         private System.Windows.Forms.GroupBox grB_Autor;
         private System.Windows.Forms.TextBox txtB_Autor;
         private System.Windows.Forms.GroupBox grB_Subtitulo;
@@ -986,6 +991,7 @@
         private System.Windows.Forms.Button btn_AnadirPersonaje;
         private System.Windows.Forms.Button btn_NuevoLibro;
         private System.Windows.Forms.Button btn_AnadirProta;
+        private System.Windows.Forms.ComboBox comboBox1;
     }
 }
 
