@@ -5,14 +5,16 @@ namespace LecturaXML
 {
     public partial class Form1 : Form
     {
+        Libro lib1 = null;
         public Form1()
         {
             InitializeComponent();
+            lib1 = new Libro();
         }
 
         #region Menu principal
 
-        Libro lib1 = null;
+        
         bool guardado = true;
         string rutaFicheroOperando = string.Empty;
 
@@ -67,6 +69,7 @@ namespace LecturaXML
         #endregion
 
         #region Cambio de datos
+
         private void DatosCambiados(object sender, EventArgs e)
         {
             guardado = false;
@@ -182,6 +185,30 @@ namespace LecturaXML
                                                 txtB_objProta.Text, txtB_epifProta.Text, txtB_conflicProta.Text);
             lib1.AnadirProtagonista(protaTMP);
         }
+
+        #endregion
+
+        #region Elegir genero
+
+        Libro.ListaGeneros generoElegido;
+
+        private void EligiendoGenero_CMB(object sender, EventArgs e)
+        {
+            if (cmB_ElegirGenero.SelectedIndex == 0)
+                generoElegido = Libro.ListaGeneros.Fantasia;
+            else if (cmB_ElegirGenero.SelectedIndex == 1)
+                generoElegido = Libro.ListaGeneros.CienciaFiccion;
+            else if (cmB_ElegirGenero.SelectedIndex == 2)
+                generoElegido = Libro.ListaGeneros.Terror;
+            else if (cmB_ElegirGenero.SelectedIndex == 3)
+                generoElegido = Libro.ListaGeneros.Cyberpunk;
+            else if (cmB_ElegirGenero.SelectedIndex == 4)
+                generoElegido = Libro.ListaGeneros.Aventura;
+            else if (cmB_ElegirGenero.SelectedIndex == 5)
+                generoElegido = Libro.ListaGeneros.Misterio;
+
+            lib1.Genero = generoElegido;
+        } 
 
         #endregion
     }

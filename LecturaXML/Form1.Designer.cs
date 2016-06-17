@@ -101,7 +101,7 @@
             this.sFD_GuardarProyecto = new System.Windows.Forms.SaveFileDialog();
             this.oFD_AbrirProyecto = new System.Windows.Forms.OpenFileDialog();
             this.dataSetXML = new System.Data.DataSet();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.cmB_ElegirGenero = new System.Windows.Forms.ComboBox();
             this.menu_Inicio.SuspendLayout();
             this.tbC_Pasos.SuspendLayout();
             this.tbP_Inicio.SuspendLayout();
@@ -282,7 +282,7 @@
             // 
             // grB_Generos
             // 
-            this.grB_Generos.Controls.Add(this.comboBox1);
+            this.grB_Generos.Controls.Add(this.cmB_ElegirGenero);
             this.grB_Generos.Location = new System.Drawing.Point(155, 193);
             this.grB_Generos.Name = "grB_Generos";
             this.grB_Generos.Size = new System.Drawing.Size(379, 54);
@@ -831,10 +831,10 @@
             // 
             this.dataSetXML.DataSetName = "NewDataSet";
             // 
-            // comboBox1
+            // cmB_ElegirGenero
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
+            this.cmB_ElegirGenero.FormattingEnabled = true;
+            this.cmB_ElegirGenero.Items.AddRange(new object[] {
             "Fantasía",
             "Ciencia ficción",
             "Terror",
@@ -842,10 +842,11 @@
             "Aventura",
             "Misterio",
             "..."});
-            this.comboBox1.Location = new System.Drawing.Point(61, 22);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(266, 26);
-            this.comboBox1.TabIndex = 0;
+            this.cmB_ElegirGenero.Location = new System.Drawing.Point(61, 22);
+            this.cmB_ElegirGenero.Name = "cmB_ElegirGenero";
+            this.cmB_ElegirGenero.Size = new System.Drawing.Size(266, 26);
+            this.cmB_ElegirGenero.TabIndex = 0;
+            this.cmB_ElegirGenero.SelectedIndexChanged += new System.EventHandler(this.EligiendoGenero_CMB);
             // 
             // Form1
             // 
@@ -991,7 +992,7 @@
         private System.Windows.Forms.Button btn_AnadirPersonaje;
         private System.Windows.Forms.Button btn_NuevoLibro;
         private System.Windows.Forms.Button btn_AnadirProta;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox cmB_ElegirGenero;
     }
 }
 

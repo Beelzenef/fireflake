@@ -27,6 +27,7 @@ Nombre de autor [*]
 Pseudonimo [*]
 Titulo [*]
 Subtitulo [*]
+Genero [Fantasía, Ciencia Ficcion, Terror, Cyberpunk, Aventura, Misterio]
 
 * Paso 1:
 Resumen
