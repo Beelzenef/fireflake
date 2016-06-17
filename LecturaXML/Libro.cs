@@ -14,7 +14,7 @@ namespace LecturaXML
         string autor;
         string titulo;
         string subtitulo;
-        string genero;
+        ListaGeneros genero;
 
         public List<Personaje> listaPersonajes;
         List<Escena> listaEscenas;
@@ -43,7 +43,7 @@ namespace LecturaXML
             set { subtitulo = value; }
         }
 
-        public string Genero
+        public ListaGeneros Genero
         {
             get { return genero; }
             set { genero = value; }
@@ -63,6 +63,20 @@ namespace LecturaXML
         {
             listaEscenas = new List<Escena>();
             listaPersonajes = new List<Personaje>();
+        }
+
+        #endregion
+
+        #region ListaGeneros
+
+        public enum ListaGeneros
+        {
+            Fantasia,
+            CienciaFiccion,
+            Terror,
+            Cyberpunk,
+            Aventura, 
+            Misterio
         }
 
         #endregion
