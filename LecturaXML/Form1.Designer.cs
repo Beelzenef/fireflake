@@ -45,6 +45,7 @@
             this.tbP_Autor = new System.Windows.Forms.TabPage();
             this.tbP_Paso1 = new System.Windows.Forms.TabPage();
             this.grB_Generos = new System.Windows.Forms.GroupBox();
+            this.cmB_ElegirGenero = new System.Windows.Forms.ComboBox();
             this.grB_Autor = new System.Windows.Forms.GroupBox();
             this.txtB_Autor = new System.Windows.Forms.TextBox();
             this.grB_Subtitulo = new System.Windows.Forms.GroupBox();
@@ -101,7 +102,10 @@
             this.sFD_GuardarProyecto = new System.Windows.Forms.SaveFileDialog();
             this.oFD_AbrirProyecto = new System.Windows.Forms.OpenFileDialog();
             this.dataSetXML = new System.Data.DataSet();
-            this.cmB_ElegirGenero = new System.Windows.Forms.ComboBox();
+            this.dgC_Capitulo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgC_POV = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.dgC_NEscena = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgC_Resumen = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.menu_Inicio.SuspendLayout();
             this.tbC_Pasos.SuspendLayout();
             this.tbP_Inicio.SuspendLayout();
@@ -289,6 +293,23 @@
             this.grB_Generos.TabIndex = 5;
             this.grB_Generos.TabStop = false;
             this.grB_Generos.Text = "Genero(s)";
+            // 
+            // cmB_ElegirGenero
+            // 
+            this.cmB_ElegirGenero.FormattingEnabled = true;
+            this.cmB_ElegirGenero.Items.AddRange(new object[] {
+            "Fantasía",
+            "Ciencia ficción",
+            "Terror",
+            "Cyberpunk",
+            "Aventura",
+            "Misterio",
+            "..."});
+            this.cmB_ElegirGenero.Location = new System.Drawing.Point(61, 22);
+            this.cmB_ElegirGenero.Name = "cmB_ElegirGenero";
+            this.cmB_ElegirGenero.Size = new System.Drawing.Size(266, 26);
+            this.cmB_ElegirGenero.TabIndex = 0;
+            this.cmB_ElegirGenero.SelectedIndexChanged += new System.EventHandler(this.EligiendoGenero_CMB);
             // 
             // grB_Autor
             // 
@@ -791,7 +812,12 @@
             // dataGV_Escenas
             // 
             this.dataGV_Escenas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGV_Escenas.Location = new System.Drawing.Point(17, 13);
+            this.dataGV_Escenas.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dgC_Capitulo,
+            this.dgC_POV,
+            this.dgC_NEscena,
+            this.dgC_Resumen});
+            this.dataGV_Escenas.Location = new System.Drawing.Point(26, 13);
             this.dataGV_Escenas.Name = "dataGV_Escenas";
             this.dataGV_Escenas.Size = new System.Drawing.Size(524, 214);
             this.dataGV_Escenas.TabIndex = 0;
@@ -831,22 +857,26 @@
             // 
             this.dataSetXML.DataSetName = "NewDataSet";
             // 
-            // cmB_ElegirGenero
+            // dgC_Capitulo
             // 
-            this.cmB_ElegirGenero.FormattingEnabled = true;
-            this.cmB_ElegirGenero.Items.AddRange(new object[] {
-            "Fantasía",
-            "Ciencia ficción",
-            "Terror",
-            "Cyberpunk",
-            "Aventura",
-            "Misterio",
-            "..."});
-            this.cmB_ElegirGenero.Location = new System.Drawing.Point(61, 22);
-            this.cmB_ElegirGenero.Name = "cmB_ElegirGenero";
-            this.cmB_ElegirGenero.Size = new System.Drawing.Size(266, 26);
-            this.cmB_ElegirGenero.TabIndex = 0;
-            this.cmB_ElegirGenero.SelectedIndexChanged += new System.EventHandler(this.EligiendoGenero_CMB);
+            this.dgC_Capitulo.HeaderText = "Capitulo";
+            this.dgC_Capitulo.Name = "dgC_Capitulo";
+            // 
+            // dgC_POV
+            // 
+            this.dgC_POV.HeaderText = "POV";
+            this.dgC_POV.Name = "dgC_POV";
+            // 
+            // dgC_NEscena
+            // 
+            this.dgC_NEscena.HeaderText = "N Escena";
+            this.dgC_NEscena.Name = "dgC_NEscena";
+            // 
+            // dgC_Resumen
+            // 
+            this.dgC_Resumen.HeaderText = "Resumen de la escena";
+            this.dgC_Resumen.Name = "dgC_Resumen";
+            this.dgC_Resumen.Width = 180;
             // 
             // Form1
             // 
@@ -993,6 +1023,10 @@
         private System.Windows.Forms.Button btn_NuevoLibro;
         private System.Windows.Forms.Button btn_AnadirProta;
         private System.Windows.Forms.ComboBox cmB_ElegirGenero;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgC_Capitulo;
+        private System.Windows.Forms.DataGridViewComboBoxColumn dgC_POV;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgC_NEscena;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgC_Resumen;
     }
 }
 

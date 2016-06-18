@@ -68,7 +68,7 @@ namespace LecturaXML
 
         #endregion
 
-        #region Cambio de datos
+        #region Gestionando DGV
 
         private void DatosCambiados(object sender, EventArgs e)
         {
@@ -84,9 +84,6 @@ namespace LecturaXML
         {
             // Cuando se modifican datos a mano, no cuando Abrir: guardado = false;
         }
-        #endregion
-
-        #region Gestionando DGV
 
         private void EliminarFila(object sender, EventArgs e)
         {
@@ -101,7 +98,18 @@ namespace LecturaXML
             }
         }
 
-
+        private void GuardarEscenas()
+        {
+            foreach (DataGridViewRow item in dataGV_Escenas.Rows)
+            {
+                Escena escTMP = new Escena();
+                escTMP.Capitulo = Convert.ToInt32(item.Cells["dgC_Capitulo"].Value);
+                escTMP.PoV = item.Cells["dgC_POV"].Value.ToString();
+                escTMP.NumEscena = Convert.ToInt32(item.Cells["dgC_NEscena"].Value);
+                escTMP.ResumenEscena = item.Cells["dgC_Resumen"].Value.ToString();
+                lib1.AnadirEscena(escTMP);
+            }
+        }
 
         #endregion
 
@@ -109,8 +117,7 @@ namespace LecturaXML
 
         private void btn_NuevoLibro_Click(object sender, EventArgs e)
         {
-            lib1 = new Libro();
-            btn_AnadirPersonaje.Enabled = true;
+            GuardarEscenas();
         } 
         #endregion
 
@@ -184,6 +191,7 @@ namespace LecturaXML
             Personaje protaTMP = new Personaje(txtB_nombreProta.Text, txtB_historiaProta.Text, txtB_motivProta.Text,
                                                 txtB_objProta.Text, txtB_epifProta.Text, txtB_conflicProta.Text);
             lib1.AnadirProtagonista(protaTMP);
+            lib1.listaPersonajes.Add(protaTMP);
         }
 
         #endregion
