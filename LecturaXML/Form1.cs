@@ -103,7 +103,7 @@ namespace LecturaXML
             foreach (DataGridViewRow item in dataGV_Escenas.Rows)
             {
                 Escena escTMP = new Escena();
-                escTMP.Capitulo = Convert.ToInt32(item.Cells["dgC_Capitulo"].Value);
+                escTMP.Capitulo = item.Cells["dgC_Capitulo"].Value.ToString();
                 escTMP.PoV = item.Cells["dgC_POV"].Value.ToString();
                 escTMP.NumEscena = Convert.ToInt32(item.Cells["dgC_NEscena"].Value);
                 escTMP.ResumenEscena = item.Cells["dgC_Resumen"].Value.ToString();

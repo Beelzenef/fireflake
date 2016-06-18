@@ -12,7 +12,7 @@ namespace LecturaXML
 
         private int numEscena;
         private string pov;
-        private int capitulo;
+        private string capitulo;
         private string resumenEscena;
 
         #endregion
@@ -58,7 +58,7 @@ namespace LecturaXML
             }
         }
 
-        public int Capitulo
+        public string Capitulo
         {
             get
             {
