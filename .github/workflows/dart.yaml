@@ -10,7 +10,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Install dependencies
         run: flutter pub get
-        working-directory: src
+        working-directory: src/fireflake
       - name: Build windows app
         run: flutter build windows
-        working-directory: src
+        working-directory: src/fireflake
