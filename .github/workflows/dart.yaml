@@ -1,0 +1,16 @@
+name: Flutter CI
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: subosito/flutter-action@v1
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: flutter pub get
+        working-directory: src
+      - name: Build windows app
+        run: flutter build windows
+        working-directory: src
