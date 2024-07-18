@@ -1,4 +1,4 @@
-name: Flutter CI
+name: Release app
 on:
   workflow_dispatch:
 jobs:
