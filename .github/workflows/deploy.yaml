@@ -17,4 +17,10 @@ jobs:
       - uses: actions/upload-artifact@v1
         with:
           name: Release windows exe
-          path: src\fireflake\build\windows\x64\runner\Release\fireflake.exe
+          path: 
+      - name: Upload to GitHub Release
+        uses: xresloader/upload-to-github-release@v1
+        with:
+          file: "src\fireflake\build\windows\x64\runner\Release\fireflake.exe"
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
