@@ -17,5 +17,4 @@ jobs:
       - uses: actions/upload-artifact@v1
         with:
           name: Release windows exe
-          path: build\windows\x64\runner\Release\fireflake.exe
-        working-directory: src/fireflake
+          path: src\fireflake\build\windows\x64\runner\Release\fireflake.exe
