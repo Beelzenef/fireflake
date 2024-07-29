@@ -1,3 +1,4 @@
+import 'package:fireflake/step_views/step3.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -37,16 +38,7 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: const Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              '🔥',
-            ),
-          ],
-        ),
-      ),
+      body: const StepThreePage(),
     );
   }
 }
