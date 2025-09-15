@@ -1,4 +1,5 @@
 import 'package:fireflake/models/project.dart';
+import 'package:fireflake/projectwrapper.dart';
 import 'package:flutter/material.dart';
 
 class ProjectsPage extends StatefulWidget {
@@ -37,7 +38,11 @@ class _ProjectsPageState extends State<ProjectsPage> {
                   child: TextButton(
                       style: mainButtonStyle(),
                       onPressed: () {
-                        print('Opening existing project...');
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => ProjectWrapper(),
+                          ),
+                        );
                       },
                       child: const Text('Open')),
                 ),

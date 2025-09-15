@@ -1,5 +1,4 @@
 import 'package:fireflake/projects_page.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -11,10 +10,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const CupertinoApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Fireflake',
-      theme: CupertinoThemeData(brightness: Brightness.light),
+      theme: ThemeData(brightness: Brightness.light),
       home: HomePage(title: 'Fireflake'),
     );
   }
