@@ -1,3 +1,4 @@
+import 'package:fireflake/author_info_page.dart';
 import 'package:fireflake/models/project.dart';
 import 'package:fireflake/projectwrapper.dart';
 import 'package:flutter/material.dart';
@@ -57,7 +58,21 @@ class _ProjectsPageState extends State<ProjectsPage> {
                 )
               ],
             ),
-          )
+          ),
+          const SizedBox(height: 20),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextButton(
+                style: mainButtonStyle(),
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => AuthorInfoPage(),
+                    ),
+                  );
+                },
+                child: const Text('Author info')),
+          ),
         ],
       ),
     );
