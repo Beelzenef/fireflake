@@ -11,7 +11,7 @@ class ProjectsPage extends StatefulWidget {
 }
 
 class _ProjectsPageState extends State<ProjectsPage> {
-  List<Project> projectsToLoad = [Project(title: 'Project 1')];
+  List<Project> projectsToLoad = [Project(title: 'Project 1', expectedWordCount: 1000)];
 
   @override
   Widget build(BuildContext context) {

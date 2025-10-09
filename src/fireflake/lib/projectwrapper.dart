@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'info_views/projectinfo.dart';
 import 'step_views/step1.dart';
 import 'step_views/step2.dart';
 import 'step_views/step3.dart';
@@ -19,6 +20,7 @@ class _ProjectWrapperState extends State<ProjectWrapper> {
   Widget build(BuildContext context) {
 
     const steps = [
+            ProjectInfoPage(),
             StepOnePage(),
             StepTwoPage(),
             StepThreePage(),
@@ -34,6 +36,7 @@ class _ProjectWrapperState extends State<ProjectWrapper> {
           title: const Text('Project'),
           bottom: const TabBar(
             tabs: [
+              Tab(text: 'Project Info'),
               Tab(text: 'Step 1'),
               Tab(text: 'Step 2'),
               Tab(text: 'Step 3'),

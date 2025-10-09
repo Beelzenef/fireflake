@@ -1,16 +1,6 @@
 import 'package:flutter/material.dart';
 
-class Scene {
-  String id;
-  String chapter;
-  String summary;
-
-  Scene({
-    required this.id,
-    required this.chapter,
-    required this.summary,
-  });
-}
+import '../models/scene.dart';
 
 class StepNinePage extends StatefulWidget {
   const StepNinePage({super.key});
@@ -19,7 +9,16 @@ class StepNinePage extends StatefulWidget {
   State<StepNinePage> createState() => _StepNinePageState();
 }
 
-class _StepNinePageState extends State<StepNinePage> {
+class _StepNinePageState extends State<StepNinePage> with TickerProviderStateMixin {
+  bool _isPanelOpen = false;
+  Scene? _editingScene;
+  late AnimationController _animationController;
+  late Animation<Offset> _slideAnimation;
+  
+  final TextEditingController _idController = TextEditingController();
+  final TextEditingController _chapterController = TextEditingController();
+  final TextEditingController _summaryController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   List<Scene> scenes = [
     Scene(
@@ -45,9 +44,36 @@ class _StepNinePageState extends State<StepNinePage> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 300),
+      vsync: this,
+    );
+    _slideAnimation = Tween<Offset>(
+      begin: const Offset(1.0, 0.0),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeInOut,
+    ));
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    _idController.dispose();
+    _chapterController.dispose();
+    _summaryController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+      body: Stack(
+        children: [
+          Column(
         children: [
           Container(
             padding: const EdgeInsets.all(16.0),
@@ -84,7 +110,7 @@ class _StepNinePageState extends State<StepNinePage> {
                   child: DataTable(
                     columnSpacing: 20,
                     dataRowHeight: 80, 
-                    headingRowColor: MaterialStateProperty.all(
+                    headingRowColor: WidgetStateProperty.all(
                       Theme.of(context).primaryColor.withOpacity(0.15),
                     ),
                     columns: const [
@@ -196,13 +222,49 @@ class _StepNinePageState extends State<StepNinePage> {
           ),
         ],
       ),
+          if (_isPanelOpen)
+            GestureDetector(
+              onTap: _closeSidePanel,
+              child: Container(
+                color: Colors.black.withOpacity(0.5),
+                width: double.infinity,
+                height: double.infinity,
+              ),
+            ),
+          if (_isPanelOpen)
+            SlideTransition(
+              position: _slideAnimation,
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: Container(
+                  width: 400,
+                  height: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.3),
+                        spreadRadius: 0,
+                        blurRadius: 10,
+                        offset: const Offset(-5, 0),
+                      ),
+                    ],
+                  ),
+                  child: _buildSidePanelContent(),
+                ),
+              ),
+            ),
+        ],
+      ),
     );
   }
 
   void _editScene(Scene scene) {
-    // ScaffoldMessenger.of(context).showSnackBar(
-    //   SnackBar(content: Text('Editando: ${scene.escena}')),
-    // );
+    _editingScene = scene;
+    _idController.text = scene.id;
+    _chapterController.text = scene.chapter;
+    _summaryController.text = scene.summary;
+    _openSidePanel();
   }
 
   void _deleteScene(Scene scene) {
@@ -272,15 +334,164 @@ class _StepNinePageState extends State<StepNinePage> {
   }
 
   void _addNewScene() {
+    _editingScene = null;
+    _idController.text = 'Escena ${scenes.length + 1}';
+    _chapterController.text = 'Capítulo ${(scenes.length ~/ 2) + 1}';
+    _summaryController.text = '';
+    _openSidePanel();
+  }
+
+  void _openSidePanel() {
     setState(() {
-      scenes.add(Scene(
-        id: 'Escena ${scenes.length + 1}',
-        chapter: 'Capítulo ${(scenes.length ~/ 2) + 1}',
-        summary: 'Nueva escena agregada. Aquí se describe lo que sucede en esta escena, con suficiente detalle para proporcionar contexto sobre los eventos, personajes y desarrollo de la trama que tiene lugar.',
-      ));
+      _isPanelOpen = true;
     });
-    // ScaffoldMessenger.of(context).showSnackBar(
-    //   const SnackBar(content: Text('Nueva escena agregada')),
-    // );
+    _animationController.forward();
+  }
+
+  void _closeSidePanel() {
+    _animationController.reverse().then((_) {
+      setState(() {
+        _isPanelOpen = false;
+        _editingScene = null;
+      });
+    });
+  }
+
+  void _saveScene() {
+    if (_formKey.currentState!.validate()) {
+      setState(() {
+        if (_editingScene != null) {
+          _editingScene!.id = _idController.text;
+          _editingScene!.chapter = _chapterController.text;
+          _editingScene!.summary = _summaryController.text;
+        } else {
+          scenes.add(Scene(
+            id: _idController.text,
+            chapter: _chapterController.text,
+            summary: _summaryController.text,
+          ));
+        }
+      });
+      _closeSidePanel();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(_editingScene != null ? 'Escena actualizada' : 'Nueva escena agregada'),
+        ),
+      );
+    }
+  }
+
+  Widget _buildSidePanelContent() {
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(16.0),
+          decoration: BoxDecoration(
+            color: Theme.of(context).primaryColor.withOpacity(0.1),
+            border: Border(
+              bottom: BorderSide(
+                color: Theme.of(context).dividerColor,
+              ),
+            ),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                _editingScene != null ? 'Editar Escena' : 'Nueva Escena',
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              IconButton(
+                onPressed: _closeSidePanel,
+                icon: const Icon(Icons.close),
+              ),
+            ],
+          ),
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  TextFormField(
+                    controller: _idController,
+                    decoration: const InputDecoration(
+                      labelText: 'Nombre de la escena',
+                      border: OutlineInputBorder(),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Este campo es requerido';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: _chapterController,
+                    decoration: const InputDecoration(
+                      labelText: 'Capítulo',
+                      border: OutlineInputBorder(),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Este campo es requerido';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  Expanded(
+                    child: TextFormField(
+                      controller: _summaryController,
+                      decoration: const InputDecoration(
+                        labelText: 'Resumen de la escena',
+                        border: OutlineInputBorder(),
+                        alignLabelWithHint: true,
+                      ),
+                      maxLines: null,
+                      expands: true,
+                      textAlignVertical: TextAlignVertical.top,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Este campo es requerido';
+                        }
+                        if (value.length < 50) {
+                          return 'El resumen debe tener al menos 50 caracteres';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: OutlinedButton(
+                          onPressed: _closeSidePanel,
+                          child: const Text('Cancelar'),
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: _saveScene,
+                          child: Text(_editingScene != null ? 'Actualizar' : 'Agregar'),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }

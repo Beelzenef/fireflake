@@ -120,7 +120,7 @@ class _StepThreePageState extends State<StepThreePage> {
                       ],
                     ),
                   );
-                }).toList(),
+                }),
                 TextButton.icon(
                   onPressed: _addHistoryField,
                   icon: const Icon(Icons.add),
@@ -226,7 +226,7 @@ class _StepThreePageState extends State<StepThreePage> {
                       ],
                     ),
                   );
-                }).toList(),
+                }),
                 TextButton.icon(
                   onPressed: _addFinalHistoryField,
                   icon: const Icon(Icons.add),
