@@ -22,7 +22,7 @@ class _StepSevenPageState extends State<StepSevenPage> {
               child: Padding(
                 padding: EdgeInsets.all(24),
                 child: Text(
-                  'No hay personajes principales aún.\nCompleta el Paso 5 primero.',
+                  'No main characters yet.\nComplete Step 5 first.',
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 16),
                 ),
@@ -36,16 +36,18 @@ class _StepSevenPageState extends State<StepSevenPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Paso 7: Tablas de personajes',
-                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+                  'Step 7: Character tables',
+                  style: Theme.of(context)
+                      .textTheme
+                      .headlineSmall
+                      ?.copyWith(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Revisa la información detallada de los personajes principales (creados en Paso 3 y Paso 5).',
+                  'Review the detailed info of main characters (created in Step 3 and Step 5).',
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 const SizedBox(height: 24),
-
                 ...characters.asMap().entries.map((entry) {
                   final index = entry.key;
                   final character = entry.value;
@@ -61,30 +63,36 @@ class _StepSevenPageState extends State<StepSevenPage> {
                             Row(
                               children: [
                                 CircleAvatar(
-                                  backgroundColor: Theme.of(context).primaryColor,
+                                  backgroundColor:
+                                      Theme.of(context).primaryColor,
                                   child: Text(
                                     '${index + 1}',
-                                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                                    style: const TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                 ),
                                 const SizedBox(width: 12),
                                 Expanded(
                                   child: Text(
                                     character.name,
-                                    style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleLarge
+                                        ?.copyWith(fontWeight: FontWeight.bold),
                                   ),
                                 ),
                               ],
                             ),
                             const Divider(height: 24),
-                            _buildInfoRow(context, 'Descripción / Objetivo', character.storygoal),
+                            _buildInfoRow(context, 'Descripción / Objetivo',
+                                character.storygoal),
                           ],
                         ),
                       ),
                     ),
                   );
                 }),
-
                 const SizedBox(height: 16),
                 Container(
                   padding: const EdgeInsets.all(16),
@@ -99,7 +107,7 @@ class _StepSevenPageState extends State<StepSevenPage> {
                       const SizedBox(width: 12),
                       Expanded(
                         child: Text(
-                          'Para editar personajes, vuelve al Paso 3 o Paso 5.',
+                          'To edit characters, go back to Step 3 or Step 5.',
                           style: TextStyle(color: Colors.blue.shade700),
                         ),
                       ),
@@ -129,7 +137,7 @@ class _StepSevenPageState extends State<StepSevenPage> {
           ),
           const SizedBox(height: 4),
           Text(
-            value.isEmpty ? '(No especificado)' : value,
+            value.isEmpty ? '(Not specified)' : value,
             style: Theme.of(context).textTheme.bodyMedium,
           ),
         ],

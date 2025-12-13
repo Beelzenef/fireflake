@@ -54,7 +54,7 @@ class _StepTwoPageState extends State<StepTwoPage> {
         );
     context.read<AppCubit>().saveCurrentProjectToDisk();
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Resumen ampliado guardado')),
+      const SnackBar(content: Text('Expanded summary saved')),
     );
   }
 
@@ -69,16 +69,18 @@ class _StepTwoPageState extends State<StepTwoPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Ampliación del resumen',
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+                'Expand the summary',
+                style: Theme.of(context)
+                    .textTheme
+                    .headlineSmall
+                    ?.copyWith(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               Text(
-                'Desglosa el resumen en actos principales y final para estructurar la historia.',
+                'Break the summary into main acts and finale to structure the story.',
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
               const SizedBox(height: 24),
-
               _buildCard(
                 context,
                 title: 'Resumen general',
@@ -86,16 +88,15 @@ class _StepTwoPageState extends State<StepTwoPage> {
                   controller: _summaryController,
                   maxLines: 4,
                   decoration: const InputDecoration(
-                    labelText: 'Resumen general del proyecto',
+                    labelText: 'Overall project summary',
                     border: OutlineInputBorder(),
                   ),
                   validator: (value) => (value == null || value.trim().isEmpty)
-                      ? 'El resumen es requerido'
+                      ? 'Summary is required'
                       : null,
                 ),
               ),
               const SizedBox(height: 16),
-
               _buildCard(
                 context,
                 title: 'Acto I',
@@ -103,16 +104,15 @@ class _StepTwoPageState extends State<StepTwoPage> {
                   controller: _act1Controller,
                   maxLines: 3,
                   decoration: const InputDecoration(
-                    labelText: 'Planteamiento / Acto I',
+                    labelText: 'Setup / Act I',
                     border: OutlineInputBorder(),
                   ),
                   validator: (value) => (value == null || value.trim().isEmpty)
-                      ? 'Describe el Acto I'
+                      ? 'Describe Act I'
                       : null,
                 ),
               ),
               const SizedBox(height: 12),
-
               _buildCard(
                 context,
                 title: 'Acto II',
@@ -120,16 +120,15 @@ class _StepTwoPageState extends State<StepTwoPage> {
                   controller: _act2Controller,
                   maxLines: 3,
                   decoration: const InputDecoration(
-                    labelText: 'Nudo / Acto II',
+                    labelText: 'Confrontation / Act II',
                     border: OutlineInputBorder(),
                   ),
                   validator: (value) => (value == null || value.trim().isEmpty)
-                      ? 'Describe el Acto II'
+                      ? 'Describe Act II'
                       : null,
                 ),
               ),
               const SizedBox(height: 12),
-
               _buildCard(
                 context,
                 title: 'Acto III',
@@ -137,16 +136,15 @@ class _StepTwoPageState extends State<StepTwoPage> {
                   controller: _act3Controller,
                   maxLines: 3,
                   decoration: const InputDecoration(
-                    labelText: 'Clímax / Acto III',
+                    labelText: 'Climax / Act III',
                     border: OutlineInputBorder(),
                   ),
                   validator: (value) => (value == null || value.trim().isEmpty)
-                      ? 'Describe el Acto III'
+                      ? 'Describe Act III'
                       : null,
                 ),
               ),
               const SizedBox(height: 12),
-
               _buildCard(
                 context,
                 title: 'Final',
@@ -154,22 +152,21 @@ class _StepTwoPageState extends State<StepTwoPage> {
                   controller: _finaleController,
                   maxLines: 3,
                   decoration: const InputDecoration(
-                    labelText: 'Resolución / Final',
+                    labelText: 'Resolution / Finale',
                     border: OutlineInputBorder(),
                   ),
                   validator: (value) => (value == null || value.trim().isEmpty)
-                      ? 'Describe el final'
+                      ? 'Describe the ending'
                       : null,
                 ),
               ),
-
               const SizedBox(height: 24),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton.icon(
                   onPressed: _save,
                   icon: const Icon(Icons.save),
-                  label: const Text('Guardar'),
+                  label: const Text('Save'),
                 ),
               ),
             ],
@@ -179,7 +176,8 @@ class _StepTwoPageState extends State<StepTwoPage> {
     );
   }
 
-  Widget _buildCard(BuildContext context, {required String title, required Widget child}) {
+  Widget _buildCard(BuildContext context,
+      {required String title, required Widget child}) {
     return Card(
       elevation: 1,
       child: Padding(
@@ -187,7 +185,11 @@ class _StepTwoPageState extends State<StepTwoPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(title, style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600)),
+            Text(title,
+                style: Theme.of(context)
+                    .textTheme
+                    .titleMedium
+                    ?.copyWith(fontWeight: FontWeight.w600)),
             const SizedBox(height: 12),
             child,
           ],

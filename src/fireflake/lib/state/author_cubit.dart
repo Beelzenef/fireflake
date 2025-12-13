@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:bloc/bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/author_settings.dart';
 
@@ -22,7 +23,7 @@ class AuthorCubit extends Cubit<AuthorSettings> {
       }
     } catch (e) {
       // Si hay error, mantener valores por defecto
-      print('Error loading author settings: $e');
+      debugPrint('Error loading author settings: $e');
     }
   }
 
@@ -34,7 +35,7 @@ class AuthorCubit extends Cubit<AuthorSettings> {
       await prefs.setString(_storageKey, jsonString);
       emit(settings);
     } catch (e) {
-      print('Error saving author settings: $e');
+      debugPrint('Error saving author settings: $e');
     }
   }
 

@@ -36,7 +36,7 @@ class _ProjectInfoPageState extends State<ProjectInfoPage> {
       );
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Proyecto guardado'),
+          content: Text('Project saved'),
           backgroundColor: Colors.green,
         ),
       );
@@ -78,23 +78,23 @@ class _ProjectInfoPageState extends State<ProjectInfoPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Información del Proyecto',
-                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).primaryColor,
-                      ),
+                      'Project Information',
+                      style:
+                          Theme.of(context).textTheme.headlineMedium?.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).primaryColor,
+                              ),
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Completa la información básica de tu proyecto de escritura',
+                      'Fill in the basic information for your writing project',
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: Colors.grey[600],
-                      ),
+                            color: Colors.grey[600],
+                          ),
                     ),
                   ],
                 ),
               ),
-
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(
@@ -107,26 +107,29 @@ class _ProjectInfoPageState extends State<ProjectInfoPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Título del Proyecto',
-                                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                ),
+                                'Project title',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleMedium
+                                    ?.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                    ),
                               ),
                               const SizedBox(height: 12),
                               TextFormField(
                                 controller: _titleController,
                                 decoration: const InputDecoration(
-                                  labelText: 'Título',
-                                  hintText: 'Ej: El Reino de las Sombras',
+                                  labelText: 'Title',
+                                  hintText: 'E.g. The Shadow Kingdom',
                                   border: OutlineInputBorder(),
                                   prefixIcon: Icon(Icons.title),
                                 ),
                                 validator: (value) {
                                   if (value == null || value.trim().isEmpty) {
-                                    return 'El título es obligatorio';
+                                    return 'Title is required';
                                   }
                                   if (value.trim().length < 3) {
-                                    return 'El título debe tener al menos 3 caracteres';
+                                    return 'Title must be at least 3 characters';
                                   }
                                   return null;
                                 },
@@ -135,9 +138,7 @@ class _ProjectInfoPageState extends State<ProjectInfoPage> {
                           ),
                         ),
                       ),
-
                       const SizedBox(height: 20),
-
                       Card(
                         elevation: 2,
                         child: Padding(
@@ -146,31 +147,39 @@ class _ProjectInfoPageState extends State<ProjectInfoPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Subtítulo',
-                                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                ),
+                                'Subtitle',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleMedium
+                                    ?.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                    ),
                               ),
                               const SizedBox(height: 8),
                               Text(
-                                'Descripción breve o tagline del proyecto',
-                                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                  color: Colors.grey[600],
-                                ),
+                                'Short description or tagline of the project',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall
+                                    ?.copyWith(
+                                      color: Colors.grey[600],
+                                    ),
                               ),
                               const SizedBox(height: 12),
                               TextFormField(
                                 controller: _subtitleController,
                                 decoration: const InputDecoration(
-                                  labelText: 'Subtítulo',
-                                  hintText: 'Ej: Una épica aventura de fantasía',
+                                  labelText: 'Subtitle',
+                                  hintText: 'E.g. An epic fantasy adventure',
                                   border: OutlineInputBorder(),
                                   prefixIcon: Icon(Icons.short_text),
                                 ),
                                 maxLines: 2,
                                 validator: (value) {
-                                  if (value != null && value.isNotEmpty && value.trim().length < 10) {
-                                    return 'El subtítulo debe tener al menos 10 caracteres o estar vacío';
+                                  if (value != null &&
+                                      value.isNotEmpty &&
+                                      value.trim().length < 10) {
+                                    return 'Subtitle must have at least 10 characters or be empty';
                                   }
                                   return null;
                                 },
@@ -179,9 +188,7 @@ class _ProjectInfoPageState extends State<ProjectInfoPage> {
                           ),
                         ),
                       ),
-
                       const SizedBox(height: 20),
-
                       Card(
                         elevation: 2,
                         child: Padding(
@@ -190,27 +197,33 @@ class _ProjectInfoPageState extends State<ProjectInfoPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Número de palabras',
-                                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                ),
+                                'Word count',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleMedium
+                                    ?.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                    ),
                               ),
                               const SizedBox(height: 8),
                               Text(
-                                'Número aproximado para completar el proyecto',
-                                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                  color: Colors.grey[600],
-                                ),
+                                'Approximate total to complete the project',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall
+                                    ?.copyWith(
+                                      color: Colors.grey[600],
+                                    ),
                               ),
                               const SizedBox(height: 12),
                               TextFormField(
                                 controller: _wordCountController,
                                 decoration: const InputDecoration(
-                                  labelText: 'Número de palabras',
-                                  hintText: 'Ej: 80000',
+                                  labelText: 'Word count',
+                                  hintText: 'E.g. 80000',
                                   border: OutlineInputBorder(),
                                   prefixIcon: Icon(Icons.format_list_numbered),
-                                  suffixText: 'palabras',
+                                  suffixText: 'words',
                                 ),
                                 keyboardType: TextInputType.number,
                                 inputFormatters: [
@@ -218,17 +231,17 @@ class _ProjectInfoPageState extends State<ProjectInfoPage> {
                                 ],
                                 validator: (value) {
                                   if (value == null || value.trim().isEmpty) {
-                                    return 'El número de palabras es obligatorio';
+                                    return 'Word count is required';
                                   }
                                   final int? wordCount = int.tryParse(value);
                                   if (wordCount == null) {
-                                    return 'Debe ser un número válido';
+                                    return 'Enter a valid number';
                                   }
                                   if (wordCount < 1000) {
-                                    return 'El conteo debe ser de al menos 1,000 palabras';
+                                    return 'Word count must be at least 1,000';
                                   }
                                   if (wordCount > 1000000) {
-                                    return 'El conteo no puede exceder 1,000,000 palabras';
+                                    return 'Word count cannot exceed 1,000,000';
                                   }
                                   return null;
                                 },
@@ -237,9 +250,7 @@ class _ProjectInfoPageState extends State<ProjectInfoPage> {
                           ),
                         ),
                       ),
-
                       const SizedBox(height: 32),
-
                       Container(
                         padding: const EdgeInsets.all(16.0),
                         decoration: BoxDecoration(
@@ -249,14 +260,15 @@ class _ProjectInfoPageState extends State<ProjectInfoPage> {
                         ),
                         child: Row(
                           children: [
-                            Icon(Icons.info_outline, color: Colors.blue.shade700),
+                            Icon(Icons.info_outline,
+                                color: Colors.blue.shade700),
                             const SizedBox(width: 12),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Referencia de conteo de palabras:',
+                                    'Word count reference:',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       color: Colors.blue.shade700,
@@ -264,9 +276,9 @@ class _ProjectInfoPageState extends State<ProjectInfoPage> {
                                   ),
                                   const SizedBox(height: 4),
                                   Text(
-                                    '• Novela corta: 50,000 - 80,000 palabras\n'
-                                    '• Novela estándar: 80,000 - 100,000 palabras\n'
-                                    '• Novela épica: 100,000+ palabras',
+                                    '• Novella: 50,000 - 80,000 words\n'
+                                    '• Standard novel: 80,000 - 100,000 words\n'
+                                    '• Epic novel: 100,000+ words',
                                     style: TextStyle(
                                       fontSize: 13,
                                       color: Colors.blue.shade600,
@@ -282,7 +294,6 @@ class _ProjectInfoPageState extends State<ProjectInfoPage> {
                   ),
                 ),
               ),
-
               Container(
                 padding: const EdgeInsets.only(top: 24),
                 child: Row(
@@ -291,7 +302,7 @@ class _ProjectInfoPageState extends State<ProjectInfoPage> {
                       child: OutlinedButton.icon(
                         onPressed: _clearForm,
                         icon: const Icon(Icons.clear),
-                        label: const Text('Limpiar'),
+                        label: const Text('Clear'),
                       ),
                     ),
                     const SizedBox(width: 16),
@@ -300,7 +311,7 @@ class _ProjectInfoPageState extends State<ProjectInfoPage> {
                       child: ElevatedButton.icon(
                         onPressed: _saveProject,
                         icon: const Icon(Icons.save),
-                        label: const Text('Guardar Proyecto'),
+                        label: const Text('Save Project'),
                       ),
                     ),
                   ],

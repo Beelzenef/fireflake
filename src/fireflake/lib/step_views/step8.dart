@@ -71,7 +71,7 @@ class _StepEightPageState extends State<StepEightPage> {
     cubit.saveCurrentProjectToDisk();
 
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Lista de escenas guardada')),
+      const SnackBar(content: Text('Scene list saved')),
     );
   }
 
@@ -82,7 +82,8 @@ class _StepEightPageState extends State<StepEightPage> {
         builder: (context, state) {
           final project = state.selectedProject;
           if (project == null) {
-            return const Center(child: Text('Selecciona o crea un proyecto primero'));
+            return const Center(
+                child: Text('Select or create a project first'));
           }
 
           return SingleChildScrollView(
@@ -93,16 +94,18 @@ class _StepEightPageState extends State<StepEightPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Paso 8: Lista de escenas',
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+                    'Step 8: Scene list',
+                    style: Theme.of(context)
+                        .textTheme
+                        .headlineSmall
+                        ?.copyWith(fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Usando el argumento ampliado del Paso 6, escribe una lista de las escenas que faltan para completar la historia.',
+                    'Using the extended argument from Step 6, list the scenes needed to complete the story.',
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   const SizedBox(height: 24),
-
                   ..._sceneControllers.asMap().entries.map((entry) {
                     final index = entry.key;
                     final controller = entry.value;
@@ -118,7 +121,9 @@ class _StepEightPageState extends State<StepEightPage> {
                                 width: 32,
                                 height: 32,
                                 decoration: BoxDecoration(
-                                  color: Theme.of(context).primaryColor.withValues(alpha: 0.2),
+                                  color: Theme.of(context)
+                                      .primaryColor
+                                      .withValues(alpha: 0.2),
                                   shape: BoxShape.circle,
                                 ),
                                 child: Center(
@@ -136,22 +141,24 @@ class _StepEightPageState extends State<StepEightPage> {
                                 child: TextFormField(
                                   controller: controller,
                                   decoration: InputDecoration(
-                                    labelText: 'Escena ${index + 1}',
-                                    hintText: 'Describe brevemente la escena...',
+                                    labelText: 'Scene ${index + 1}',
+                                    hintText: 'Briefly describe the scene...',
                                     border: const OutlineInputBorder(),
                                     isDense: true,
                                   ),
-                                  validator: (value) => (value == null || value.trim().isEmpty)
-                                      ? 'Requerido'
-                                      : null,
+                                  validator: (value) =>
+                                      (value == null || value.trim().isEmpty)
+                                          ? 'Required'
+                                          : null,
                                 ),
                               ),
                               const SizedBox(width: 8),
                               if (_sceneControllers.length > 1)
                                 IconButton(
-                                  icon: const Icon(Icons.delete_outline, color: Colors.red, size: 20),
+                                  icon: const Icon(Icons.delete_outline,
+                                      color: Colors.red, size: 20),
                                   onPressed: () => _removeSceneField(index),
-                                  tooltip: 'Eliminar',
+                                  tooltip: 'Delete',
                                 ),
                             ],
                           ),
@@ -159,24 +166,21 @@ class _StepEightPageState extends State<StepEightPage> {
                       ),
                     );
                   }),
-
                   const SizedBox(height: 8),
                   OutlinedButton.icon(
                     onPressed: _addSceneField,
                     icon: const Icon(Icons.add),
-                    label: const Text('Agregar escena'),
+                    label: const Text('Add scene'),
                   ),
-
                   const SizedBox(height: 24),
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton.icon(
                       onPressed: _save,
                       icon: const Icon(Icons.save),
-                      label: const Text('Guardar lista de escenas'),
+                      label: const Text('Save scene list'),
                     ),
                   ),
-
                   const SizedBox(height: 16),
                   Container(
                     padding: const EdgeInsets.all(16),
@@ -187,11 +191,12 @@ class _StepEightPageState extends State<StepEightPage> {
                     ),
                     child: Row(
                       children: [
-                        Icon(Icons.lightbulb_outline, color: Colors.amber.shade700),
+                        Icon(Icons.lightbulb_outline,
+                            color: Colors.amber.shade700),
                         const SizedBox(width: 12),
                         Expanded(
                           child: Text(
-                            'Después de guardar esta lista, ve al Paso 9 para escribir el resumen narrativo de cada escena.',
+                            'After saving this list, go to Step 9 to write the narrative summary of each scene.',
                             style: TextStyle(color: Colors.amber.shade900),
                           ),
                         ),

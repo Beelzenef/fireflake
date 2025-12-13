@@ -40,7 +40,7 @@ class _StepSixPageState extends State<StepSixPage> {
     cubit.saveCurrentProjectToDisk();
 
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Argumento ampliado guardado')),
+      const SnackBar(content: Text('Extended argument saved')),
     );
   }
 
@@ -51,7 +51,8 @@ class _StepSixPageState extends State<StepSixPage> {
         builder: (context, state) {
           final project = state.selectedProject;
           if (project == null) {
-            return const Center(child: Text('Selecciona o crea un proyecto primero'));
+            return const Center(
+                child: Text('Select or create a project first'));
           }
 
           return SingleChildScrollView(
@@ -62,16 +63,18 @@ class _StepSixPageState extends State<StepSixPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Paso 6: Ampliar argumento',
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+                    'Step 6: Expand argument',
+                    style: Theme.of(context)
+                        .textTheme
+                        .headlineSmall
+                        ?.copyWith(fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Vuelve al Paso 4 y amplía el argumento con más detalle narrativo. Integra conflictos, giros y desarrollo de personajes.',
+                    'Return to Step 4 and expand the argument with more narrative detail. Integrate conflicts, twists, and character development.',
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   const SizedBox(height: 24),
-
                   Card(
                     elevation: 1,
                     child: Padding(
@@ -80,40 +83,47 @@ class _StepSixPageState extends State<StepSixPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Argumento extendido',
-                            style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
+                            'Extended argument',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(fontWeight: FontWeight.w600),
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            'Combina los párrafos del Paso 4 y añade más profundidad: conflictos internos, secundarios, giros de trama, desarrollo de relaciones...',
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.grey[700]),
+                            'Combine the paragraphs from Step 4 and add more depth: internal conflicts, subplots, twists, relationship arcs...',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodySmall
+                                ?.copyWith(color: Colors.grey[700]),
                           ),
                           const SizedBox(height: 12),
                           TextFormField(
                             controller: _argumentController,
                             maxLines: 15,
                             decoration: const InputDecoration(
-                              labelText: 'Argumento completo ampliado',
-                              hintText: 'Escribe varios párrafos con el argumento completo, integrando todos los elementos narrativos...',
+                              labelText: 'Full expanded argument',
+                              hintText:
+                                  'Write multiple paragraphs with the full argument, integrating all narrative elements...',
                               border: OutlineInputBorder(),
                               alignLabelWithHint: true,
                             ),
-                            validator: (value) => (value == null || value.trim().isEmpty)
-                                ? 'El argumento ampliado es requerido'
-                                : null,
+                            validator: (value) =>
+                                (value == null || value.trim().isEmpty)
+                                    ? 'The extended argument is required'
+                                    : null,
                           ),
                         ],
                       ),
                     ),
                   ),
-
                   const SizedBox(height: 24),
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton.icon(
                       onPressed: _save,
                       icon: const Icon(Icons.save),
-                      label: const Text('Guardar argumento ampliado'),
+                      label: const Text('Save extended argument'),
                     ),
                   ),
                 ],

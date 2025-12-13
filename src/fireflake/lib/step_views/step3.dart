@@ -83,13 +83,12 @@ class _StepThreePageState extends State<StepThreePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  'Información del Personaje',
+                  'Character Information',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 20),
-                
                 const Text(
-                  'Su historia (elementos con una sola frase)',
+                  'Backstory (single-sentence elements)',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                 ),
                 const SizedBox(height: 10),
@@ -104,12 +103,12 @@ class _StepThreePageState extends State<StepThreePage> {
                           child: TextFormField(
                             controller: controller,
                             decoration: InputDecoration(
-                              labelText: 'Elemento de historia ${index + 1}',
+                              labelText: 'Story element ${index + 1}',
                               border: const OutlineInputBorder(),
                             ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Este campo es requerido';
+                                return 'This field is required';
                               }
                               return null;
                             },
@@ -126,76 +125,71 @@ class _StepThreePageState extends State<StepThreePage> {
                 TextButton.icon(
                   onPressed: _addHistoryField,
                   icon: const Icon(Icons.add),
-                  label: const Text('Agregar elemento de historia'),
+                  label: const Text('Add story element'),
                 ),
                 const SizedBox(height: 20),
-
                 TextFormField(
                   controller: _motivationsController,
                   decoration: const InputDecoration(
-                    labelText: 'Sus motivaciones',
+                    labelText: 'Motivations',
                     border: OutlineInputBorder(),
                   ),
                   maxLines: 3,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Este campo es requerido';
+                      return 'This field is required';
                     }
                     return null;
                   },
                 ),
                 const SizedBox(height: 16),
-
                 TextFormField(
                   controller: _objectiveController,
                   decoration: const InputDecoration(
-                    labelText: 'Su objetivo',
+                    labelText: 'Goal',
                     border: OutlineInputBorder(),
                   ),
                   maxLines: 3,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Este campo es requerido';
+                      return 'This field is required';
                     }
                     return null;
                   },
                 ),
                 const SizedBox(height: 16),
-
                 TextFormField(
                   controller: _conflictController,
                   decoration: const InputDecoration(
-                    labelText: 'Su conflicto',
+                    labelText: 'Conflict',
                     border: OutlineInputBorder(),
                   ),
                   maxLines: 3,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Este campo es requerido';
+                      return 'This field is required';
                     }
                     return null;
                   },
                 ),
                 const SizedBox(height: 16),
-
                 TextFormField(
                   controller: _epiphanyController,
                   decoration: const InputDecoration(
-                    labelText: 'Epifanía',
+                    labelText: 'Epiphany',
                     border: OutlineInputBorder(),
                   ),
                   maxLines: 3,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Este campo es requerido';
+                      return 'This field is required';
                     }
                     return null;
                   },
                 ),
                 const SizedBox(height: 20),
-
                 const Text(
-                  'Su historia final (elementos con una sola frase)',
+                  'Final backstory (single-sentence elements)',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                 ),
                 const SizedBox(height: 10),
@@ -210,12 +204,12 @@ class _StepThreePageState extends State<StepThreePage> {
                           child: TextFormField(
                             controller: controller,
                             decoration: InputDecoration(
-                              labelText: 'Elemento de historia final ${index + 1}',
+                              labelText: 'Final story element ${index + 1}',
                               border: const OutlineInputBorder(),
                             ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Este campo es requerido';
+                                return 'This field is required';
                               }
                               return null;
                             },
@@ -232,28 +226,33 @@ class _StepThreePageState extends State<StepThreePage> {
                 TextButton.icon(
                   onPressed: _addFinalHistoryField,
                   icon: const Icon(Icons.add),
-                  label: const Text('Agregar elemento de historia final'),
+                  label: const Text('Add final story element'),
                 ),
                 const SizedBox(height: 30),
-
                 Center(
                   child: ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        final name = _historyControllers.isNotEmpty && _historyControllers.first.text.isNotEmpty
+                        final name = _historyControllers.isNotEmpty &&
+                                _historyControllers.first.text.isNotEmpty
                             ? _historyControllers.first.text
                             : 'Personaje';
-                        final character = Character(name: name, storygoal: _objectiveController.text);
-                        context.read<AppCubit>().addCharacter(character);
-                        context.read<AppCubit>().saveCurrentProjectToDisk();
+                        final character = Character(
+                            name: name, storygoal: _objectiveController.text);
+                        final cubit = context.read<AppCubit>();
+                        final updated =
+                            List<Character>.from(cubit.state.characters)
+                              ..add(character);
+                        cubit.setCharacters(updated);
+                        cubit.saveCurrentProjectToDisk();
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                            content: Text('Información del personaje guardada'),
+                            content: Text('Character info saved'),
                           ),
                         );
                       }
                     },
-                    child: const Text('Guardar Información'),
+                    child: const Text('Save Information'),
                   ),
                 ),
               ],
@@ -264,5 +263,3 @@ class _StepThreePageState extends State<StepThreePage> {
     );
   }
 }
-
-

@@ -23,7 +23,8 @@ class AppState extends Equatable {
     Project? selectedProject,
     List<Scene>? scenes,
     List<Character>? characters,
-  }) => AppState(
+  }) =>
+      AppState(
         projects: projects ?? this.projects,
         selectedProject: selectedProject ?? this.selectedProject,
         scenes: scenes ?? this.scenes,
@@ -127,7 +128,8 @@ class AppCubit extends Cubit<AppState> {
     final updatedProjects = state.projects
         .map((p) => p.title == selected.title ? updatedProject : p)
         .toList();
-    emit(state.copyWith(projects: updatedProjects, selectedProject: updatedProject));
+    emit(state.copyWith(
+        projects: updatedProjects, selectedProject: updatedProject));
   }
 
   void updateExpandedParagraphs({
@@ -147,17 +149,20 @@ class AppCubit extends Cubit<AppState> {
     final updatedProjects = state.projects
         .map((p) => p.title == selected.title ? updatedProject : p)
         .toList();
-    emit(state.copyWith(projects: updatedProjects, selectedProject: updatedProject));
+    emit(state.copyWith(
+        projects: updatedProjects, selectedProject: updatedProject));
   }
 
   void updateExtendedArgument(String extendedArgument) {
     final selected = state.selectedProject;
     if (selected == null) return;
-    final updatedProject = selected.copyWith(extendedArgument: extendedArgument);
+    final updatedProject =
+        selected.copyWith(extendedArgument: extendedArgument);
     final updatedProjects = state.projects
         .map((p) => p.title == selected.title ? updatedProject : p)
         .toList();
-    emit(state.copyWith(projects: updatedProjects, selectedProject: updatedProject));
+    emit(state.copyWith(
+        projects: updatedProjects, selectedProject: updatedProject));
   }
 
   void updatePendingScenes(List<String> pendingScenes) {
@@ -167,7 +172,8 @@ class AppCubit extends Cubit<AppState> {
     final updatedProjects = state.projects
         .map((p) => p.title == selected.title ? updatedProject : p)
         .toList();
-    emit(state.copyWith(projects: updatedProjects, selectedProject: updatedProject));
+    emit(state.copyWith(
+        projects: updatedProjects, selectedProject: updatedProject));
   }
 
   void addScene(Scene scene) {
@@ -214,6 +220,10 @@ class AppCubit extends Cubit<AppState> {
     emit(state.copyWith(characters: updated));
   }
 
+  void setCharacters(List<Character> characters) {
+    emit(state.copyWith(characters: List<Character>.from(characters)));
+  }
+
   void removeCharacter(Character character) {
     final updated = List<Character>.from(state.characters)..remove(character);
     emit(state.copyWith(characters: updated));
@@ -223,11 +233,20 @@ class AppCubit extends Cubit<AppState> {
     final project = state.selectedProject;
     if (project == null) return;
     final merged = project.copyWith(
+      title: project.title,
+      subtitle: project.subtitle,
+      expectedWordCount: project.expectedWordCount,
       summary: project.summary,
       act1: project.act1,
       act2: project.act2,
       act3: project.act3,
       finale: project.finale,
+      expandedAct1: project.expandedAct1,
+      expandedAct2: project.expandedAct2,
+      expandedAct3: project.expandedAct3,
+      expandedFinale: project.expandedFinale,
+      extendedArgument: project.extendedArgument,
+      pendingScenes: project.pendingScenes,
       scenes: state.scenes,
       characters: state.characters,
     );

@@ -13,8 +13,6 @@ class ProjectsPage extends StatefulWidget {
 }
 
 class _ProjectsPageState extends State<ProjectsPage> {
-  List<Project> projectsToLoad = [Project(title: 'Project 1', expectedWordCount: 1000)];
-
   @override
   void initState() {
     super.initState();
@@ -33,11 +31,20 @@ class _ProjectsPageState extends State<ProjectsPage> {
           Container(
               padding: const EdgeInsets.all(20),
               width: 220,
-              height: 320,
-              color: Colors.grey,
+              height: 360,
+              color: Colors.grey.shade800,
               child: BlocBuilder<AppCubit, AppState>(
                 builder: (context, state) {
-                  final projects = state.projects.isEmpty ? projectsToLoad : state.projects;
+                  final projects = state.projects;
+                  if (projects.isEmpty) {
+                    return const Center(
+                      child: Text(
+                        'No projects yet.\nTap "New" to create one.',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.white70),
+                      ),
+                    );
+                  }
                   return buildProjectList(projects);
                 },
               )),
@@ -52,27 +59,17 @@ class _ProjectsPageState extends State<ProjectsPage> {
                   padding: const EdgeInsets.all(8.0),
                   child: TextButton(
                       style: mainButtonStyle(),
-                      onPressed: () {
-                        final cubit = context.read<AppCubit>();
-                        cubit.loadInitial(projectsToLoad);
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => ProjectWrapper(),
-                          ),
-                        );
+                      onPressed: () async {
+                        await context.read<AppCubit>().loadProjectsFromDisk();
                       },
-                      child: const Text('Open')),
+                      child: const Text('Refresh')),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextButton(
                       style: mainButtonStyle(),
                       onPressed: () {
-                        final cubit = context.read<AppCubit>();
-                        final newProject = Project(title: 'New Project', expectedWordCount: 2000);
-                        final updated = List<Project>.from(cubit.state.projects)..add(newProject);
-                        cubit.loadInitial(updated);
-                        cubit.selectProject(newProject);
+                        _createNewProject(context);
                       },
                       child: const Text('New')),
                 ),
@@ -84,10 +81,10 @@ class _ProjectsPageState extends State<ProjectsPage> {
                       await context.read<AppCubit>().saveCurrentProjectToDisk();
                       if (!context.mounted) return;
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Proyecto guardado en disco')),
+                        const SnackBar(content: Text('Project saved to disk')),
                       );
                     },
-                    child: const Text('Guardar'),
+                    child: const Text('Save'),
                   ),
                 ),
               ],
@@ -126,7 +123,9 @@ class _ProjectsPageState extends State<ProjectsPage> {
       itemBuilder: (context, index) {
         return GestureDetector(
           onTap: () async {
-            await context.read<AppCubit>().loadAndSelectProject(projects[index].title);
+            await context
+                .read<AppCubit>()
+                .loadAndSelectProject(projects[index].title);
             if (!context.mounted) return;
             Navigator.of(context).push(
               MaterialPageRoute(
@@ -140,6 +139,66 @@ class _ProjectsPageState extends State<ProjectsPage> {
           ),
         );
       },
+    );
+  }
+
+  Future<void> _createNewProject(BuildContext context) async {
+    final titleController = TextEditingController(text: 'New project');
+    final wordsController = TextEditingController(text: '50000');
+    final cubit = context.read<AppCubit>();
+    final navigator = Navigator.of(context);
+
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Create project'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: titleController,
+                decoration: const InputDecoration(labelText: 'Title'),
+              ),
+              const SizedBox(height: 12),
+              TextField(
+                controller: wordsController,
+                keyboardType: TextInputType.number,
+                decoration:
+                    const InputDecoration(labelText: 'Expected word count'),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: const Text('Create'),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (result != true) return;
+    if (!mounted) return;
+    final title = titleController.text.trim().isEmpty
+        ? 'New project'
+        : titleController.text.trim();
+    final expected = int.tryParse(wordsController.text.trim()) ?? 50000;
+    cubit.saveProject(title: title, expectedWordCount: expected);
+    final created = cubit.state.projects.firstWhere((p) => p.title == title);
+    cubit.selectProject(created);
+    await cubit.saveCurrentProjectToDisk();
+
+    if (!mounted) return;
+    navigator.push(
+      MaterialPageRoute(
+        builder: (context) => ProjectWrapper(),
+      ),
     );
   }
 }

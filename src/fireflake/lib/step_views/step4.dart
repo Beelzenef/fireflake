@@ -30,10 +30,19 @@ class _StepFourPageState extends State<StepFourPage> {
     final project = context.read<AppCubit>().state.selectedProject;
     if (project == null) return;
 
-    _controllers['act1'] = TextEditingController(text: project.expandedAct1.isEmpty ? project.act1 : project.expandedAct1);
-    _controllers['act2'] = TextEditingController(text: project.expandedAct2.isEmpty ? project.act2 : project.expandedAct2);
-    _controllers['act3'] = TextEditingController(text: project.expandedAct3.isEmpty ? project.act3 : project.expandedAct3);
-    _controllers['finale'] = TextEditingController(text: project.expandedFinale.isEmpty ? project.finale : project.expandedFinale);
+    _controllers['act1'] = TextEditingController(
+        text:
+            project.expandedAct1.isEmpty ? project.act1 : project.expandedAct1);
+    _controllers['act2'] = TextEditingController(
+        text:
+            project.expandedAct2.isEmpty ? project.act2 : project.expandedAct2);
+    _controllers['act3'] = TextEditingController(
+        text:
+            project.expandedAct3.isEmpty ? project.act3 : project.expandedAct3);
+    _controllers['finale'] = TextEditingController(
+        text: project.expandedFinale.isEmpty
+            ? project.finale
+            : project.expandedFinale);
 
     _initialized = true;
   }
@@ -51,7 +60,7 @@ class _StepFourPageState extends State<StepFourPage> {
     cubit.saveCurrentProjectToDisk();
 
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Párrafos expandidos guardados')),
+      const SnackBar(content: Text('Expanded paragraphs saved')),
     );
   }
 
@@ -62,11 +71,16 @@ class _StepFourPageState extends State<StepFourPage> {
         builder: (context, state) {
           final project = state.selectedProject;
           if (project == null) {
-            return const Center(child: Text('Selecciona o crea un proyecto primero'));
+            return const Center(
+                child: Text('Select or create a project first'));
           }
 
-          if (project.act1.isEmpty && project.act2.isEmpty && project.act3.isEmpty && project.finale.isEmpty) {
-            return const Center(child: Text('Completa el Paso 2 primero (actos y final)'));
+          if (project.act1.isEmpty &&
+              project.act2.isEmpty &&
+              project.act3.isEmpty &&
+              project.finale.isEmpty) {
+            return const Center(
+                child: Text('Complete Step 2 first (acts and finale)'));
           }
 
           if (!_initialized) {
@@ -83,43 +97,45 @@ class _StepFourPageState extends State<StepFourPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Paso 4: Expandir a párrafos',
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+                    'Step 4: Expand into paragraphs',
+                    style: Theme.of(context)
+                        .textTheme
+                        .headlineSmall
+                        ?.copyWith(fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Convierte cada frase del Paso 2 en un párrafo completo.',
+                    'Turn each sentence from Step 2 into a full paragraph.',
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   const SizedBox(height: 24),
-
                   if (project.act1.isNotEmpty) ...[
-                    _buildExpandedSection(context, 'Acto I - Expandido', 'act1'),
+                    _buildExpandedSection(
+                        context, 'Acto I - Expandido', 'act1'),
                     const SizedBox(height: 16),
                   ],
-
                   if (project.act2.isNotEmpty) ...[
-                    _buildExpandedSection(context, 'Acto II - Expandido', 'act2'),
+                    _buildExpandedSection(
+                        context, 'Acto II - Expandido', 'act2'),
                     const SizedBox(height: 16),
                   ],
-
                   if (project.act3.isNotEmpty) ...[
-                    _buildExpandedSection(context, 'Acto III - Expandido', 'act3'),
+                    _buildExpandedSection(
+                        context, 'Acto III - Expandido', 'act3'),
                     const SizedBox(height: 16),
                   ],
-
                   if (project.finale.isNotEmpty) ...[
-                    _buildExpandedSection(context, 'Final - Expandido', 'finale'),
+                    _buildExpandedSection(
+                        context, 'Final - Expandido', 'finale'),
                     const SizedBox(height: 16),
                   ],
-
                   const SizedBox(height: 8),
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton.icon(
                       onPressed: _save,
                       icon: const Icon(Icons.save),
-                      label: const Text('Guardar párrafos expandidos'),
+                      label: const Text('Save expanded paragraphs'),
                     ),
                   ),
                 ],
@@ -141,19 +157,25 @@ class _StepFourPageState extends State<StepFourPage> {
           children: [
             Text(
               title,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
+              style: Theme.of(context)
+                  .textTheme
+                  .titleMedium
+                  ?.copyWith(fontWeight: FontWeight.w600),
             ),
             const SizedBox(height: 12),
             TextFormField(
               controller: _controllers[key],
               maxLines: 6,
               decoration: InputDecoration(
-                labelText: 'Párrafo completo para $title',
-                hintText: 'Expande la frase del Paso 2 en un párrafo narrativo más detallado...',
+                labelText: 'Full paragraph for $title',
+                hintText:
+                    'Expand the sentence from Step 2 into a richer narrative paragraph...',
                 border: const OutlineInputBorder(),
                 alignLabelWithHint: true,
               ),
-              validator: (value) => (value == null || value.trim().isEmpty) ? 'Este párrafo es requerido' : null,
+              validator: (value) => (value == null || value.trim().isEmpty)
+                  ? 'This paragraph is required'
+                  : null,
             ),
           ],
         ),

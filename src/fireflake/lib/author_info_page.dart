@@ -40,7 +40,7 @@ class _AuthorInfoPageState extends State<AuthorInfoPage> {
             email: _emailController.text,
           );
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Información del autor guardada')),
+        const SnackBar(content: Text('Author info saved')),
       );
     }
   }
@@ -48,7 +48,7 @@ class _AuthorInfoPageState extends State<AuthorInfoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Información del Autor')),
+      appBar: AppBar(title: const Text('Author Information')),
       body: BlocBuilder<AuthorCubit, AuthorSettings>(
         builder: (context, settings) {
           // Actualizar controladores cuando cambie el estado
@@ -69,7 +69,7 @@ class _AuthorInfoPageState extends State<AuthorInfoPage> {
               child: ListView(
                 children: [
                   const Text(
-                    'Esta configuración se guarda de forma global y será usada en todos los proyectos.',
+                    'This configuration is stored globally and will be used across all projects.',
                     style: TextStyle(
                       fontStyle: FontStyle.italic,
                       color: Colors.grey,
@@ -79,17 +79,18 @@ class _AuthorInfoPageState extends State<AuthorInfoPage> {
                   TextFormField(
                     controller: _nameController,
                     decoration: const InputDecoration(
-                      labelText: 'Nombre',
+                      labelText: 'Name',
                       border: OutlineInputBorder(),
                     ),
-                    validator: (value) =>
-                        value == null || value.isEmpty ? 'Ingresa tu nombre' : null,
+                    validator: (value) => value == null || value.isEmpty
+                        ? 'Enter your name'
+                        : null,
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
                     controller: _bioController,
                     decoration: const InputDecoration(
-                      labelText: 'Biografía',
+                      labelText: 'Bio',
                       border: OutlineInputBorder(),
                       alignLabelWithHint: true,
                     ),
@@ -105,10 +106,10 @@ class _AuthorInfoPageState extends State<AuthorInfoPage> {
                     keyboardType: TextInputType.emailAddress,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Ingresa tu email';
+                        return 'Enter your email';
                       }
                       if (!value.contains('@')) {
-                        return 'Ingresa un email válido';
+                        return 'Enter a valid email';
                       }
                       return null;
                     },
@@ -120,7 +121,7 @@ class _AuthorInfoPageState extends State<AuthorInfoPage> {
                       padding: const EdgeInsets.all(16),
                     ),
                     child: const Text(
-                      'Guardar',
+                      'Save',
                       style: TextStyle(fontSize: 16),
                     ),
                   ),

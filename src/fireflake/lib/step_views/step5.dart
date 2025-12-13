@@ -73,27 +73,19 @@ class _StepFivePageState extends State<StepFivePage> {
     if (_formKey.currentState?.validate() != true) return;
 
     final cubit = context.read<AppCubit>();
-    
-    // Limpiar personajes actuales y agregar los nuevos
-    final currentCharacters = List<Character>.from(cubit.state.characters);
-    currentCharacters.clear();
+    final currentCharacters = _characterControllers
+        .map((controllerMap) => Character(
+              name: controllerMap['name']!.text.trim(),
+              storygoal: controllerMap['description']!.text.trim(),
+            ))
+        .where((character) =>
+            character.name.isNotEmpty && character.storygoal.isNotEmpty)
+        .toList();
 
-    for (var controllerMap in _characterControllers) {
-      final name = controllerMap['name']!.text.trim();
-      final description = controllerMap['description']!.text.trim();
-      if (name.isNotEmpty && description.isNotEmpty) {
-        currentCharacters.add(Character(name: name, storygoal: description));
-      }
-    }
-
-    // Actualizar el estado con los personajes
-    for (var char in currentCharacters) {
-      cubit.addCharacter(char);
-    }
-
+    cubit.setCharacters(currentCharacters);
     cubit.saveCurrentProjectToDisk();
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Personajes principales guardados')),
+      const SnackBar(content: Text('Main characters saved')),
     );
   }
 
@@ -108,16 +100,18 @@ class _StepFivePageState extends State<StepFivePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Paso 5: Personajes principales',
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+                'Step 5: Main characters',
+                style: Theme.of(context)
+                    .textTheme
+                    .headlineSmall
+                    ?.copyWith(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               Text(
-                'Describe los personajes principales de tu historia (máximo $_maxCharacters).',
+                'Describe the main characters of your story (maximum $_maxCharacters).',
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
               const SizedBox(height: 24),
-
               ..._characterControllers.asMap().entries.map((entry) {
                 final index = entry.key;
                 final controllers = entry.value;
@@ -134,14 +128,18 @@ class _StepFivePageState extends State<StepFivePage> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'Personaje ${index + 1}',
-                                style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
+                                'Character ${index + 1}',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleMedium
+                                    ?.copyWith(fontWeight: FontWeight.w600),
                               ),
                               if (_characterControllers.length > 1)
                                 IconButton(
-                                  icon: const Icon(Icons.delete_outline, color: Colors.red),
+                                  icon: const Icon(Icons.delete_outline,
+                                      color: Colors.red),
                                   onPressed: () => _removeCharacterField(index),
-                                  tooltip: 'Eliminar personaje',
+                                  tooltip: 'Delete character',
                                 ),
                             ],
                           ),
@@ -149,28 +147,30 @@ class _StepFivePageState extends State<StepFivePage> {
                           TextFormField(
                             controller: controllers['name'],
                             decoration: const InputDecoration(
-                              labelText: 'Nombre del personaje',
-                              hintText: 'Ej: Aragorn',
+                              labelText: 'Character name',
+                              hintText: 'E.g. Aragorn',
                               border: OutlineInputBorder(),
                               prefixIcon: Icon(Icons.person),
                             ),
-                            validator: (value) => (value == null || value.trim().isEmpty)
-                                ? 'El nombre es requerido'
-                                : null,
+                            validator: (value) =>
+                                (value == null || value.trim().isEmpty)
+                                    ? 'Name is required'
+                                    : null,
                           ),
                           const SizedBox(height: 12),
                           TextFormField(
                             controller: controllers['description'],
                             maxLines: 4,
                             decoration: const InputDecoration(
-                              labelText: 'Descripción del personaje',
-                              hintText: 'Rol, motivación, conflicto, objetivos...',
+                              labelText: 'Character description',
+                              hintText: 'Role, motivation, conflict, goals...',
                               border: OutlineInputBorder(),
                               alignLabelWithHint: true,
                             ),
-                            validator: (value) => (value == null || value.trim().isEmpty)
-                                ? 'La descripción es requerida'
-                                : null,
+                            validator: (value) =>
+                                (value == null || value.trim().isEmpty)
+                                    ? 'Description is required'
+                                    : null,
                           ),
                         ],
                       ),
@@ -178,21 +178,19 @@ class _StepFivePageState extends State<StepFivePage> {
                   ),
                 );
               }),
-
               if (_characterControllers.length < _maxCharacters)
                 OutlinedButton.icon(
                   onPressed: _addCharacterField,
                   icon: const Icon(Icons.add),
-                  label: const Text('Agregar personaje'),
+                  label: const Text('Add character'),
                 ),
-
               const SizedBox(height: 24),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton.icon(
                   onPressed: _save,
                   icon: const Icon(Icons.save),
-                  label: const Text('Guardar personajes'),
+                  label: const Text('Save characters'),
                 ),
               ),
             ],

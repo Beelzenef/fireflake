@@ -38,7 +38,7 @@ class _StepOnePageState extends State<StepOnePage> {
         );
     context.read<AppCubit>().saveCurrentProjectToDisk();
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Resumen guardado')),
+      const SnackBar(content: Text('Summary saved')),
     );
   }
 
@@ -53,16 +53,18 @@ class _StepOnePageState extends State<StepOnePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Paso 1: Resumen en una frase',
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+                'Step 1: One-sentence summary',
+                style: Theme.of(context)
+                    .textTheme
+                    .headlineSmall
+                    ?.copyWith(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               Text(
-                'Escribe el resumen de tu historia en una sola frase. Este será el corazón de tu proyecto.',
+                'Write your story in a single sentence. This is the core of your project.',
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
               const SizedBox(height: 24),
-
               Card(
                 elevation: 1,
                 child: Padding(
@@ -71,34 +73,38 @@ class _StepOnePageState extends State<StepOnePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Resumen en una frase',
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
+                        'One-sentence summary',
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium
+                            ?.copyWith(fontWeight: FontWeight.w600),
                       ),
                       const SizedBox(height: 12),
                       TextFormField(
                         controller: _summaryController,
                         maxLines: 3,
                         decoration: const InputDecoration(
-                          labelText: 'Tu historia en una sola frase',
-                          hintText: 'Ejemplo: Un joven mago descubre que es el elegido para salvar el mundo de la oscuridad.',
+                          labelText: 'Your story in one sentence',
+                          hintText:
+                              'Example: A young wizard learns he is the chosen one to save the world from darkness.',
                           border: OutlineInputBorder(),
                         ),
-                        validator: (value) => (value == null || value.trim().isEmpty)
-                            ? 'El resumen es requerido'
-                            : null,
+                        validator: (value) =>
+                            (value == null || value.trim().isEmpty)
+                                ? 'Summary is required'
+                                : null,
                       ),
                     ],
                   ),
                 ),
               ),
-
               const SizedBox(height: 24),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton.icon(
                   onPressed: _save,
                   icon: const Icon(Icons.save),
-                  label: const Text('Guardar'),
+                  label: const Text('Save'),
                 ),
               ),
             ],
