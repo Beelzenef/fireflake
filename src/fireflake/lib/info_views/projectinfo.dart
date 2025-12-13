@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../state/app_cubit.dart';
 
 class ProjectInfoPage extends StatefulWidget {
   const ProjectInfoPage({super.key});
@@ -13,6 +15,7 @@ class _ProjectInfoPageState extends State<ProjectInfoPage> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _subtitleController = TextEditingController();
   final TextEditingController _wordCountController = TextEditingController();
+  bool _initializedFromState = false;
 
   @override
   void dispose() {
@@ -24,12 +27,19 @@ class _ProjectInfoPageState extends State<ProjectInfoPage> {
 
   void _saveProject() {
     if (_formKey.currentState!.validate()) {
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //   const SnackBar(
-      //     content: Text('Información del proyecto guardada'),
-      //     backgroundColor: Colors.green,
-      //   ),
-      // );
+      final cubit = context.read<AppCubit>();
+      final wordCount = int.parse(_wordCountController.text);
+      cubit.saveProject(
+        title: _titleController.text.trim(),
+        subtitle: _subtitleController.text.trim(),
+        expectedWordCount: wordCount,
+      );
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Proyecto guardado'),
+          backgroundColor: Colors.green,
+        ),
+      );
     }
   }
 
@@ -37,6 +47,19 @@ class _ProjectInfoPageState extends State<ProjectInfoPage> {
     _titleController.clear();
     _subtitleController.clear();
     _wordCountController.clear();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_initializedFromState) return;
+    final project = context.read<AppCubit>().state.selectedProject;
+    if (project != null) {
+      _titleController.text = project.title;
+      _subtitleController.text = project.subtitle;
+      _wordCountController.text = project.expectedWordCount.toString();
+    }
+    _initializedFromState = true;
   }
 
   @override

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../state/app_cubit.dart';
 
 class StepTwoPage extends StatefulWidget {
   const StepTwoPage({super.key});
@@ -8,10 +10,189 @@ class StepTwoPage extends StatefulWidget {
 }
 
 class _StepTwoPageState extends State<StepTwoPage> {
+  final _formKey = GlobalKey<FormState>();
+  final _summaryController = TextEditingController();
+  final _act1Controller = TextEditingController();
+  final _act2Controller = TextEditingController();
+  final _act3Controller = TextEditingController();
+  final _finaleController = TextEditingController();
+  bool _initialized = false;
+
+  @override
+  void dispose() {
+    _summaryController.dispose();
+    _act1Controller.dispose();
+    _act2Controller.dispose();
+    _act3Controller.dispose();
+    _finaleController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_initialized) return;
+    final project = context.read<AppCubit>().state.selectedProject;
+    if (project != null) {
+      _summaryController.text = project.summary;
+      _act1Controller.text = project.act1;
+      _act2Controller.text = project.act2;
+      _act3Controller.text = project.act3;
+      _finaleController.text = project.finale;
+    }
+    _initialized = true;
+  }
+
+  void _save() {
+    if (_formKey.currentState?.validate() != true) return;
+    context.read<AppCubit>().updateProjectSummary(
+          summary: _summaryController.text.trim(),
+          act1: _act1Controller.text.trim(),
+          act2: _act2Controller.text.trim(),
+          act3: _act3Controller.text.trim(),
+          finale: _finaleController.text.trim(),
+        );
+    context.read<AppCubit>().saveCurrentProjectToDisk();
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Resumen ampliado guardado')),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text('This is Step 2'),
+    return Scaffold(
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Ampliación del resumen',
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Desglosa el resumen en actos principales y final para estructurar la historia.',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              const SizedBox(height: 24),
+
+              _buildCard(
+                context,
+                title: 'Resumen general',
+                child: TextFormField(
+                  controller: _summaryController,
+                  maxLines: 4,
+                  decoration: const InputDecoration(
+                    labelText: 'Resumen general del proyecto',
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) => (value == null || value.trim().isEmpty)
+                      ? 'El resumen es requerido'
+                      : null,
+                ),
+              ),
+              const SizedBox(height: 16),
+
+              _buildCard(
+                context,
+                title: 'Acto I',
+                child: TextFormField(
+                  controller: _act1Controller,
+                  maxLines: 3,
+                  decoration: const InputDecoration(
+                    labelText: 'Planteamiento / Acto I',
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) => (value == null || value.trim().isEmpty)
+                      ? 'Describe el Acto I'
+                      : null,
+                ),
+              ),
+              const SizedBox(height: 12),
+
+              _buildCard(
+                context,
+                title: 'Acto II',
+                child: TextFormField(
+                  controller: _act2Controller,
+                  maxLines: 3,
+                  decoration: const InputDecoration(
+                    labelText: 'Nudo / Acto II',
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) => (value == null || value.trim().isEmpty)
+                      ? 'Describe el Acto II'
+                      : null,
+                ),
+              ),
+              const SizedBox(height: 12),
+
+              _buildCard(
+                context,
+                title: 'Acto III',
+                child: TextFormField(
+                  controller: _act3Controller,
+                  maxLines: 3,
+                  decoration: const InputDecoration(
+                    labelText: 'Clímax / Acto III',
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) => (value == null || value.trim().isEmpty)
+                      ? 'Describe el Acto III'
+                      : null,
+                ),
+              ),
+              const SizedBox(height: 12),
+
+              _buildCard(
+                context,
+                title: 'Final',
+                child: TextFormField(
+                  controller: _finaleController,
+                  maxLines: 3,
+                  decoration: const InputDecoration(
+                    labelText: 'Resolución / Final',
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) => (value == null || value.trim().isEmpty)
+                      ? 'Describe el final'
+                      : null,
+                ),
+              ),
+
+              const SizedBox(height: 24),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  onPressed: _save,
+                  icon: const Icon(Icons.save),
+                  label: const Text('Guardar'),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCard(BuildContext context, {required String title, required Widget child}) {
+    return Card(
+      elevation: 1,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(title, style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600)),
+            const SizedBox(height: 12),
+            child,
+          ],
+        ),
+      ),
     );
   }
 }

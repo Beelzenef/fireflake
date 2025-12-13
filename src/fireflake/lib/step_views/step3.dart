@@ -1,5 +1,7 @@
-import 'package:fireflake/models/character.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../models/character.dart';
+import '../state/app_cubit.dart';
 
 class StepThreePage extends StatefulWidget {
   const StepThreePage({super.key});
@@ -238,6 +240,12 @@ class _StepThreePageState extends State<StepThreePage> {
                   child: ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
+                        final name = _historyControllers.isNotEmpty && _historyControllers.first.text.isNotEmpty
+                            ? _historyControllers.first.text
+                            : 'Personaje';
+                        final character = Character(name: name, storygoal: _objectiveController.text);
+                        context.read<AppCubit>().addCharacter(character);
+                        context.read<AppCubit>().saveCurrentProjectToDisk();
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             content: Text('Información del personaje guardada'),
