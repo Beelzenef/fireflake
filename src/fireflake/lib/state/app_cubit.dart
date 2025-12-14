@@ -10,12 +10,14 @@ class AppState extends Equatable {
   final Project? selectedProject;
   final List<Scene> scenes;
   final List<Character> characters;
+  final String? currentProjectFilename;
 
   const AppState({
     this.projects = const [],
     this.selectedProject,
     this.scenes = const [],
     this.characters = const [],
+    this.currentProjectFilename,
   });
 
   AppState copyWith({
@@ -23,16 +25,18 @@ class AppState extends Equatable {
     Project? selectedProject,
     List<Scene>? scenes,
     List<Character>? characters,
+    String? currentProjectFilename,
   }) =>
       AppState(
         projects: projects ?? this.projects,
         selectedProject: selectedProject ?? this.selectedProject,
         scenes: scenes ?? this.scenes,
         characters: characters ?? this.characters,
+        currentProjectFilename: currentProjectFilename ?? this.currentProjectFilename,
       );
 
   @override
-  List<Object?> get props => [projects, selectedProject, scenes, characters];
+  List<Object?> get props => [projects, selectedProject, scenes, characters, currentProjectFilename];
 }
 
 class AppCubit extends Cubit<AppState> {
@@ -48,11 +52,19 @@ class AppCubit extends Cubit<AppState> {
   }
 
   void selectProject(Project project) {
+    final filename = _generateFilename(project.title);
     emit(state.copyWith(
       selectedProject: project,
       scenes: project.scenes,
       characters: project.characters,
+      currentProjectFilename: filename,
     ));
+  }
+
+  String _generateFilename(String title) {
+    final slug = title.toLowerCase().replaceAll(RegExp(r'[^a-z0-9]+'), '-').replaceAll(RegExp(r'-+'), '-').trim();
+    final safe = slug.isEmpty ? 'project' : slug;
+    return '$safe.json';
   }
 
   Future<void> loadAndSelectProject(String title) async {
@@ -250,7 +262,7 @@ class AppCubit extends Cubit<AppState> {
       scenes: state.scenes,
       characters: state.characters,
     );
-    await ProjectStorage.saveProject(merged);
+    await ProjectStorage.saveProject(merged, state.currentProjectFilename);
     final projects = state.projects
         .map((p) => p.title == merged.title ? merged : p)
         .toList();

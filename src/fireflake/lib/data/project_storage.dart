@@ -49,9 +49,10 @@ class ProjectStorage {
     return Project.fromJson(map);
   }
 
-  static Future<void> saveProject(Project project) async {
+  static Future<void> saveProject(Project project, [String? filename]) async {
     final dir = await _baseDir();
-    final file = File(p.join(dir.path, _fileName(project.title)));
+    final actualFilename = filename ?? _fileName(project.title);
+    final file = File(p.join(dir.path, actualFilename));
     final jsonStr = json.encode(project.toJson());
     await file.writeAsString(jsonStr);
   }

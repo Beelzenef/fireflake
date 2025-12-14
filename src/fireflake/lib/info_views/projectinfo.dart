@@ -25,7 +25,7 @@ class _ProjectInfoPageState extends State<ProjectInfoPage> {
     super.dispose();
   }
 
-  void _saveProject() {
+  void _saveProject() async {
     if (_formKey.currentState!.validate()) {
       final cubit = context.read<AppCubit>();
       final wordCount = int.parse(_wordCountController.text);
@@ -34,6 +34,8 @@ class _ProjectInfoPageState extends State<ProjectInfoPage> {
         subtitle: _subtitleController.text.trim(),
         expectedWordCount: wordCount,
       );
+      await cubit.saveCurrentProjectToDisk();
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Project saved'),
