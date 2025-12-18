@@ -13,10 +13,11 @@ class ProjectsPage extends StatefulWidget {
 }
 
 class _ProjectsPageState extends State<ProjectsPage> {
+  int? _selectedProjectIndex;
+
   @override
   void initState() {
     super.initState();
-    // Load projects from disk on startup
     context.read<AppCubit>().loadProjectsFromDisk();
   }
 
@@ -73,6 +74,38 @@ class _ProjectsPageState extends State<ProjectsPage> {
                       },
                       child: const Text('New')),
                 ),
+                BlocBuilder<AppCubit, AppState>(
+                  builder: (context, state) {
+                    final hasSelection = _selectedProjectIndex != null &&
+                        _selectedProjectIndex! < state.projects.length;
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextButton(
+                        style: mainButtonStyle(),
+                        onPressed: hasSelection
+                            ? () => _openSelectedProject(context, state.projects)
+                            : null,
+                        child: const Text('Open'),
+                      ),
+                    );
+                  },
+                ),
+                BlocBuilder<AppCubit, AppState>(
+                  builder: (context, state) {
+                    final hasSelection = _selectedProjectIndex != null &&
+                        _selectedProjectIndex! < state.projects.length;
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextButton(
+                        style: mainButtonStyle(),
+                        onPressed: hasSelection
+                            ? () => _deleteSelectedProject(context, state.projects)
+                            : null,
+                        child: const Text('Delete'),
+                      ),
+                    );
+                  },
+                ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextButton(
@@ -121,24 +154,96 @@ class _ProjectsPageState extends State<ProjectsPage> {
       shrinkWrap: true,
       itemCount: projects.length,
       itemBuilder: (context, index) {
+        final isSelected = _selectedProjectIndex == index;
         return GestureDetector(
-          onTap: () async {
-            await context
-                .read<AppCubit>()
-                .loadAndSelectProject(projects[index].title);
-            if (!context.mounted) return;
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => ProjectWrapper(),
-              ),
-            );
+          onTap: () {
+            setState(() {
+              _selectedProjectIndex = index;
+            });
           },
-          child: Text(
-            projects[index].title,
-            style: const TextStyle(color: Colors.white),
+          child: Container(
+            margin: const EdgeInsets.symmetric(vertical: 4),
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: isSelected ? Colors.blue.shade700 : Colors.transparent,
+              borderRadius: BorderRadius.circular(4),
+              border: Border.all(
+                color: isSelected ? Colors.blue.shade400 : Colors.transparent,
+                width: 2,
+              ),
+            ),
+            child: Text(
+              projects[index].title,
+              style: TextStyle(
+                color: isSelected ? Colors.white : Colors.white70,
+                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+              ),
+            ),
           ),
         );
       },
+    );
+  }
+
+  Future<void> _openSelectedProject(
+      BuildContext context, List<Project> projects) async {
+    if (_selectedProjectIndex == null) return;
+    final project = projects[_selectedProjectIndex!];
+    final cubit = context.read<AppCubit>();
+    final navigator = Navigator.of(context);
+
+    await cubit.loadAndSelectProject(project.title);
+    if (!mounted) return;
+    navigator.push(
+      MaterialPageRoute(
+        builder: (context) => ProjectWrapper(),
+      ),
+    );
+  }
+
+  Future<void> _deleteSelectedProject(
+      BuildContext context, List<Project> projects) async {
+    if (_selectedProjectIndex == null) return;
+    final project = projects[_selectedProjectIndex!];
+    final projectTitle = project.title;
+    final cubit = context.read<AppCubit>();
+    final messenger = ScaffoldMessenger.of(context);
+
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Delete project'),
+          content: Text(
+              'Are you sure you want to delete "$projectTitle"? This action cannot be undone.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+              ),
+              child: const Text('Delete'),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (result != true) return;
+    if (!mounted) return;
+
+    await cubit.deleteProject(projectTitle);
+    if (!mounted) return;
+
+    setState(() {
+      _selectedProjectIndex = null;
+    });
+    messenger.showSnackBar(
+      SnackBar(content: Text('Project "$projectTitle" deleted')),
     );
   }
 

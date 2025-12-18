@@ -56,4 +56,12 @@ class ProjectStorage {
     final jsonStr = json.encode(project.toJson());
     await file.writeAsString(jsonStr);
   }
+
+  static Future<void> deleteProject(String title) async {
+    final dir = await _baseDir();
+    final file = File(p.join(dir.path, _fileName(title)));
+    if (await file.exists()) {
+      await file.delete();
+    }
+  }
 }

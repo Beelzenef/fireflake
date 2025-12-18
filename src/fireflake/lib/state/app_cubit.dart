@@ -268,4 +268,10 @@ class AppCubit extends Cubit<AppState> {
         .toList();
     emit(state.copyWith(projects: projects, selectedProject: merged));
   }
+
+  Future<void> deleteProject(String title) async {
+    await ProjectStorage.deleteProject(title);
+    final updated = state.projects.where((p) => p.title != title).toList();
+    emit(state.copyWith(projects: updated));
+  }
 }
