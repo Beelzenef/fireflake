@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../state/app_cubit.dart';
+import '../widgets/save_project_button.dart';
 
 class StepSixPage extends StatefulWidget {
   const StepSixPage({super.key});
@@ -118,14 +119,7 @@ class _StepSixPageState extends State<StepSixPage> {
                     ),
                   ),
                   const SizedBox(height: 24),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton.icon(
-                      onPressed: _save,
-                      icon: const Icon(Icons.save),
-                      label: const Text('Save extended argument'),
-                    ),
-                  ),
+                  SaveProjectButton(onPressed: _save),
                 ],
               ),
             ),

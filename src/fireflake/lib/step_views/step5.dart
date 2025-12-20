@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../models/character.dart';
 import '../state/app_cubit.dart';
+import '../widgets/save_project_button.dart';
 
 class StepFivePage extends StatefulWidget {
   const StepFivePage({super.key});
@@ -185,14 +186,7 @@ class _StepFivePageState extends State<StepFivePage> {
                   label: const Text('Add character'),
                 ),
               const SizedBox(height: 24),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton.icon(
-                  onPressed: _save,
-                  icon: const Icon(Icons.save),
-                  label: const Text('Save characters'),
-                ),
-              ),
+              SaveProjectButton(onPressed: _save),
             ],
           ),
         ),

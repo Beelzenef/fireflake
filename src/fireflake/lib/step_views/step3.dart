@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../models/character.dart';
 import '../state/app_cubit.dart';
+import '../widgets/save_project_button.dart';
 
 class StepThreePage extends StatefulWidget {
   const StepThreePage({super.key});
@@ -229,31 +230,27 @@ class _StepThreePageState extends State<StepThreePage> {
                   label: const Text('Add final story element'),
                 ),
                 const SizedBox(height: 30),
-                Center(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        final name = _historyControllers.isNotEmpty &&
-                                _historyControllers.first.text.isNotEmpty
-                            ? _historyControllers.first.text
-                            : 'Personaje';
-                        final character = Character(
-                            name: name, storygoal: _objectiveController.text);
-                        final cubit = context.read<AppCubit>();
-                        final updated =
-                            List<Character>.from(cubit.state.characters)
-                              ..add(character);
-                        cubit.setCharacters(updated);
-                        cubit.saveCurrentProjectToDisk();
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Character info saved'),
-                          ),
-                        );
-                      }
-                    },
-                    child: const Text('Save Information'),
-                  ),
+                SaveProjectButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      final name = _historyControllers.isNotEmpty &&
+                              _historyControllers.first.text.isNotEmpty
+                          ? _historyControllers.first.text
+                          : 'Personaje';
+                      final character =
+                          Character(name: name, storygoal: _objectiveController.text);
+                      final cubit = context.read<AppCubit>();
+                      final updated = List<Character>.from(cubit.state.characters)
+                        ..add(character);
+                      cubit.setCharacters(updated);
+                      cubit.saveCurrentProjectToDisk();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Character info saved'),
+                        ),
+                      );
+                    }
+                  },
                 ),
               ],
             ),

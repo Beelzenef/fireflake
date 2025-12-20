@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../models/scene.dart';
 import '../state/app_cubit.dart';
+import '../widgets/save_project_button.dart';
 
 class StepNinePage extends StatefulWidget {
   const StepNinePage({super.key});
@@ -462,9 +463,11 @@ class _StepNinePageState extends State<StepNinePage>
                       ),
                       const SizedBox(width: 16),
                       Expanded(
-                        child: ElevatedButton(
+                        child: SaveProjectButton(
+                          label: _editingScene != null
+                              ? 'Update Scene'
+                              : 'Save Scene',
                           onPressed: _saveScene,
-                          child: Text(_editingScene != null ? 'Update' : 'Add'),
                         ),
                       ),
                     ],

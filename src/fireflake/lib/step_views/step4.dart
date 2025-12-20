@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../state/app_cubit.dart';
+import '../widgets/save_project_button.dart';
 
 class StepFourPage extends StatefulWidget {
   const StepFourPage({super.key});
@@ -130,14 +131,7 @@ class _StepFourPageState extends State<StepFourPage> {
                     const SizedBox(height: 16),
                   ],
                   const SizedBox(height: 8),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton.icon(
-                      onPressed: _save,
-                      icon: const Icon(Icons.save),
-                      label: const Text('Save expanded paragraphs'),
-                    ),
-                  ),
+                  SaveProjectButton(onPressed: _save),
                 ],
               ),
             ),

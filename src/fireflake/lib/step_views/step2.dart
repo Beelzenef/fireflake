@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../state/app_cubit.dart';
+import '../widgets/save_project_button.dart';
 
 class StepTwoPage extends StatefulWidget {
   const StepTwoPage({super.key});
@@ -83,7 +84,7 @@ class _StepTwoPageState extends State<StepTwoPage> {
               const SizedBox(height: 24),
               _buildCard(
                 context,
-                title: 'Resumen general',
+                title: 'Overall summary',
                 child: TextFormField(
                   controller: _summaryController,
                   maxLines: 4,
@@ -99,7 +100,7 @@ class _StepTwoPageState extends State<StepTwoPage> {
               const SizedBox(height: 16),
               _buildCard(
                 context,
-                title: 'Acto I',
+                title: 'Act I',
                 child: TextFormField(
                   controller: _act1Controller,
                   maxLines: 3,
@@ -115,7 +116,7 @@ class _StepTwoPageState extends State<StepTwoPage> {
               const SizedBox(height: 12),
               _buildCard(
                 context,
-                title: 'Acto II',
+                title: 'Act II',
                 child: TextFormField(
                   controller: _act2Controller,
                   maxLines: 3,
@@ -131,7 +132,7 @@ class _StepTwoPageState extends State<StepTwoPage> {
               const SizedBox(height: 12),
               _buildCard(
                 context,
-                title: 'Acto III',
+                title: 'Act III',
                 child: TextFormField(
                   controller: _act3Controller,
                   maxLines: 3,
@@ -147,7 +148,7 @@ class _StepTwoPageState extends State<StepTwoPage> {
               const SizedBox(height: 12),
               _buildCard(
                 context,
-                title: 'Final',
+                title: 'Finalr',
                 child: TextFormField(
                   controller: _finaleController,
                   maxLines: 3,
@@ -161,14 +162,7 @@ class _StepTwoPageState extends State<StepTwoPage> {
                 ),
               ),
               const SizedBox(height: 24),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton.icon(
-                  onPressed: _save,
-                  icon: const Icon(Icons.save),
-                  label: const Text('Save'),
-                ),
-              ),
+              SaveProjectButton(onPressed: _save),
             ],
           ),
         ),

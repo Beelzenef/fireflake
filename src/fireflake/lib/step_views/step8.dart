@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../state/app_cubit.dart';
+import '../widgets/save_project_button.dart';
 
 class StepEightPage extends StatefulWidget {
   const StepEightPage({super.key});
@@ -173,14 +174,7 @@ class _StepEightPageState extends State<StepEightPage> {
                     label: const Text('Add scene'),
                   ),
                   const SizedBox(height: 24),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton.icon(
-                      onPressed: _save,
-                      icon: const Icon(Icons.save),
-                      label: const Text('Save scene list'),
-                    ),
-                  ),
+                  SaveProjectButton(onPressed: _save),
                   const SizedBox(height: 16),
                   Container(
                     padding: const EdgeInsets.all(16),
