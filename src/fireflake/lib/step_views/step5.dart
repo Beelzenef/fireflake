@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../models/character.dart';
 import '../state/app_cubit.dart';
 import '../widgets/save_project_button.dart';
+import '../utils/responsive_helper.dart';
 
 class StepFivePage extends StatefulWidget {
   const StepFivePage({super.key});
@@ -93,101 +94,105 @@ class _StepFivePageState extends State<StepFivePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Step 5: Main characters',
-                style: Theme.of(context)
-                    .textTheme
-                    .headlineSmall
-                    ?.copyWith(fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'Describe the main characters of your story (maximum $_maxCharacters).',
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              const SizedBox(height: 24),
-              ..._characterControllers.asMap().entries.map((entry) {
-                final index = entry.key;
-                final controllers = entry.value;
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 16),
-                  child: Card(
-                    elevation: 1,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Character ${index + 1}',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleMedium
-                                    ?.copyWith(fontWeight: FontWeight.w600),
-                              ),
-                              if (_characterControllers.length > 1)
-                                IconButton(
-                                  icon: const Icon(Icons.delete_outline,
-                                      color: Colors.red),
-                                  onPressed: () => _removeCharacterField(index),
-                                  tooltip: 'Delete character',
+      body: ResponsiveWrapper(
+        child: SingleChildScrollView(
+          padding: ResponsiveHelper.getContentPadding(context),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Step 5: Main characters',
+                  style: Theme.of(context)
+                      .textTheme
+                      .headlineSmall
+                      ?.copyWith(fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Describe the main characters of your story (maximum $_maxCharacters).',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                const SizedBox(height: 24),
+                ..._characterControllers.asMap().entries.map((entry) {
+                  final index = entry.key;
+                  final controllers = entry.value;
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 16),
+                    child: Card(
+                      elevation: 1,
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Character ${index + 1}',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleMedium
+                                      ?.copyWith(fontWeight: FontWeight.w600),
                                 ),
-                            ],
-                          ),
-                          const SizedBox(height: 12),
-                          TextFormField(
-                            controller: controllers['name'],
-                            decoration: const InputDecoration(
-                              labelText: 'Character name',
-                              hintText: 'E.g. Aragorn',
-                              border: OutlineInputBorder(),
-                              prefixIcon: Icon(Icons.person),
+                                if (_characterControllers.length > 1)
+                                  IconButton(
+                                    icon: const Icon(Icons.delete_outline,
+                                        color: Colors.red),
+                                    onPressed: () =>
+                                        _removeCharacterField(index),
+                                    tooltip: 'Delete character',
+                                  ),
+                              ],
                             ),
-                            validator: (value) =>
-                                (value == null || value.trim().isEmpty)
-                                    ? 'Name is required'
-                                    : null,
-                          ),
-                          const SizedBox(height: 12),
-                          TextFormField(
-                            controller: controllers['description'],
-                            maxLines: 4,
-                            decoration: const InputDecoration(
-                              labelText: 'Character description',
-                              hintText: 'Role, motivation, conflict, goals...',
-                              border: OutlineInputBorder(),
-                              alignLabelWithHint: true,
+                            const SizedBox(height: 12),
+                            TextFormField(
+                              controller: controllers['name'],
+                              decoration: const InputDecoration(
+                                labelText: 'Character name',
+                                hintText: 'E.g. Aragorn',
+                                border: OutlineInputBorder(),
+                                prefixIcon: Icon(Icons.person),
+                              ),
+                              validator: (value) =>
+                                  (value == null || value.trim().isEmpty)
+                                      ? 'Name is required'
+                                      : null,
                             ),
-                            validator: (value) =>
-                                (value == null || value.trim().isEmpty)
-                                    ? 'Description is required'
-                                    : null,
-                          ),
-                        ],
+                            const SizedBox(height: 12),
+                            TextFormField(
+                              controller: controllers['description'],
+                              maxLines: 4,
+                              decoration: const InputDecoration(
+                                labelText: 'Character description',
+                                hintText:
+                                    'Role, motivation, conflict, goals...',
+                                border: OutlineInputBorder(),
+                                alignLabelWithHint: true,
+                              ),
+                              validator: (value) =>
+                                  (value == null || value.trim().isEmpty)
+                                      ? 'Description is required'
+                                      : null,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
+                  );
+                }),
+                if (_characterControllers.length < _maxCharacters)
+                  OutlinedButton.icon(
+                    onPressed: _addCharacterField,
+                    icon: const Icon(Icons.add),
+                    label: const Text('Add character'),
                   ),
-                );
-              }),
-              if (_characterControllers.length < _maxCharacters)
-                OutlinedButton.icon(
-                  onPressed: _addCharacterField,
-                  icon: const Icon(Icons.add),
-                  label: const Text('Add character'),
-                ),
-              const SizedBox(height: 24),
-              SaveProjectButton(onPressed: _save),
-            ],
+                const SizedBox(height: 24),
+                SaveProjectButton(onPressed: _save),
+              ],
+            ),
           ),
         ),
       ),

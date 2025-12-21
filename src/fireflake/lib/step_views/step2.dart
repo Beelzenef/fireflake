@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../state/app_cubit.dart';
 import '../widgets/save_project_button.dart';
+import '../utils/responsive_helper.dart';
 
 class StepTwoPage extends StatefulWidget {
   const StepTwoPage({super.key});
@@ -62,108 +63,115 @@ class _StepTwoPageState extends State<StepTwoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Expand the summary',
-                style: Theme.of(context)
-                    .textTheme
-                    .headlineSmall
-                    ?.copyWith(fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'Break the summary into main acts and finale to structure the story.',
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              const SizedBox(height: 24),
-              _buildCard(
-                context,
-                title: 'Overall summary',
-                child: TextFormField(
-                  controller: _summaryController,
-                  maxLines: 4,
-                  decoration: const InputDecoration(
-                    labelText: 'Overall project summary',
-                    border: OutlineInputBorder(),
-                  ),
-                  validator: (value) => (value == null || value.trim().isEmpty)
-                      ? 'Summary is required'
-                      : null,
+      body: ResponsiveWrapper(
+        child: SingleChildScrollView(
+          padding: ResponsiveHelper.getContentPadding(context),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Expand the summary',
+                  style: Theme.of(context)
+                      .textTheme
+                      .headlineSmall
+                      ?.copyWith(fontWeight: FontWeight.bold),
                 ),
-              ),
-              const SizedBox(height: 16),
-              _buildCard(
-                context,
-                title: 'Act I',
-                child: TextFormField(
-                  controller: _act1Controller,
-                  maxLines: 3,
-                  decoration: const InputDecoration(
-                    labelText: 'Setup / Act I',
-                    border: OutlineInputBorder(),
-                  ),
-                  validator: (value) => (value == null || value.trim().isEmpty)
-                      ? 'Describe Act I'
-                      : null,
+                const SizedBox(height: 8),
+                Text(
+                  'Break the summary into main acts and finale to structure the story.',
+                  style: Theme.of(context).textTheme.bodyMedium,
                 ),
-              ),
-              const SizedBox(height: 12),
-              _buildCard(
-                context,
-                title: 'Act II',
-                child: TextFormField(
-                  controller: _act2Controller,
-                  maxLines: 3,
-                  decoration: const InputDecoration(
-                    labelText: 'Confrontation / Act II',
-                    border: OutlineInputBorder(),
+                const SizedBox(height: 24),
+                _buildCard(
+                  context,
+                  title: 'Overall summary',
+                  child: TextFormField(
+                    controller: _summaryController,
+                    maxLines: 4,
+                    decoration: const InputDecoration(
+                      labelText: 'Overall project summary',
+                      border: OutlineInputBorder(),
+                    ),
+                    validator: (value) =>
+                        (value == null || value.trim().isEmpty)
+                            ? 'Summary is required'
+                            : null,
                   ),
-                  validator: (value) => (value == null || value.trim().isEmpty)
-                      ? 'Describe Act II'
-                      : null,
                 ),
-              ),
-              const SizedBox(height: 12),
-              _buildCard(
-                context,
-                title: 'Act III',
-                child: TextFormField(
-                  controller: _act3Controller,
-                  maxLines: 3,
-                  decoration: const InputDecoration(
-                    labelText: 'Climax / Act III',
-                    border: OutlineInputBorder(),
+                const SizedBox(height: 16),
+                _buildCard(
+                  context,
+                  title: 'Act I',
+                  child: TextFormField(
+                    controller: _act1Controller,
+                    maxLines: 3,
+                    decoration: const InputDecoration(
+                      labelText: 'Setup / Act I',
+                      border: OutlineInputBorder(),
+                    ),
+                    validator: (value) =>
+                        (value == null || value.trim().isEmpty)
+                            ? 'Describe Act I'
+                            : null,
                   ),
-                  validator: (value) => (value == null || value.trim().isEmpty)
-                      ? 'Describe Act III'
-                      : null,
                 ),
-              ),
-              const SizedBox(height: 12),
-              _buildCard(
-                context,
-                title: 'Finalr',
-                child: TextFormField(
-                  controller: _finaleController,
-                  maxLines: 3,
-                  decoration: const InputDecoration(
-                    labelText: 'Resolution / Finale',
-                    border: OutlineInputBorder(),
+                const SizedBox(height: 12),
+                _buildCard(
+                  context,
+                  title: 'Act II',
+                  child: TextFormField(
+                    controller: _act2Controller,
+                    maxLines: 3,
+                    decoration: const InputDecoration(
+                      labelText: 'Confrontation / Act II',
+                      border: OutlineInputBorder(),
+                    ),
+                    validator: (value) =>
+                        (value == null || value.trim().isEmpty)
+                            ? 'Describe Act II'
+                            : null,
                   ),
-                  validator: (value) => (value == null || value.trim().isEmpty)
-                      ? 'Describe the ending'
-                      : null,
                 ),
-              ),
-              const SizedBox(height: 24),
-              SaveProjectButton(onPressed: _save),
-            ],
+                const SizedBox(height: 12),
+                _buildCard(
+                  context,
+                  title: 'Act III',
+                  child: TextFormField(
+                    controller: _act3Controller,
+                    maxLines: 3,
+                    decoration: const InputDecoration(
+                      labelText: 'Climax / Act III',
+                      border: OutlineInputBorder(),
+                    ),
+                    validator: (value) =>
+                        (value == null || value.trim().isEmpty)
+                            ? 'Describe Act III'
+                            : null,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                _buildCard(
+                  context,
+                  title: 'Finalr',
+                  child: TextFormField(
+                    controller: _finaleController,
+                    maxLines: 3,
+                    decoration: const InputDecoration(
+                      labelText: 'Resolution / Finale',
+                      border: OutlineInputBorder(),
+                    ),
+                    validator: (value) =>
+                        (value == null || value.trim().isEmpty)
+                            ? 'Describe the ending'
+                            : null,
+                  ),
+                ),
+                const SizedBox(height: 24),
+                SaveProjectButton(onPressed: _save),
+              ],
+            ),
           ),
         ),
       ),
@@ -173,9 +181,9 @@ class _StepTwoPageState extends State<StepTwoPage> {
   Widget _buildCard(BuildContext context,
       {required String title, required Widget child}) {
     return Card(
-      elevation: 1,
+      elevation: ResponsiveHelper.getCardElevation(context),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(ResponsiveHelper.isMobile(context) ? 12 : 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

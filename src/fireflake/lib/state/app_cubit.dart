@@ -32,11 +32,13 @@ class AppState extends Equatable {
         selectedProject: selectedProject ?? this.selectedProject,
         scenes: scenes ?? this.scenes,
         characters: characters ?? this.characters,
-        currentProjectFilename: currentProjectFilename ?? this.currentProjectFilename,
+        currentProjectFilename:
+            currentProjectFilename ?? this.currentProjectFilename,
       );
 
   @override
-  List<Object?> get props => [projects, selectedProject, scenes, characters, currentProjectFilename];
+  List<Object?> get props =>
+      [projects, selectedProject, scenes, characters, currentProjectFilename];
 }
 
 class AppCubit extends Cubit<AppState> {
@@ -62,7 +64,11 @@ class AppCubit extends Cubit<AppState> {
   }
 
   String _generateFilename(String title) {
-    final slug = title.toLowerCase().replaceAll(RegExp(r'[^a-z0-9]+'), '-').replaceAll(RegExp(r'-+'), '-').trim();
+    final slug = title
+        .toLowerCase()
+        .replaceAll(RegExp(r'[^a-z0-9]+'), '-')
+        .replaceAll(RegExp(r'-+'), '-')
+        .trim();
     final safe = slug.isEmpty ? 'project' : slug;
     return '$safe.json';
   }

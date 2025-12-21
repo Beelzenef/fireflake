@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'state/author_cubit.dart';
 import 'models/author_settings.dart';
+import 'utils/responsive_helper.dart';
 
 class AuthorInfoPage extends StatefulWidget {
   const AuthorInfoPage({super.key});
@@ -51,7 +52,6 @@ class _AuthorInfoPageState extends State<AuthorInfoPage> {
       appBar: AppBar(title: const Text('Author Information')),
       body: BlocBuilder<AuthorCubit, AuthorSettings>(
         builder: (context, settings) {
-          // Actualizar controladores cuando cambie el estado
           if (_nameController.text != settings.name) {
             _nameController.text = settings.name;
           }
@@ -62,70 +62,72 @@ class _AuthorInfoPageState extends State<AuthorInfoPage> {
             _emailController.text = settings.email;
           }
 
-          return Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Form(
-              key: _formKey,
-              child: ListView(
-                children: [
-                  const Text(
-                    'This configuration is stored globally and will be used across all projects.',
-                    style: TextStyle(
-                      fontStyle: FontStyle.italic,
-                      color: Colors.grey,
+          return ResponsiveWrapper(
+            child: Padding(
+              padding: ResponsiveHelper.getContentPadding(context),
+              child: Form(
+                key: _formKey,
+                child: ListView(
+                  children: [
+                    const Text(
+                      'This configuration is stored globally and will be used across all projects.',
+                      style: TextStyle(
+                        fontStyle: FontStyle.italic,
+                        color: Colors.grey,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _nameController,
-                    decoration: const InputDecoration(
-                      labelText: 'Name',
-                      border: OutlineInputBorder(),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: _nameController,
+                      decoration: const InputDecoration(
+                        labelText: 'Name',
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (value) => value == null || value.isEmpty
+                          ? 'Enter your name'
+                          : null,
                     ),
-                    validator: (value) => value == null || value.isEmpty
-                        ? 'Enter your name'
-                        : null,
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _bioController,
-                    decoration: const InputDecoration(
-                      labelText: 'Bio',
-                      border: OutlineInputBorder(),
-                      alignLabelWithHint: true,
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: _bioController,
+                      decoration: const InputDecoration(
+                        labelText: 'Bio',
+                        border: OutlineInputBorder(),
+                        alignLabelWithHint: true,
+                      ),
+                      maxLines: 5,
                     ),
-                    maxLines: 5,
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _emailController,
-                    decoration: const InputDecoration(
-                      labelText: 'Email',
-                      border: OutlineInputBorder(),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: _emailController,
+                      decoration: const InputDecoration(
+                        labelText: 'Email',
+                        border: OutlineInputBorder(),
+                      ),
+                      keyboardType: TextInputType.emailAddress,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Enter your email';
+                        }
+                        if (!value.contains('@')) {
+                          return 'Enter a valid email';
+                        }
+                        return null;
+                      },
                     ),
-                    keyboardType: TextInputType.emailAddress,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Enter your email';
-                      }
-                      if (!value.contains('@')) {
-                        return 'Enter a valid email';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 24),
-                  ElevatedButton(
-                    onPressed: _submit,
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.all(16),
+                    const SizedBox(height: 24),
+                    ElevatedButton(
+                      onPressed: _submit,
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.all(16),
+                      ),
+                      child: const Text(
+                        'Save',
+                        style: TextStyle(fontSize: 16),
+                      ),
                     ),
-                    child: const Text(
-                      'Save',
-                      style: TextStyle(fontSize: 16),
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           );

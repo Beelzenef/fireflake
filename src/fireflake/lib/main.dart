@@ -19,10 +19,10 @@ class MyApp extends StatelessWidget {
         BlocProvider<AuthorCubit>(create: (_) => AuthorCubit()),
       ],
       child: MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Fireflake',
-      theme: ThemeData(brightness: Brightness.light),
-      home: HomePage(title: 'Fireflake'),
+        debugShowCheckedModeBanner: false,
+        title: 'Fireflake',
+        theme: ThemeData(brightness: Brightness.light),
+        home: HomePage(title: 'Fireflake'),
       ),
     );
   }
@@ -41,10 +41,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      // appBar: AppBar(
-      //   backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-      //   title: Text(widget.title),
-      // ),
       body: ProjectsPage(),
     );
   }

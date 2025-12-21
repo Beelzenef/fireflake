@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../models/character.dart';
 import '../state/app_cubit.dart';
 import '../widgets/save_project_button.dart';
+import '../utils/responsive_helper.dart';
 
 class StepThreePage extends StatefulWidget {
   const StepThreePage({super.key});
@@ -75,11 +76,11 @@ class _StepThreePageState extends State<StepThreePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: SingleChildScrollView(
+      body: ResponsiveWrapper(
+        child: SingleChildScrollView(
+          padding: ResponsiveHelper.getContentPadding(context),
+          child: Form(
+            key: _formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -237,11 +238,12 @@ class _StepThreePageState extends State<StepThreePage> {
                               _historyControllers.first.text.isNotEmpty
                           ? _historyControllers.first.text
                           : 'Personaje';
-                      final character =
-                          Character(name: name, storygoal: _objectiveController.text);
+                      final character = Character(
+                          name: name, storygoal: _objectiveController.text);
                       final cubit = context.read<AppCubit>();
-                      final updated = List<Character>.from(cubit.state.characters)
-                        ..add(character);
+                      final updated =
+                          List<Character>.from(cubit.state.characters)
+                            ..add(character);
                       cubit.setCharacters(updated);
                       cubit.saveCurrentProjectToDisk();
                       ScaffoldMessenger.of(context).showSnackBar(

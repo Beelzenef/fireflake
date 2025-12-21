@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'info_views/projectinfo.dart';
@@ -23,19 +22,18 @@ class ProjectWrapper extends StatefulWidget {
 class _ProjectWrapperState extends State<ProjectWrapper> {
   @override
   Widget build(BuildContext context) {
-
     const steps = [
-            ProjectInfoPage(),
-            StepOnePage(),
-            StepTwoPage(),
-            StepThreePage(),
-            StepFourPage(),
-            StepFivePage(),
-            StepSixPage(),
-            StepSevenPage(),
-            StepEightPage(),
-            StepNinePage()
-          ];
+      ProjectInfoPage(),
+      StepOnePage(),
+      StepTwoPage(),
+      StepThreePage(),
+      StepFourPage(),
+      StepFivePage(),
+      StepSixPage(),
+      StepSevenPage(),
+      StepEightPage(),
+      StepNinePage()
+    ];
 
     return DefaultTabController(
       length: steps.length,

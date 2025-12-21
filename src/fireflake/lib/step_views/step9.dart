@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../models/scene.dart';
 import '../state/app_cubit.dart';
 import '../widgets/save_project_button.dart';
+import '../utils/responsive_helper.dart';
 
 class StepNinePage extends StatefulWidget {
   const StepNinePage({super.key});
@@ -58,7 +59,7 @@ class _StepNinePageState extends State<StepNinePage>
           Column(
             children: [
               Container(
-                padding: const EdgeInsets.all(16.0),
+                padding: ResponsiveHelper.getContentPadding(context),
                 decoration: BoxDecoration(
                   color: Theme.of(context).primaryColor.withValues(alpha: 0.1),
                   border: Border(
@@ -71,15 +72,23 @@ class _StepNinePageState extends State<StepNinePage>
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      'Scene List',
-                      style:
-                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    Flexible(
+                      child: Text(
+                        'Scene List',
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineSmall
+                            ?.copyWith(fontWeight: FontWeight.bold),
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
+                    const SizedBox(width: 8),
                     ElevatedButton.icon(
                       onPressed: _addNewScene,
                       icon: const Icon(Icons.add),
-                      label: const Text('Add New Scene'),
+                      label: Text(ResponsiveHelper.isMobile(context)
+                          ? 'Add'
+                          : 'Add New Scene'),
                     ),
                   ],
                 ),
@@ -251,7 +260,11 @@ class _StepNinePageState extends State<StepNinePage>
               child: Align(
                 alignment: Alignment.centerRight,
                 child: Container(
-                  width: 400,
+                  width: ResponsiveHelper.isMobile(context)
+                      ? MediaQuery.of(context).size.width * 0.9
+                      : ResponsiveHelper.isTablet(context)
+                          ? 450
+                          : 500,
                   height: double.infinity,
                   decoration: BoxDecoration(
                     color: Theme.of(context).scaffoldBackgroundColor,

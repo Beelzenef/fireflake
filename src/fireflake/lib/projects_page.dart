@@ -4,6 +4,7 @@ import 'package:fireflake/projectwrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'state/app_cubit.dart';
+import 'utils/responsive_helper.dart';
 
 class ProjectsPage extends StatefulWidget {
   const ProjectsPage({super.key});
@@ -24,15 +25,16 @@ class _ProjectsPageState extends State<ProjectsPage> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(30),
+      padding: ResponsiveHelper.getContentPadding(context),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-              padding: const EdgeInsets.all(20),
-              width: 220,
-              height: 360,
+              padding:
+                  EdgeInsets.all(ResponsiveHelper.isMobile(context) ? 16 : 20),
+              width: ResponsiveHelper.isMobile(context) ? 200 : 220,
+              height: ResponsiveHelper.isMobile(context) ? 320 : 360,
               color: Colors.grey.shade800,
               child: BlocBuilder<AppCubit, AppState>(
                 builder: (context, state) {
@@ -83,7 +85,8 @@ class _ProjectsPageState extends State<ProjectsPage> {
                       child: TextButton(
                         style: mainButtonStyle(),
                         onPressed: hasSelection
-                            ? () => _openSelectedProject(context, state.projects)
+                            ? () =>
+                                _openSelectedProject(context, state.projects)
                             : null,
                         child: const Text('Open'),
                       ),
@@ -99,7 +102,8 @@ class _ProjectsPageState extends State<ProjectsPage> {
                       child: TextButton(
                         style: mainButtonStyle(),
                         onPressed: hasSelection
-                            ? () => _deleteSelectedProject(context, state.projects)
+                            ? () =>
+                                _deleteSelectedProject(context, state.projects)
                             : null,
                         child: const Text('Delete'),
                       ),

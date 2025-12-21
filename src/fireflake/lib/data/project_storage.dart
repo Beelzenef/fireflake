@@ -19,14 +19,19 @@ class ProjectStorage {
   }
 
   static String _fileName(String title) {
-    final slug = title.toLowerCase().replaceAll(RegExp(r'[^a-z0-9]+'), '-').replaceAll(RegExp(r'-+'), '-').trim();
+    final slug = title
+        .toLowerCase()
+        .replaceAll(RegExp(r'[^a-z0-9]+'), '-')
+        .replaceAll(RegExp(r'-+'), '-')
+        .trim();
     final safe = slug.isEmpty ? 'project' : slug;
     return '$safe.json';
   }
 
   static Future<List<Project>> loadProjects() async {
     final dir = await _baseDir();
-    final files = dir.listSync().whereType<File>().where((f) => f.path.endsWith('.json'));
+    final files =
+        dir.listSync().whereType<File>().where((f) => f.path.endsWith('.json'));
     final projects = <Project>[];
     for (final file in files) {
       try {

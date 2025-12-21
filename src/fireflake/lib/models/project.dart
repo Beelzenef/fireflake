@@ -2,7 +2,6 @@ import 'scene.dart';
 import 'character.dart';
 
 class Project {
-  // TODO: consider making these fields final with copyWith returning new instance; current mutable for simplicity.
   String title;
   String subtitle;
   int expectedWordCount;
