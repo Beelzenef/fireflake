@@ -13,13 +13,16 @@ Ejemplo de app: [▶️ vídeo en YouTube](https://youtu.be/5UdYlEhAuTE)
 Los diferentes pasos incluyen:
 
 - 1, el resumen en una sola frase
-- 2, ampliación del resulen con actos pricipales y final
+- 2, ampliación del resumen con actos pricipales y final
 - 3, describiendo al protagonista, con los diferentes elementos:
-
-- 4, convitiendo cada frase del paso 2 y convertirlo en un nuevo párrafo
+    - motivaciones
+    - objetivos
+    - conflicto
+    - epifanía
+- 4, recoge cada frase del paso 2 y convertirlo en un nuevo párrafo
 - 5, describir a los personajes pricipales
 - 6, volver al punto cuatro y ampliar argumento
-- 7, crea tablas de personaje para los principales, siguiendo la estructura del punto tres
+- 7, crea tablas de personaje para los principales, siguiendo la estructura del punto 3
 - 8, usando el argumento ampliado, escribe una lista de las escenas que faltan para completar la historia
 - 9, de cada escena en la lista, escribe un resumen narrativo (con varios párrafos)
 

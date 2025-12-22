@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../models/scene.dart';
+import '../state/app_cubit.dart';
+import '../widgets/save_project_button.dart';
+import '../utils/responsive_helper.dart';
 
 class StepNinePage extends StatefulWidget {
   const StepNinePage({super.key});
@@ -9,39 +13,18 @@ class StepNinePage extends StatefulWidget {
   State<StepNinePage> createState() => _StepNinePageState();
 }
 
-class _StepNinePageState extends State<StepNinePage> with TickerProviderStateMixin {
+class _StepNinePageState extends State<StepNinePage>
+    with TickerProviderStateMixin {
   bool _isPanelOpen = false;
   Scene? _editingScene;
+  int? _editingIndex;
   late AnimationController _animationController;
   late Animation<Offset> _slideAnimation;
-  
+
   final TextEditingController _idController = TextEditingController();
   final TextEditingController _chapterController = TextEditingController();
   final TextEditingController _summaryController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  List<Scene> scenes = [
-    Scene(
-      id: 'Escena 1',
-      chapter: 'Capítulo 1',
-      summary: 'El protagonista despierta en un mundo desconocido, rodeado de una extraña niebla que parece tener vida propia. Debe encontrar una manera de orientarse mientras descubre que sus recuerdos están fragmentados y confusos.',
-    ),
-    Scene(
-      id: 'Escena 2',
-      chapter: 'Capítulo 1',
-      summary: 'Durante su exploración, encuentra a un misterioso personaje encapuchado que le ofrece ayuda a cambio de un favor que no revela. La tensión aumenta cuando aparecen criaturas hostiles en la distancia.',
-    ),
-    Scene(
-      id: 'Escena 3',
-      chapter: 'Capítulo 2',
-      summary: 'El protagonista debe tomar una decisión crucial: confiar en el extraño o aventurarse solo. Su elección determinará no solo su supervivencia, sino también el destino de otros personajes que aún no conoce.',
-    ),
-    Scene(
-      id: 'Escena 4',
-      chapter: 'Capítulo 2',
-      summary: 'Una revelación inesperada cambia todo lo que el protagonista creía saber sobre su situación. Los fragmentos de sus recuerdos comienzan a formar un patrón inquietante que sugiere una conspiración más grande.',
-    ),
-  ];
 
   @override
   void initState() {
@@ -74,159 +57,199 @@ class _StepNinePageState extends State<StepNinePage> with TickerProviderStateMix
       body: Stack(
         children: [
           Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(16.0),
-            decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor.withOpacity(0.1),
-              border: Border(
-                bottom: BorderSide(
-                  color: Theme.of(context).dividerColor,
-                  width: 1,
+            children: [
+              Container(
+                padding: ResponsiveHelper.getContentPadding(context),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor.withValues(alpha: 0.1),
+                  border: Border(
+                    bottom: BorderSide(
+                      color: Theme.of(context).dividerColor,
+                      width: 1,
+                    ),
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      child: Text(
+                        'Scene List',
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineSmall
+                            ?.copyWith(fontWeight: FontWeight.bold),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    ElevatedButton.icon(
+                      onPressed: _addNewScene,
+                      icon: const Icon(Icons.add),
+                      label: Text(ResponsiveHelper.isMobile(context)
+                          ? 'Add'
+                          : 'Add New Scene'),
+                    ),
+                  ],
                 ),
               ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Lista de Escenas',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-                ElevatedButton.icon(
-                  onPressed: _addNewScene,
-                  icon: const Icon(Icons.add),
-                  label: const Text('Agregar Nueva Escena'),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width,
+              Expanded(
                 child: SingleChildScrollView(
-                  child: DataTable(
-                    columnSpacing: 20,
-                    dataRowHeight: 80, 
-                    headingRowColor: WidgetStateProperty.all(
-                      Theme.of(context).primaryColor.withOpacity(0.15),
-                    ),
-                    columns: const [
-                      DataColumn(
-                        label: Expanded(
-                          child: Text(
-                            'Escena',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Expanded(
-                          child: Text(
-                            'Capítulo',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Expanded(
-                          child: Text(
-                            'Resumen',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Expanded(
-                          child: Text(
-                            'Acciones',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                    ],
-                    rows: scenes.map((scene) {
-                      return DataRow(
-                        cells: [
-                          DataCell(
-                            Container(
-                              padding: const EdgeInsets.symmetric(vertical: 8.0),
-                              child: Text(
-                                scene.id,
-                                style: const TextStyle(fontWeight: FontWeight.w500),
+                  scrollDirection: Axis.horizontal,
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: BlocBuilder<AppCubit, AppState>(
+                      builder: (context, state) {
+                        final scenes = state.scenes;
+                        if (scenes.isEmpty) {
+                          return const Center(
+                              child: Text('No scenes yet. Add the first one.'));
+                        }
+                        return SingleChildScrollView(
+                          child: DataTable(
+                            columnSpacing: 20,
+                            dataRowMinHeight: 80,
+                            dataRowMaxHeight: 80,
+                            headingRowColor: WidgetStateProperty.all(
+                              Theme.of(context)
+                                  .primaryColor
+                                  .withValues(alpha: 0.15),
+                            ),
+                            columns: const [
+                              DataColumn(
+                                label: Expanded(
+                                  child: Text(
+                                    'Scene',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                          DataCell(
-                            Container(
-                              padding: const EdgeInsets.symmetric(vertical: 8.0),
-                              child: Text(scene.chapter),
-                            ),
-                          ),
-                          DataCell(
-                            Container(
-                              width: double.infinity,
-                              padding: const EdgeInsets.symmetric(vertical: 8.0),
-                              child: Text(
-                                scene.summary,
-                                softWrap: true,
-                                maxLines: 4,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(fontSize: 13),
+                              DataColumn(
+                                label: Expanded(
+                                  child: Text(
+                                    'Chapter',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                          DataCell(
-                            Container(
-                              padding: const EdgeInsets.symmetric(vertical: 8.0),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  IconButton(
-                                    icon: const Icon(Icons.keyboard_arrow_up, size: 20),
-                                    onPressed: scenes.indexOf(scene) > 0 
-                                        ? () => _moveSceneUp(scene)
-                                        : null,
-                                    tooltip: 'Mover arriba',
+                              DataColumn(
+                                label: Expanded(
+                                  child: Text(
+                                    'Summary',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
                                   ),
-                                  IconButton(
-                                    icon: const Icon(Icons.keyboard_arrow_down, size: 20),
-                                    onPressed: scenes.indexOf(scene) < scenes.length - 1 
-                                        ? () => _moveSceneDown(scene)
-                                        : null,
-                                    tooltip: 'Mover abajo',
+                                ),
+                              ),
+                              DataColumn(
+                                label: Expanded(
+                                  child: Text(
+                                    'Actions',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
                                   ),
-                                  IconButton(
-                                    icon: const Icon(Icons.edit, size: 20),
-                                    onPressed: () => _editScene(scene),
-                                    tooltip: 'Editar escena',
+                                ),
+                              ),
+                            ],
+                            rows: scenes.asMap().entries.map((entry) {
+                              final index = entry.key;
+                              final scene = entry.value;
+                              return DataRow(
+                                cells: [
+                                  DataCell(
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 8.0),
+                                      child: Text(
+                                        scene.id,
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    ),
                                   ),
-                                  IconButton(
-                                    icon: const Icon(Icons.delete, size: 20),
-                                    onPressed: () => _deleteScene(scene),
-                                    tooltip: 'Eliminar escena',
+                                  DataCell(
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 8.0),
+                                      child: Text(scene.chapter),
+                                    ),
+                                  ),
+                                  DataCell(
+                                    Container(
+                                      width: double.infinity,
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 8.0),
+                                      child: Text(
+                                        scene.summary,
+                                        softWrap: true,
+                                        maxLines: 4,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(fontSize: 13),
+                                      ),
+                                    ),
+                                  ),
+                                  DataCell(
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 8.0),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          IconButton(
+                                            icon: const Icon(
+                                                Icons.keyboard_arrow_up,
+                                                size: 20),
+                                            onPressed: index > 0
+                                                ? () => _moveSceneUp(index)
+                                                : null,
+                                            tooltip: 'Move up',
+                                          ),
+                                          IconButton(
+                                            icon: const Icon(
+                                                Icons.keyboard_arrow_down,
+                                                size: 20),
+                                            onPressed: index < scenes.length - 1
+                                                ? () => _moveSceneDown(index)
+                                                : null,
+                                            tooltip: 'Move down',
+                                          ),
+                                          IconButton(
+                                            icon: const Icon(Icons.edit,
+                                                size: 20),
+                                            onPressed: () =>
+                                                _editScene(scene, index),
+                                            tooltip: 'Edit scene',
+                                          ),
+                                          IconButton(
+                                            icon: const Icon(Icons.delete,
+                                                size: 20),
+                                            onPressed: () =>
+                                                _deleteScene(index),
+                                            tooltip: 'Delete scene',
+                                          ),
+                                        ],
+                                      ),
+                                    ),
                                   ),
                                 ],
-                              ),
-                            ),
+                              );
+                            }).toList(),
                           ),
-                        ],
-                      );
-                    }).toList(),
+                        );
+                      },
+                    ),
                   ),
                 ),
               ),
-            ),
+            ],
           ),
-        ],
-      ),
           if (_isPanelOpen)
             GestureDetector(
               onTap: _closeSidePanel,
               child: Container(
-                color: Colors.black.withOpacity(0.5),
+                color: Colors.black.withValues(alpha: 0.5),
                 width: double.infinity,
                 height: double.infinity,
               ),
@@ -237,13 +260,17 @@ class _StepNinePageState extends State<StepNinePage> with TickerProviderStateMix
               child: Align(
                 alignment: Alignment.centerRight,
                 child: Container(
-                  width: 400,
+                  width: ResponsiveHelper.isMobile(context)
+                      ? MediaQuery.of(context).size.width * 0.9
+                      : ResponsiveHelper.isTablet(context)
+                          ? 450
+                          : 500,
                   height: double.infinity,
                   decoration: BoxDecoration(
                     color: Theme.of(context).scaffoldBackgroundColor,
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.3),
+                        color: Colors.black.withValues(alpha: 0.3),
                         spreadRadius: 0,
                         blurRadius: 10,
                         offset: const Offset(-5, 0),
@@ -259,37 +286,33 @@ class _StepNinePageState extends State<StepNinePage> with TickerProviderStateMix
     );
   }
 
-  void _editScene(Scene scene) {
+  void _editScene(Scene scene, int index) {
     _editingScene = scene;
+    _editingIndex = index;
     _idController.text = scene.id;
     _chapterController.text = scene.chapter;
     _summaryController.text = scene.summary;
     _openSidePanel();
   }
 
-  void _deleteScene(Scene scene) {
+  void _deleteScene(int index) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Confirmar eliminación'),
-          content: Text('¿Estás seguro de que quieres eliminar "${scene.id}"?'),
+          title: const Text('Confirm delete'),
+          content: const Text('Are you sure you want to delete this scene?'),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Cancelar'),
+              child: const Text('Cancel'),
             ),
             TextButton(
               onPressed: () {
-                setState(() {
-                  scenes.remove(scene);
-                });
+                context.read<AppCubit>().removeSceneAt(index);
                 Navigator.of(context).pop();
-                // ScaffoldMessenger.of(context).showSnackBar(
-                //   SnackBar(content: Text('${scene.escena} eliminada')),
-                // );
               },
-              child: const Text('Eliminar'),
+              child: const Text('Delete'),
             ),
           ],
         );
@@ -297,46 +320,20 @@ class _StepNinePageState extends State<StepNinePage> with TickerProviderStateMix
     );
   }
 
-  void _moveSceneUp(Scene scene) {
-    setState(() {
-      int currentIndex = scenes.indexOf(scene);
-      if (currentIndex > 0) {
-        scenes.removeAt(currentIndex);
-        scenes.insert(currentIndex - 1, scene);
-        
-        _updateSceneNames();
-      }
-    });
-    // ScaffoldMessenger.of(context).showSnackBar(
-    //   SnackBar(content: Text('${scene.escena} movida hacia arriba')),
-    // );
+  void _moveSceneUp(int index) {
+    context.read<AppCubit>().moveSceneUp(index);
   }
 
-  void _moveSceneDown(Scene scene) {
-    setState(() {
-      int currentIndex = scenes.indexOf(scene);
-      if (currentIndex < scenes.length - 1) {
-        scenes.removeAt(currentIndex);
-        scenes.insert(currentIndex + 1, scene);
-        
-        _updateSceneNames();
-      }
-    });
-    // ScaffoldMessenger.of(context).showSnackBar(
-    //   SnackBar(content: Text('${scene.escena} movida hacia abajo')),
-    // );
-  }
-
-  void _updateSceneNames() {
-    for (int i = 0; i < scenes.length; i++) {
-      scenes[i].id = 'Escena ${i + 1}';
-    }
+  void _moveSceneDown(int index) {
+    context.read<AppCubit>().moveSceneDown(index);
   }
 
   void _addNewScene() {
+    final scenesLength = context.read<AppCubit>().state.scenes.length;
     _editingScene = null;
-    _idController.text = 'Escena ${scenes.length + 1}';
-    _chapterController.text = 'Capítulo ${(scenes.length ~/ 2) + 1}';
+    _editingIndex = null;
+    _idController.text = 'Scene ${scenesLength + 1}';
+    _chapterController.text = 'Chapter ${(scenesLength ~/ 2) + 1}';
     _summaryController.text = '';
     _openSidePanel();
   }
@@ -353,29 +350,29 @@ class _StepNinePageState extends State<StepNinePage> with TickerProviderStateMix
       setState(() {
         _isPanelOpen = false;
         _editingScene = null;
+        _editingIndex = null;
       });
     });
   }
 
   void _saveScene() {
     if (_formKey.currentState!.validate()) {
-      setState(() {
-        if (_editingScene != null) {
-          _editingScene!.id = _idController.text;
-          _editingScene!.chapter = _chapterController.text;
-          _editingScene!.summary = _summaryController.text;
-        } else {
-          scenes.add(Scene(
-            id: _idController.text,
-            chapter: _chapterController.text,
-            summary: _summaryController.text,
-          ));
-        }
-      });
+      final newScene = Scene(
+        id: _idController.text,
+        chapter: _chapterController.text,
+        summary: _summaryController.text,
+      );
+      if (_editingIndex != null) {
+        context.read<AppCubit>().updateScene(_editingIndex!, newScene);
+      } else {
+        context.read<AppCubit>().addScene(newScene);
+      }
+      context.read<AppCubit>().saveCurrentProjectToDisk();
       _closeSidePanel();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(_editingScene != null ? 'Escena actualizada' : 'Nueva escena agregada'),
+          content:
+              Text(_editingIndex != null ? 'Scene updated' : 'New scene added'),
         ),
       );
     }
@@ -387,7 +384,7 @@ class _StepNinePageState extends State<StepNinePage> with TickerProviderStateMix
         Container(
           padding: const EdgeInsets.all(16.0),
           decoration: BoxDecoration(
-            color: Theme.of(context).primaryColor.withOpacity(0.1),
+            color: Theme.of(context).primaryColor.withValues(alpha: 0.1),
             border: Border(
               bottom: BorderSide(
                 color: Theme.of(context).dividerColor,
@@ -398,7 +395,7 @@ class _StepNinePageState extends State<StepNinePage> with TickerProviderStateMix
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                _editingScene != null ? 'Editar Escena' : 'Nueva Escena',
+                _editingScene != null ? 'Edit Scene' : 'New Scene',
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -421,12 +418,12 @@ class _StepNinePageState extends State<StepNinePage> with TickerProviderStateMix
                   TextFormField(
                     controller: _idController,
                     decoration: const InputDecoration(
-                      labelText: 'Nombre de la escena',
+                      labelText: 'Scene name',
                       border: OutlineInputBorder(),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Este campo es requerido';
+                        return 'This field is required';
                       }
                       return null;
                     },
@@ -435,12 +432,12 @@ class _StepNinePageState extends State<StepNinePage> with TickerProviderStateMix
                   TextFormField(
                     controller: _chapterController,
                     decoration: const InputDecoration(
-                      labelText: 'Capítulo',
+                      labelText: 'Chapter',
                       border: OutlineInputBorder(),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Este campo es requerido';
+                        return 'This field is required';
                       }
                       return null;
                     },
@@ -450,7 +447,7 @@ class _StepNinePageState extends State<StepNinePage> with TickerProviderStateMix
                     child: TextFormField(
                       controller: _summaryController,
                       decoration: const InputDecoration(
-                        labelText: 'Resumen de la escena',
+                        labelText: 'Scene summary',
                         border: OutlineInputBorder(),
                         alignLabelWithHint: true,
                       ),
@@ -459,10 +456,10 @@ class _StepNinePageState extends State<StepNinePage> with TickerProviderStateMix
                       textAlignVertical: TextAlignVertical.top,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Este campo es requerido';
+                          return 'This field is required';
                         }
                         if (value.length < 50) {
-                          return 'El resumen debe tener al menos 50 caracteres';
+                          return 'Summary must have at least 50 characters';
                         }
                         return null;
                       },
@@ -474,14 +471,16 @@ class _StepNinePageState extends State<StepNinePage> with TickerProviderStateMix
                       Expanded(
                         child: OutlinedButton(
                           onPressed: _closeSidePanel,
-                          child: const Text('Cancelar'),
+                          child: const Text('Cancel'),
                         ),
                       ),
                       const SizedBox(width: 16),
                       Expanded(
-                        child: ElevatedButton(
+                        child: SaveProjectButton(
+                          label: _editingScene != null
+                              ? 'Update Scene'
+                              : 'Save Scene',
                           onPressed: _saveScene,
-                          child: Text(_editingScene != null ? 'Actualizar' : 'Agregar'),
                         ),
                       ),
                     ],

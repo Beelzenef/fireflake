@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'state/author_cubit.dart';
+import 'models/author_settings.dart';
+import 'utils/responsive_helper.dart';
 
 class AuthorInfoPage extends StatefulWidget {
-    const AuthorInfoPage({super.key});
+  const AuthorInfoPage({super.key});
 
   @override
   State<AuthorInfoPage> createState() => _AuthorInfoPageState();
@@ -9,15 +13,35 @@ class AuthorInfoPage extends StatefulWidget {
 
 class _AuthorInfoPageState extends State<AuthorInfoPage> {
   final _formKey = GlobalKey<FormState>();
-  String _name = '';
-  String _bio = '';
-  String _email = '';
+  late TextEditingController _nameController;
+  late TextEditingController _bioController;
+  late TextEditingController _emailController;
+
+  @override
+  void initState() {
+    super.initState();
+    _nameController = TextEditingController();
+    _bioController = TextEditingController();
+    _emailController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _bioController.dispose();
+    _emailController.dispose();
+    super.dispose();
+  }
 
   void _submit() {
     if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
+      context.read<AuthorCubit>().updateAll(
+            name: _nameController.text,
+            bio: _bioController.text,
+            email: _emailController.text,
+          );
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Author info saved')),
+        const SnackBar(content: Text('Author info saved')),
       );
     }
   }
@@ -25,39 +49,89 @@ class _AuthorInfoPageState extends State<AuthorInfoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Add Author Info')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            children: [
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Name'),
-                validator: (value) =>
-                    value == null || value.isEmpty ? 'Enter name' : null,
-                onSaved: (value) => _name = value ?? '',
+      appBar: AppBar(title: const Text('Author Information')),
+      body: BlocBuilder<AuthorCubit, AuthorSettings>(
+        builder: (context, settings) {
+          if (_nameController.text != settings.name) {
+            _nameController.text = settings.name;
+          }
+          if (_bioController.text != settings.bio) {
+            _bioController.text = settings.bio;
+          }
+          if (_emailController.text != settings.email) {
+            _emailController.text = settings.email;
+          }
+
+          return ResponsiveWrapper(
+            child: Padding(
+              padding: ResponsiveHelper.getContentPadding(context),
+              child: Form(
+                key: _formKey,
+                child: ListView(
+                  children: [
+                    const Text(
+                      'This configuration is stored globally and will be used across all projects.',
+                      style: TextStyle(
+                        fontStyle: FontStyle.italic,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: _nameController,
+                      decoration: const InputDecoration(
+                        labelText: 'Name',
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (value) => value == null || value.isEmpty
+                          ? 'Enter your name'
+                          : null,
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: _bioController,
+                      decoration: const InputDecoration(
+                        labelText: 'Bio',
+                        border: OutlineInputBorder(),
+                        alignLabelWithHint: true,
+                      ),
+                      maxLines: 5,
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: _emailController,
+                      decoration: const InputDecoration(
+                        labelText: 'Email',
+                        border: OutlineInputBorder(),
+                      ),
+                      keyboardType: TextInputType.emailAddress,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Enter your email';
+                        }
+                        if (!value.contains('@')) {
+                          return 'Enter a valid email';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 24),
+                    ElevatedButton(
+                      onPressed: _submit,
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.all(16),
+                      ),
+                      child: const Text(
+                        'Save',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Bio'),
-                maxLines: 3,
-                onSaved: (value) => _bio = value ?? '',
-              ),
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Email'),
-                keyboardType: TextInputType.emailAddress,
-                validator: (value) =>
-                    value == null || value.isEmpty ? 'Enter email' : null,
-                onSaved: (value) => _email = value ?? '',
-              ),
-              SizedBox(height: 24),
-              ElevatedButton(
-                onPressed: _submit,
-                child: Text('Save'),
-              ),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }
