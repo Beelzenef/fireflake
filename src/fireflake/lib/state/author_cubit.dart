@@ -11,7 +11,6 @@ class AuthorCubit extends Cubit<AuthorSettings> {
     loadSettings();
   }
 
-  // Cargar configuración desde SharedPreferences
   Future<void> loadSettings() async {
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -22,12 +21,10 @@ class AuthorCubit extends Cubit<AuthorSettings> {
         emit(AuthorSettings.fromJson(json));
       }
     } catch (e) {
-      // Si hay error, mantener valores por defecto
       debugPrint('Error loading author settings: $e');
     }
   }
 
-  // Guardar configuración en SharedPreferences
   Future<void> saveSettings(AuthorSettings settings) async {
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -39,25 +36,21 @@ class AuthorCubit extends Cubit<AuthorSettings> {
     }
   }
 
-  // Actualizar nombre
   Future<void> updateName(String name) async {
     final updated = state.copyWith(name: name);
     await saveSettings(updated);
   }
 
-  // Actualizar biografía
   Future<void> updateBio(String bio) async {
     final updated = state.copyWith(bio: bio);
     await saveSettings(updated);
   }
 
-  // Actualizar email
   Future<void> updateEmail(String email) async {
     final updated = state.copyWith(email: email);
     await saveSettings(updated);
   }
 
-  // Actualizar todo a la vez
   Future<void> updateAll({
     String? name,
     String? bio,
