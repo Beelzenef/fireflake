@@ -4,6 +4,7 @@ import '../models/character.dart';
 import '../state/app_cubit.dart';
 import '../widgets/save_project_button.dart';
 import '../utils/responsive_helper.dart';
+import '../utils/project_save.dart';
 
 class StepFivePage extends StatefulWidget {
   const StepFivePage({super.key});
@@ -30,8 +31,13 @@ class _StepFivePageState extends State<StepFivePage> {
     if (_initialized) return;
     final characters = context.read<AppCubit>().state.characters;
     if (characters.isNotEmpty) {
+      for (final controllers in _characterControllers) {
+        for (final controller in controllers.values) {
+          controller.dispose();
+        }
+      }
       _characterControllers.clear();
-      for (final char in characters.take(_maxCharacters)) {
+      for (final char in characters) {
         _characterControllers.add({
           'name': TextEditingController(text: char.name),
           'description': TextEditingController(text: char.storygoal),
@@ -71,7 +77,7 @@ class _StepFivePageState extends State<StepFivePage> {
     }
   }
 
-  void _save() {
+  Future<void> _save() async {
     if (_formKey.currentState?.validate() != true) return;
 
     final cubit = context.read<AppCubit>();
@@ -84,10 +90,10 @@ class _StepFivePageState extends State<StepFivePage> {
             character.name.isNotEmpty && character.storygoal.isNotEmpty)
         .toList();
 
-    cubit.setCharacters(currentCharacters);
-    cubit.saveCurrentProjectToDisk();
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Main characters saved')),
+    await saveProjectWithFeedback(
+      context,
+      update: () => cubit.setCharacters(currentCharacters),
+      successMessage: 'Main characters saved',
     );
   }
 

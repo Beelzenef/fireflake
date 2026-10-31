@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../state/app_cubit.dart';
 import '../widgets/save_project_button.dart';
 import '../utils/responsive_helper.dart';
+import '../utils/project_save.dart';
 
 class StepEightPage extends StatefulWidget {
   const StepEightPage({super.key});
@@ -29,6 +30,9 @@ class _StepEightPageState extends State<StepEightPage> {
 
     final project = context.read<AppCubit>().state.selectedProject;
     if (project != null && project.pendingScenes.isNotEmpty) {
+      for (final controller in _sceneControllers) {
+        controller.dispose();
+      }
       _sceneControllers.clear();
       for (final scene in project.pendingScenes) {
         _sceneControllers.add(TextEditingController(text: scene));
@@ -60,7 +64,7 @@ class _StepEightPageState extends State<StepEightPage> {
     }
   }
 
-  void _save() {
+  Future<void> _save() async {
     if (_formKey.currentState?.validate() != true) return;
 
     final cubit = context.read<AppCubit>();
@@ -69,11 +73,10 @@ class _StepEightPageState extends State<StepEightPage> {
         .where((text) => text.isNotEmpty)
         .toList();
 
-    cubit.updatePendingScenes(scenes);
-    cubit.saveCurrentProjectToDisk();
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Scene list saved')),
+    await saveProjectWithFeedback(
+      context,
+      update: () => cubit.updatePendingScenes(scenes),
+      successMessage: 'Scene list saved',
     );
   }
 

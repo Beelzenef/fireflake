@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../data/project_storage.dart';
 import '../models/project.dart';
 import '../models/scene.dart';
 import '../models/character.dart';
+import '../models/protagonist.dart';
 
 class AppState extends Equatable {
   final List<Project> projects;
@@ -43,8 +46,10 @@ class AppState extends Equatable {
 
 class AppCubit extends Cubit<AppState> {
   AppCubit() : super(const AppState());
+  Future<void> _pendingSave = Future<void>.value();
 
   Future<void> loadProjectsFromDisk() async {
+    await _pendingSave;
     final projects = await ProjectStorage.loadProjects();
     emit(state.copyWith(projects: projects));
   }
@@ -74,10 +79,42 @@ class AppCubit extends Cubit<AppState> {
   }
 
   Future<void> loadAndSelectProject(String title) async {
+    await _pendingSave;
     final project = await ProjectStorage.loadProjectByTitle(title);
-    if (project != null) {
-      selectProject(project);
+    if (project == null) {
+      throw StateError('Project "$title" could not be found on disk.');
     }
+    selectProject(project);
+  }
+
+  void updateProjectInfo({
+    required String title,
+    required String subtitle,
+    required int expectedWordCount,
+  }) {
+    final selected = state.selectedProject;
+    if (selected == null) {
+      throw StateError('Select a project before updating its information.');
+    }
+    if (state.projects.any((project) =>
+        project.title != selected.title &&
+        _generateFilename(project.title) == _generateFilename(title))) {
+      throw StateError(
+          'Another project already uses the filename for "$title".');
+    }
+    final updated = selected.copyWith(
+      title: title,
+      subtitle: subtitle,
+      expectedWordCount: expectedWordCount,
+      scenes: state.scenes,
+      characters: state.characters,
+    );
+    emit(state.copyWith(
+      selectedProject: updated,
+      projects: state.projects
+          .map((project) => project.title == selected.title ? updated : project)
+          .toList(),
+    ));
   }
 
   void saveProject({
@@ -242,6 +279,20 @@ class AppCubit extends Cubit<AppState> {
     emit(state.copyWith(characters: List<Character>.from(characters)));
   }
 
+  void updateProtagonist(Protagonist protagonist) {
+    final selected = state.selectedProject;
+    if (selected == null) return;
+    final updatedProject = selected.copyWith(protagonist: protagonist);
+    final updatedProjects = state.projects
+        .map((project) =>
+            project.title == selected.title ? updatedProject : project)
+        .toList();
+    emit(state.copyWith(
+      projects: updatedProjects,
+      selectedProject: updatedProject,
+    ));
+  }
+
   void removeCharacter(Character character) {
     final updated = List<Character>.from(state.characters)..remove(character);
     emit(state.copyWith(characters: updated));
@@ -249,7 +300,9 @@ class AppCubit extends Cubit<AppState> {
 
   Future<void> saveCurrentProjectToDisk() async {
     final project = state.selectedProject;
-    if (project == null) return;
+    if (project == null) {
+      throw StateError('Select a project before saving.');
+    }
     final merged = project.copyWith(
       title: project.title,
       subtitle: project.subtitle,
@@ -268,16 +321,37 @@ class AppCubit extends Cubit<AppState> {
       scenes: state.scenes,
       characters: state.characters,
     );
-    await ProjectStorage.saveProject(merged, state.currentProjectFilename);
+    final previousFilename = state.currentProjectFilename;
+    final filename = _generateFilename(merged.title);
     final projects = state.projects
         .map((p) => p.title == merged.title ? merged : p)
         .toList();
-    emit(state.copyWith(projects: projects, selectedProject: merged));
+    emit(state.copyWith(
+      projects: projects,
+      selectedProject: merged,
+      currentProjectFilename: filename,
+    ));
+
+    final previousSave = _pendingSave;
+    final finished = Completer<void>();
+    _pendingSave = finished.future;
+    try {
+      await previousSave;
+      await ProjectStorage.saveProject(merged, filename);
+      if (previousFilename != null && previousFilename != filename) {
+        await ProjectStorage.deleteProjectFile(previousFilename);
+      }
+    } finally {
+      finished.complete();
+    }
   }
 
   Future<void> deleteProject(String title) async {
+    await _pendingSave;
     await ProjectStorage.deleteProject(title);
     final updated = state.projects.where((p) => p.title != title).toList();
-    emit(state.copyWith(projects: updated));
+    emit(state.selectedProject?.title == title
+        ? AppState(projects: updated)
+        : state.copyWith(projects: updated));
   }
 }

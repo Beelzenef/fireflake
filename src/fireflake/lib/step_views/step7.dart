@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../models/protagonist.dart';
 import '../state/app_cubit.dart';
 import '../utils/responsive_helper.dart';
 
@@ -17,8 +18,16 @@ class _StepSevenPageState extends State<StepSevenPage> {
       body: BlocBuilder<AppCubit, AppState>(
         builder: (context, state) {
           final characters = state.characters;
+          final protagonist =
+              state.selectedProject?.protagonist ?? const Protagonist();
+          final hasProtagonist = protagonist.storyElements.isNotEmpty ||
+              protagonist.motivations.isNotEmpty ||
+              protagonist.goal.isNotEmpty ||
+              protagonist.conflict.isNotEmpty ||
+              protagonist.epiphany.isNotEmpty ||
+              protagonist.finalStoryElements.isNotEmpty;
 
-          if (characters.isEmpty) {
+          if (characters.isEmpty && !hasProtagonist) {
             return const Center(
               child: Padding(
                 padding: EdgeInsets.all(24),
@@ -50,6 +59,55 @@ class _StepSevenPageState extends State<StepSevenPage> {
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   const SizedBox(height: 24),
+                  if (hasProtagonist) ...[
+                    Text(
+                      'Protagonist worksheet',
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleLarge
+                          ?.copyWith(fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 12),
+                    Card(
+                      elevation: 2,
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            _buildInfoRow(
+                              context,
+                              'Backstory',
+                              protagonist.storyElements.join('\n'),
+                            ),
+                            _buildInfoRow(context, 'Motivations',
+                                protagonist.motivations),
+                            _buildInfoRow(context, 'Goal', protagonist.goal),
+                            _buildInfoRow(
+                                context, 'Conflict', protagonist.conflict),
+                            _buildInfoRow(
+                                context, 'Epiphany', protagonist.epiphany),
+                            _buildInfoRow(
+                              context,
+                              'Final backstory',
+                              protagonist.finalStoryElements.join('\n'),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                  ],
+                  if (characters.isNotEmpty) ...[
+                    Text(
+                      'Main characters',
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleLarge
+                          ?.copyWith(fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 12),
+                  ],
                   ...characters.asMap().entries.map((entry) {
                     final index = entry.key;
                     final character = entry.value;

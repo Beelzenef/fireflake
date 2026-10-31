@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'state/app_cubit.dart';
 import 'utils/responsive_helper.dart';
+import 'utils/project_save.dart';
 
 class ProjectsPage extends StatefulWidget {
   const ProjectsPage({super.key});
@@ -115,10 +116,9 @@ class _ProjectsPageState extends State<ProjectsPage> {
                   child: TextButton(
                     style: mainButtonStyle(),
                     onPressed: () async {
-                      await context.read<AppCubit>().saveCurrentProjectToDisk();
-                      if (!context.mounted) return;
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Project saved to disk')),
+                      await saveProjectWithFeedback(
+                        context,
+                        successMessage: 'Project saved to disk',
                       );
                     },
                     child: const Text('Save'),
@@ -196,7 +196,17 @@ class _ProjectsPageState extends State<ProjectsPage> {
     final cubit = context.read<AppCubit>();
     final navigator = Navigator.of(context);
 
-    await cubit.loadAndSelectProject(project.title);
+    try {
+      await cubit.loadAndSelectProject(project.title);
+    } catch (error, stackTrace) {
+      debugPrint('Error opening project: $error\n$stackTrace');
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Could not open project: $error')),
+        );
+      }
+      return;
+    }
     if (!mounted) return;
     navigator.push(
       MaterialPageRoute(
@@ -301,9 +311,12 @@ class _ProjectsPageState extends State<ProjectsPage> {
     cubit.saveProject(title: title, expectedWordCount: expected);
     final created = cubit.state.projects.firstWhere((p) => p.title == title);
     cubit.selectProject(created);
-    await cubit.saveCurrentProjectToDisk();
+    final saved = await saveProjectWithFeedback(
+      context,
+      successMessage: 'Project created',
+    );
 
-    if (!mounted) return;
+    if (!saved || !mounted) return;
     navigator.push(
       MaterialPageRoute(
         builder: (context) => ProjectWrapper(),

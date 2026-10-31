@@ -1,5 +1,6 @@
 import 'scene.dart';
 import 'character.dart';
+import 'protagonist.dart';
 
 class Project {
   String title;
@@ -21,6 +22,7 @@ class Project {
   List<String> pendingScenes;
   List<Scene> scenes;
   List<Character> characters;
+  Protagonist protagonist;
 
   Project({
     required this.title,
@@ -39,6 +41,7 @@ class Project {
     this.pendingScenes = const [],
     this.scenes = const [],
     this.characters = const [],
+    this.protagonist = const Protagonist(),
   });
 
   Project copyWith({
@@ -58,6 +61,7 @@ class Project {
     List<String>? pendingScenes,
     List<Scene>? scenes,
     List<Character>? characters,
+    Protagonist? protagonist,
   }) {
     return Project(
       title: title ?? this.title,
@@ -76,6 +80,7 @@ class Project {
       pendingScenes: pendingScenes ?? this.pendingScenes,
       scenes: scenes ?? this.scenes,
       characters: characters ?? this.characters,
+      protagonist: protagonist ?? this.protagonist,
     );
   }
 
@@ -102,6 +107,9 @@ class Project {
         characters: (json['characters'] as List<dynamic>? ?? [])
             .map((e) => Character.fromJson(e as Map<String, dynamic>))
             .toList(),
+        protagonist: json['protagonist'] == null
+            ? const Protagonist()
+            : Protagonist.fromJson(json['protagonist'] as Map<String, dynamic>),
       );
 
   Map<String, dynamic> toJson() => {
@@ -121,5 +129,6 @@ class Project {
         'pendingScenes': pendingScenes,
         'scenes': scenes.map((s) => s.toJson()).toList(),
         'characters': characters.map((c) => c.toJson()).toList(),
+        'protagonist': protagonist.toJson(),
       };
 }

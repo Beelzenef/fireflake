@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../models/character.dart';
+import '../models/protagonist.dart';
 import '../state/app_cubit.dart';
 import '../widgets/save_project_button.dart';
 import '../utils/responsive_helper.dart';
+import '../utils/project_save.dart';
 
 class StepThreePage extends StatefulWidget {
   const StepThreePage({super.key});
@@ -20,13 +21,7 @@ class _StepThreePageState extends State<StepThreePage> {
   final TextEditingController _conflictController = TextEditingController();
   final TextEditingController _epiphanyController = TextEditingController();
   final List<TextEditingController> _finalHistoryControllers = [];
-
-  @override
-  void initState() {
-    super.initState();
-    _addHistoryField();
-    _addFinalHistoryField();
-  }
+  bool _initialized = false;
 
   @override
   void dispose() {
@@ -71,6 +66,55 @@ class _StepThreePageState extends State<StepThreePage> {
         _finalHistoryControllers.removeAt(index);
       });
     }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_initialized) return;
+
+    final protagonist =
+        context.read<AppCubit>().state.selectedProject?.protagonist;
+    if (protagonist != null) {
+      _historyControllers.addAll(protagonist.storyElements
+          .map((element) => TextEditingController(text: element)));
+      _motivationsController.text = protagonist.motivations;
+      _objectiveController.text = protagonist.goal;
+      _conflictController.text = protagonist.conflict;
+      _epiphanyController.text = protagonist.epiphany;
+      _finalHistoryControllers.addAll(protagonist.finalStoryElements
+          .map((element) => TextEditingController(text: element)));
+    }
+
+    if (_historyControllers.isEmpty) {
+      _historyControllers.add(TextEditingController());
+    }
+    if (_finalHistoryControllers.isEmpty) {
+      _finalHistoryControllers.add(TextEditingController());
+    }
+    _initialized = true;
+  }
+
+  Future<void> _save() async {
+    if (_formKey.currentState?.validate() != true) return;
+
+    final cubit = context.read<AppCubit>();
+    await saveProjectWithFeedback(
+      context,
+      update: () => cubit.updateProtagonist(Protagonist(
+        storyElements: _historyControllers
+            .map((controller) => controller.text.trim())
+            .toList(),
+        motivations: _motivationsController.text.trim(),
+        goal: _objectiveController.text.trim(),
+        conflict: _conflictController.text.trim(),
+        epiphany: _epiphanyController.text.trim(),
+        finalStoryElements: _finalHistoryControllers
+            .map((controller) => controller.text.trim())
+            .toList(),
+      )),
+      successMessage: 'Protagonist information saved',
+    );
   }
 
   @override
@@ -231,29 +275,7 @@ class _StepThreePageState extends State<StepThreePage> {
                   label: const Text('Add final story element'),
                 ),
                 const SizedBox(height: 30),
-                SaveProjectButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      final name = _historyControllers.isNotEmpty &&
-                              _historyControllers.first.text.isNotEmpty
-                          ? _historyControllers.first.text
-                          : 'Personaje';
-                      final character = Character(
-                          name: name, storygoal: _objectiveController.text);
-                      final cubit = context.read<AppCubit>();
-                      final updated =
-                          List<Character>.from(cubit.state.characters)
-                            ..add(character);
-                      cubit.setCharacters(updated);
-                      cubit.saveCurrentProjectToDisk();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Character info saved'),
-                        ),
-                      );
-                    }
-                  },
-                ),
+                SaveProjectButton(onPressed: _save),
               ],
             ),
           ),

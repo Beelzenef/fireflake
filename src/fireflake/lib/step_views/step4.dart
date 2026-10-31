@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../state/app_cubit.dart';
 import '../widgets/save_project_button.dart';
 import '../utils/responsive_helper.dart';
+import '../utils/project_save.dart';
 
 class StepFourPage extends StatefulWidget {
   const StepFourPage({super.key});
@@ -49,20 +50,19 @@ class _StepFourPageState extends State<StepFourPage> {
     _initialized = true;
   }
 
-  void _save() {
+  Future<void> _save() async {
     if (_formKey.currentState?.validate() != true) return;
 
     final cubit = context.read<AppCubit>();
-    cubit.updateExpandedParagraphs(
-      expandedAct1: _controllers['act1']!.text.trim(),
-      expandedAct2: _controllers['act2']!.text.trim(),
-      expandedAct3: _controllers['act3']!.text.trim(),
-      expandedFinale: _controllers['finale']!.text.trim(),
-    );
-    cubit.saveCurrentProjectToDisk();
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Expanded paragraphs saved')),
+    await saveProjectWithFeedback(
+      context,
+      update: () => cubit.updateExpandedParagraphs(
+        expandedAct1: _controllers['act1']!.text.trim(),
+        expandedAct2: _controllers['act2']!.text.trim(),
+        expandedAct3: _controllers['act3']!.text.trim(),
+        expandedFinale: _controllers['finale']!.text.trim(),
+      ),
+      successMessage: 'Expanded paragraphs saved',
     );
   }
 
@@ -80,7 +80,11 @@ class _StepFourPageState extends State<StepFourPage> {
           if (project.act1.isEmpty &&
               project.act2.isEmpty &&
               project.act3.isEmpty &&
-              project.finale.isEmpty) {
+              project.finale.isEmpty &&
+              project.expandedAct1.isEmpty &&
+              project.expandedAct2.isEmpty &&
+              project.expandedAct3.isEmpty &&
+              project.expandedFinale.isEmpty) {
             return const Center(
                 child: Text('Complete Step 2 first (acts and finale)'));
           }
@@ -112,22 +116,26 @@ class _StepFourPageState extends State<StepFourPage> {
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     const SizedBox(height: 24),
-                    if (project.act1.isNotEmpty) ...[
+                    if (project.act1.isNotEmpty ||
+                        project.expandedAct1.isNotEmpty) ...[
                       _buildExpandedSection(
                           context, 'Acto I - Expandido', 'act1'),
                       const SizedBox(height: 16),
                     ],
-                    if (project.act2.isNotEmpty) ...[
+                    if (project.act2.isNotEmpty ||
+                        project.expandedAct2.isNotEmpty) ...[
                       _buildExpandedSection(
                           context, 'Acto II - Expandido', 'act2'),
                       const SizedBox(height: 16),
                     ],
-                    if (project.act3.isNotEmpty) ...[
+                    if (project.act3.isNotEmpty ||
+                        project.expandedAct3.isNotEmpty) ...[
                       _buildExpandedSection(
                           context, 'Acto III - Expandido', 'act3'),
                       const SizedBox(height: 16),
                     ],
-                    if (project.finale.isNotEmpty) ...[
+                    if (project.finale.isNotEmpty ||
+                        project.expandedFinale.isNotEmpty) ...[
                       _buildExpandedSection(
                           context, 'Final - Expandido', 'finale'),
                       const SizedBox(height: 16),

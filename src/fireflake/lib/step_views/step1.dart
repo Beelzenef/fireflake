@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../state/app_cubit.dart';
 import '../widgets/save_project_button.dart';
 import '../utils/responsive_helper.dart';
+import '../utils/project_save.dart';
 
 class StepOnePage extends StatefulWidget {
   const StepOnePage({super.key});
@@ -15,6 +16,7 @@ class _StepOnePageState extends State<StepOnePage> {
   final _formKey = GlobalKey<FormState>();
   final _summaryController = TextEditingController();
   bool _initialized = false;
+  String _loadedSummary = '';
 
   @override
   void dispose() {
@@ -29,19 +31,23 @@ class _StepOnePageState extends State<StepOnePage> {
     final project = context.read<AppCubit>().state.selectedProject;
     if (project != null) {
       _summaryController.text = project.summary;
+      _loadedSummary = project.summary;
     }
     _initialized = true;
   }
 
-  void _save() {
+  Future<void> _save() async {
     if (_formKey.currentState?.validate() != true) return;
-    context.read<AppCubit>().updateProjectSummary(
-          summary: _summaryController.text.trim(),
-        );
-    context.read<AppCubit>().saveCurrentProjectToDisk();
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Summary saved')),
+    final saved = await saveProjectWithFeedback(
+      context,
+      update: () => context.read<AppCubit>().updateProjectSummary(
+            summary: _summaryController.text.trim() == _loadedSummary
+                ? null
+                : _summaryController.text.trim(),
+          ),
+      successMessage: 'Summary saved',
     );
+    if (saved && mounted) _loadedSummary = _summaryController.text.trim();
   }
 
   @override

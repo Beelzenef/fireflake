@@ -5,6 +5,7 @@ import '../models/scene.dart';
 import '../state/app_cubit.dart';
 import '../widgets/save_project_button.dart';
 import '../utils/responsive_helper.dart';
+import '../utils/project_save.dart';
 
 class StepNinePage extends StatefulWidget {
   const StepNinePage({super.key});
@@ -308,9 +309,15 @@ class _StepNinePageState extends State<StepNinePage>
               child: const Text('Cancel'),
             ),
             TextButton(
-              onPressed: () {
-                context.read<AppCubit>().removeSceneAt(index);
-                Navigator.of(context).pop();
+              onPressed: () async {
+                final cubit = context.read<AppCubit>();
+                final navigator = Navigator.of(context);
+                final saved = await saveProjectWithFeedback(
+                  context,
+                  update: () => cubit.removeSceneAt(index),
+                  successMessage: 'Scene deleted',
+                );
+                if (saved && context.mounted) navigator.pop();
               },
               child: const Text('Delete'),
             ),
@@ -320,12 +327,22 @@ class _StepNinePageState extends State<StepNinePage>
     );
   }
 
-  void _moveSceneUp(int index) {
-    context.read<AppCubit>().moveSceneUp(index);
+  Future<void> _moveSceneUp(int index) async {
+    final cubit = context.read<AppCubit>();
+    await saveProjectWithFeedback(
+      context,
+      update: () => cubit.moveSceneUp(index),
+      successMessage: 'Scene order saved',
+    );
   }
 
-  void _moveSceneDown(int index) {
-    context.read<AppCubit>().moveSceneDown(index);
+  Future<void> _moveSceneDown(int index) async {
+    final cubit = context.read<AppCubit>();
+    await saveProjectWithFeedback(
+      context,
+      update: () => cubit.moveSceneDown(index),
+      successMessage: 'Scene order saved',
+    );
   }
 
   void _addNewScene() {
@@ -347,6 +364,7 @@ class _StepNinePageState extends State<StepNinePage>
 
   void _closeSidePanel() {
     _animationController.reverse().then((_) {
+      if (!mounted) return;
       setState(() {
         _isPanelOpen = false;
         _editingScene = null;
@@ -355,26 +373,30 @@ class _StepNinePageState extends State<StepNinePage>
     });
   }
 
-  void _saveScene() {
+  Future<void> _saveScene() async {
     if (_formKey.currentState!.validate()) {
       final newScene = Scene(
         id: _idController.text,
         chapter: _chapterController.text,
         summary: _summaryController.text,
       );
-      if (_editingIndex != null) {
-        context.read<AppCubit>().updateScene(_editingIndex!, newScene);
-      } else {
-        context.read<AppCubit>().addScene(newScene);
-      }
-      context.read<AppCubit>().saveCurrentProjectToDisk();
-      _closeSidePanel();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content:
-              Text(_editingIndex != null ? 'Scene updated' : 'New scene added'),
-        ),
+      final cubit = context.read<AppCubit>();
+      final editingIndex = _editingIndex;
+      final saved = await saveProjectWithFeedback(
+        context,
+        update: () {
+          if (editingIndex != null) {
+            cubit.updateScene(editingIndex, newScene);
+          } else {
+            _editingIndex = cubit.state.scenes.length;
+            _editingScene = newScene;
+            cubit.addScene(newScene);
+          }
+        },
+        successMessage:
+            editingIndex != null ? 'Scene updated' : 'New scene added',
       );
+      if (saved && mounted) _closeSidePanel();
     }
   }
 

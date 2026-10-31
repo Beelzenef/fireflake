@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../state/app_cubit.dart';
 import '../widgets/save_project_button.dart';
 import '../utils/responsive_helper.dart';
+import '../utils/project_save.dart';
 
 class StepTwoPage extends StatefulWidget {
   const StepTwoPage({super.key});
@@ -19,6 +20,7 @@ class _StepTwoPageState extends State<StepTwoPage> {
   final _act3Controller = TextEditingController();
   final _finaleController = TextEditingController();
   bool _initialized = false;
+  String _loadedSummary = '';
 
   @override
   void dispose() {
@@ -37,6 +39,7 @@ class _StepTwoPageState extends State<StepTwoPage> {
     final project = context.read<AppCubit>().state.selectedProject;
     if (project != null) {
       _summaryController.text = project.summary;
+      _loadedSummary = project.summary;
       _act1Controller.text = project.act1;
       _act2Controller.text = project.act2;
       _act3Controller.text = project.act3;
@@ -45,19 +48,22 @@ class _StepTwoPageState extends State<StepTwoPage> {
     _initialized = true;
   }
 
-  void _save() {
+  Future<void> _save() async {
     if (_formKey.currentState?.validate() != true) return;
-    context.read<AppCubit>().updateProjectSummary(
-          summary: _summaryController.text.trim(),
-          act1: _act1Controller.text.trim(),
-          act2: _act2Controller.text.trim(),
-          act3: _act3Controller.text.trim(),
-          finale: _finaleController.text.trim(),
-        );
-    context.read<AppCubit>().saveCurrentProjectToDisk();
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Expanded summary saved')),
+    final saved = await saveProjectWithFeedback(
+      context,
+      update: () => context.read<AppCubit>().updateProjectSummary(
+            summary: _summaryController.text.trim() == _loadedSummary
+                ? null
+                : _summaryController.text.trim(),
+            act1: _act1Controller.text.trim(),
+            act2: _act2Controller.text.trim(),
+            act3: _act3Controller.text.trim(),
+            finale: _finaleController.text.trim(),
+          ),
+      successMessage: 'Expanded summary saved',
     );
+    if (saved && mounted) _loadedSummary = _summaryController.text.trim();
   }
 
   @override
@@ -154,7 +160,7 @@ class _StepTwoPageState extends State<StepTwoPage> {
                 const SizedBox(height: 12),
                 _buildCard(
                   context,
-                  title: 'Finalr',
+                  title: 'Finale',
                   child: TextFormField(
                     controller: _finaleController,
                     maxLines: 3,

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../state/app_cubit.dart';
 import '../widgets/save_project_button.dart';
 import '../utils/responsive_helper.dart';
+import '../utils/project_save.dart';
 
 class StepSixPage extends StatefulWidget {
   const StepSixPage({super.key});
@@ -34,15 +35,15 @@ class _StepSixPageState extends State<StepSixPage> {
     _initialized = true;
   }
 
-  void _save() {
+  Future<void> _save() async {
     if (_formKey.currentState?.validate() != true) return;
 
     final cubit = context.read<AppCubit>();
-    cubit.updateExtendedArgument(_argumentController.text.trim());
-    cubit.saveCurrentProjectToDisk();
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Extended argument saved')),
+    await saveProjectWithFeedback(
+      context,
+      update: () =>
+          cubit.updateExtendedArgument(_argumentController.text.trim()),
+      successMessage: 'Extended argument saved',
     );
   }
 

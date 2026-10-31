@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../state/app_cubit.dart';
 import '../utils/responsive_helper.dart';
+import '../utils/project_save.dart';
 
 class ProjectInfoPage extends StatefulWidget {
   const ProjectInfoPage({super.key});
@@ -30,18 +31,14 @@ class _ProjectInfoPageState extends State<ProjectInfoPage> {
     if (_formKey.currentState!.validate()) {
       final cubit = context.read<AppCubit>();
       final wordCount = int.parse(_wordCountController.text);
-      cubit.saveProject(
-        title: _titleController.text.trim(),
-        subtitle: _subtitleController.text.trim(),
-        expectedWordCount: wordCount,
-      );
-      await cubit.saveCurrentProjectToDisk();
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Project saved'),
-          backgroundColor: Colors.green,
+      await saveProjectWithFeedback(
+        context,
+        update: () => cubit.updateProjectInfo(
+          title: _titleController.text.trim(),
+          subtitle: _subtitleController.text.trim(),
+          expectedWordCount: wordCount,
         ),
+        successMessage: 'Project saved',
       );
     }
   }
