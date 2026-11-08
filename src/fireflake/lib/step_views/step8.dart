@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../state/app_cubit.dart';
 import '../widgets/save_project_button.dart';
@@ -29,16 +30,20 @@ class _StepEightPageState extends State<StepEightPage> {
     if (_initialized) return;
 
     final project = context.read<AppCubit>().state.selectedProject;
-    if (project != null && project.pendingScenes.isNotEmpty) {
-      for (final controller in _sceneControllers) {
-        controller.dispose();
-      }
-      _sceneControllers.clear();
-      for (final scene in project.pendingScenes) {
-        _sceneControllers.add(TextEditingController(text: scene));
-      }
-    }
+    _replaceSceneFields(project?.pendingScenes ?? const []);
     _initialized = true;
+  }
+
+  void _replaceSceneFields(List<String> scenes) {
+    for (final controller in _sceneControllers) {
+      controller.dispose();
+    }
+    _sceneControllers
+      ..clear()
+      ..addAll(scenes.map((scene) => TextEditingController(text: scene)));
+    if (_sceneControllers.isEmpty) {
+      _sceneControllers.add(TextEditingController());
+    }
   }
 
   @override
@@ -83,7 +88,19 @@ class _StepEightPageState extends State<StepEightPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<AppCubit, AppState>(
+      body: BlocConsumer<AppCubit, AppState>(
+        listenWhen: (previous, current) {
+          final previousProject = previous.selectedProject;
+          final currentProject = current.selectedProject;
+          return previousProject?.title != currentProject?.title ||
+              !listEquals(
+                previousProject?.pendingScenes ?? const [],
+                currentProject?.pendingScenes ?? const [],
+              );
+        },
+        listener: (context, state) {
+          _replaceSceneFields(state.selectedProject?.pendingScenes ?? const []);
+        },
         builder: (context, state) {
           final project = state.selectedProject;
           if (project == null) {
@@ -195,7 +212,7 @@ class _StepEightPageState extends State<StepEightPage> {
                           const SizedBox(width: 12),
                           Expanded(
                             child: Text(
-                              'After saving this list, go to Step 9 to write the narrative summary of each scene.',
+                              'In Step 9, add chapter and narrative details to these scenes.',
                               style: TextStyle(color: Colors.amber.shade900),
                             ),
                           ),

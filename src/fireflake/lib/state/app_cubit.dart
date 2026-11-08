@@ -59,13 +59,46 @@ class AppCubit extends Cubit<AppState> {
   }
 
   void selectProject(Project project) {
+    final scenes = _mergeLegacyScenes(project.pendingScenes, project.scenes);
+    final synchronizedProject = project.copyWith(
+      pendingScenes: scenes.map((scene) => scene.id).toList(),
+      scenes: scenes,
+    );
     final filename = _generateFilename(project.title);
+    final projects = state.projects
+        .map((item) => item.title == project.title ? synchronizedProject : item)
+        .toList();
     emit(state.copyWith(
-      selectedProject: project,
-      scenes: project.scenes,
-      characters: project.characters,
+      projects: projects,
+      selectedProject: synchronizedProject,
+      scenes: scenes,
+      characters: synchronizedProject.characters,
       currentProjectFilename: filename,
     ));
+  }
+
+  List<Scene> _mergeLegacyScenes(
+      List<String> pendingScenes, List<Scene> existingScenes) {
+    final unmatchedScenes = List<Scene>.from(existingScenes);
+    final mergedScenes = <Scene>[];
+
+    for (var index = 0; index < pendingScenes.length; index++) {
+      final name = pendingScenes[index];
+      final existingIndex =
+          unmatchedScenes.indexWhere((scene) => scene.id == name);
+      if (existingIndex >= 0) {
+        mergedScenes.add(unmatchedScenes.removeAt(existingIndex));
+      } else {
+        mergedScenes.add(Scene(
+          id: name,
+          chapter: 'Chapter ${(index ~/ 2) + 1}',
+          summary: '',
+        ));
+      }
+    }
+
+    mergedScenes.addAll(unmatchedScenes);
+    return mergedScenes;
   }
 
   String _generateFilename(String title) {
@@ -223,24 +256,91 @@ class AppCubit extends Cubit<AppState> {
   void updatePendingScenes(List<String> pendingScenes) {
     final selected = state.selectedProject;
     if (selected == null) return;
-    final updatedProject = selected.copyWith(pendingScenes: pendingScenes);
+    final scenes = _scenesForPendingNames(pendingScenes, state.scenes);
+    final updatedProject = selected.copyWith(
+      pendingScenes: scenes.map((scene) => scene.id).toList(),
+      scenes: scenes,
+    );
     final updatedProjects = state.projects
         .map((p) => p.title == selected.title ? updatedProject : p)
         .toList();
     emit(state.copyWith(
-        projects: updatedProjects, selectedProject: updatedProject));
+      projects: updatedProjects,
+      selectedProject: updatedProject,
+      scenes: scenes,
+    ));
+  }
+
+  List<Scene> _scenesForPendingNames(
+      List<String> pendingScenes, List<Scene> existingScenes) {
+    final unmatchedScenes = List<Scene>.from(existingScenes);
+    final scenes = List<Scene?>.filled(pendingScenes.length, null);
+
+    for (var index = 0; index < pendingScenes.length; index++) {
+      final existingIndex = unmatchedScenes
+          .indexWhere((scene) => scene.id == pendingScenes[index]);
+      if (existingIndex >= 0) {
+        scenes[index] = unmatchedScenes.removeAt(existingIndex);
+      }
+    }
+
+    for (var index = 0; index < pendingScenes.length; index++) {
+      if (scenes[index] != null) continue;
+
+      final oldScene =
+          index < existingScenes.length ? existingScenes[index] : null;
+      final oldSceneIndex =
+          oldScene == null ? -1 : unmatchedScenes.indexOf(oldScene);
+      if (oldSceneIndex >= 0) {
+        final scene = unmatchedScenes.removeAt(oldSceneIndex);
+        scenes[index] = Scene(
+          id: pendingScenes[index],
+          chapter: scene.chapter,
+          summary: scene.summary,
+        );
+      } else {
+        scenes[index] = Scene(
+          id: pendingScenes[index],
+          chapter: 'Chapter ${(index ~/ 2) + 1}',
+          summary: '',
+        );
+      }
+    }
+
+    return scenes.whereType<Scene>().toList();
+  }
+
+  void _setScenes(List<Scene> scenes) {
+    final selected = state.selectedProject;
+    if (selected == null) {
+      emit(state.copyWith(scenes: scenes));
+      return;
+    }
+    final updatedProject = selected.copyWith(
+      scenes: scenes,
+      pendingScenes: scenes.map((scene) => scene.id).toList(),
+    );
+    final updatedProjects = state.projects
+        .map((project) =>
+            project.title == selected.title ? updatedProject : project)
+        .toList();
+    emit(state.copyWith(
+      projects: updatedProjects,
+      selectedProject: updatedProject,
+      scenes: scenes,
+    ));
   }
 
   void addScene(Scene scene) {
     final updated = List<Scene>.from(state.scenes)..add(scene);
-    emit(state.copyWith(scenes: updated));
+    _setScenes(updated);
   }
 
   void updateScene(int index, Scene scene) {
     final updated = List<Scene>.from(state.scenes);
     if (index >= 0 && index < updated.length) {
       updated[index] = scene;
-      emit(state.copyWith(scenes: updated));
+      _setScenes(updated);
     }
   }
 
@@ -248,7 +348,7 @@ class AppCubit extends Cubit<AppState> {
     final updated = List<Scene>.from(state.scenes);
     if (index >= 0 && index < updated.length) {
       updated.removeAt(index);
-      emit(state.copyWith(scenes: updated));
+      _setScenes(updated);
     }
   }
 
@@ -257,7 +357,7 @@ class AppCubit extends Cubit<AppState> {
     if (index > 0 && index < updated.length) {
       final scene = updated.removeAt(index);
       updated.insert(index - 1, scene);
-      emit(state.copyWith(scenes: updated));
+      _setScenes(updated);
     }
   }
 
@@ -266,7 +366,7 @@ class AppCubit extends Cubit<AppState> {
     if (index >= 0 && index < updated.length - 1) {
       final scene = updated.removeAt(index);
       updated.insert(index + 1, scene);
-      emit(state.copyWith(scenes: updated));
+      _setScenes(updated);
     }
   }
 
