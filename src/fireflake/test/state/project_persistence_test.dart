@@ -61,9 +61,11 @@ void main() {
     );
     cubit.setCharacters([Character(name: 'Hero', storygoal: 'Description')]);
     cubit.updateExtendedArgument('Extended argument');
-    cubit.updatePendingScenes(['Scene plan']);
-    cubit.addScene(
-        Scene(id: 'Scene', chapter: 'Chapter', summary: 'Narrative summary'));
+    cubit.updatePendingScenes(['Scene']);
+    cubit.updateScene(
+      0,
+      Scene(id: 'Scene', chapter: 'Chapter', summary: 'Narrative summary'),
+    );
     final expected = cubit.state.selectedProject!
         .copyWith(
           characters: cubit.state.characters,
@@ -89,7 +91,107 @@ void main() {
     await reopened.saveCurrentProjectToDisk();
     await reopened.loadAndSelectProject('Novel');
     expect(reopened.state.scenes, isEmpty);
+    expect(reopened.state.selectedProject!.pendingScenes, isEmpty);
     expect(reopened.state.selectedProject!.act1, 'Act one');
+  });
+
+  test('Step 8 plans carry through Step 9 edits and reopening', () async {
+    final project = Project(
+      title: 'Novel',
+      expectedWordCount: 50000,
+      pendingScenes: ['Planned opening'],
+      scenes: [
+        Scene(
+          id: 'Planned opening',
+          chapter: 'Chapter 4',
+          summary: 'An existing scene summary that should survive a rename.',
+        ),
+      ],
+    );
+    await cubit.close();
+    cubit = AppCubit()..loadInitial([project]);
+    cubit.selectProject(project);
+    cubit.updatePendingScenes(['Updated opening']);
+    expect(cubit.state.scenes.single.id, 'Updated opening');
+    expect(cubit.state.scenes.single.chapter, 'Chapter 4');
+    expect(cubit.state.scenes.single.summary,
+        'An existing scene summary that should survive a rename.');
+    await cubit.saveCurrentProjectToDisk();
+
+    const updatedSummary =
+        'The revised narrative summary is long enough to satisfy editing validation.';
+    cubit.updateScene(
+      0,
+      Scene(
+        id: 'Updated opening',
+        chapter: 'Chapter 4',
+        summary: updatedSummary,
+      ),
+    );
+    await cubit.saveCurrentProjectToDisk();
+
+    final reopened = AppCubit();
+    addTearDown(reopened.close);
+    await reopened.loadProjectsFromDisk();
+    await reopened.loadAndSelectProject('Novel');
+    expect(reopened.state.selectedProject!.pendingScenes, ['Updated opening']);
+    expect(reopened.state.scenes.single.id, 'Updated opening');
+    expect(reopened.state.scenes.single.chapter, 'Chapter 4');
+    expect(reopened.state.scenes.single.summary, updatedSummary);
+  });
+
+  test('opening a legacy project merges its planned and detailed scenes',
+      () async {
+    final project = Project(
+      title: 'Legacy',
+      expectedWordCount: 50000,
+      pendingScenes: ['Planned scene'],
+      scenes: [
+        Scene(
+          id: 'Planned scene',
+          chapter: 'Chapter 3',
+          summary: 'A planned scene with an existing narrative summary.',
+        ),
+        Scene(
+          id: 'Detailed-only scene',
+          chapter: 'Chapter 5',
+          summary: 'A detailed scene not present in the old plan.',
+        ),
+      ],
+    );
+    cubit.loadInitial([project]);
+    cubit.selectProject(project);
+
+    expect(
+      cubit.state.scenes.map((scene) => scene.id),
+      ['Planned scene', 'Detailed-only scene'],
+    );
+    expect(cubit.state.scenes.map((scene) => scene.summary), [
+      'A planned scene with an existing narrative summary.',
+      'A detailed scene not present in the old plan.',
+    ]);
+    expect(cubit.state.selectedProject!.pendingScenes,
+        ['Planned scene', 'Detailed-only scene']);
+
+    cubit.addScene(Scene(
+      id: 'Added in Step 9',
+      chapter: 'Chapter 6',
+      summary: 'A new scene entered directly in the detailed scene editor.',
+    ));
+    expect(cubit.state.selectedProject!.pendingScenes,
+        ['Planned scene', 'Detailed-only scene', 'Added in Step 9']);
+    cubit.moveSceneDown(0);
+    expect(cubit.state.selectedProject!.pendingScenes,
+        ['Detailed-only scene', 'Planned scene', 'Added in Step 9']);
+    cubit.removeSceneAt(1);
+    expect(cubit.state.selectedProject!.pendingScenes,
+        ['Detailed-only scene', 'Added in Step 9']);
+    await cubit.saveCurrentProjectToDisk();
+    await cubit.loadAndSelectProject('Legacy');
+    expect(cubit.state.scenes.map((scene) => scene.id),
+        ['Detailed-only scene', 'Added in Step 9']);
+    expect(cubit.state.selectedProject!.pendingScenes,
+        ['Detailed-only scene', 'Added in Step 9']);
   });
 
   test('editing and renaming project information preserves writing', () async {

@@ -85,7 +85,7 @@ void main() {
     ],
     const StepFivePage(): ['Hero', 'Description'],
     const StepSixPage(): ['Extended argument'],
-    const StepEightPage(): ['Scene plan'],
+    const StepEightPage(): ['Scene plan', 'Scene title'],
   };
 
   for (final entry in formSteps.entries) {
@@ -142,13 +142,68 @@ void main() {
       child: const MaterialApp(home: StepNinePage()),
     ));
     expect(find.text('Scene title'), findsOneWidget);
-    await tester.tap(find.byTooltip('Edit scene'));
+    await tester.tap(find.byTooltip('Edit scene').last);
     await tester.pumpAndSettle();
     expect(
       tester
           .widgetList<TextFormField>(find.byType(TextFormField))
           .map((field) => field.controller!.text),
       ['Scene title', 'Chapter one', project.scenes.single.summary],
+    );
+  });
+
+  testWidgets('Step 9 creates entries for scenes planned in Step 8',
+      (tester) async {
+    final project = Project(
+      title: 'Novel',
+      expectedWordCount: 50000,
+      pendingScenes: ['Planned opening'],
+    );
+    final cubit = AppCubit()..selectProject(project);
+    addTearDown(cubit.close);
+    await tester.pumpWidget(BlocProvider.value(
+      value: cubit,
+      child: const MaterialApp(home: StepNinePage()),
+    ));
+
+    expect(find.text('Planned opening'), findsOneWidget);
+    expect(cubit.state.scenes.single.chapter, 'Chapter 1');
+    await tester.tap(find.byTooltip('Edit scene'));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 350));
+    expect(
+      tester
+          .widgetList<TextFormField>(find.byType(TextFormField))
+          .map((field) => field.controller!.text),
+      ['Planned opening', 'Chapter 1', ''],
+    );
+  });
+
+  testWidgets('Step 8 refreshes when scenes change in Step 9', (tester) async {
+    final project = Project(
+      title: 'Novel',
+      expectedWordCount: 50000,
+      pendingScenes: ['Planned opening'],
+    );
+    final cubit = AppCubit()..selectProject(project);
+    addTearDown(cubit.close);
+    await tester.pumpWidget(BlocProvider.value(
+      value: cubit,
+      child: const MaterialApp(home: StepEightPage()),
+    ));
+
+    cubit.addScene(Scene(
+      id: 'Added in Step 9',
+      chapter: 'Chapter 2',
+      summary: 'A new scene entered from the detailed scene list.',
+    ));
+    await tester.pump();
+
+    expect(
+      tester
+          .widgetList<TextFormField>(find.byType(TextFormField))
+          .map((field) => field.controller!.text),
+      ['Planned opening', 'Added in Step 9'],
     );
   });
 
