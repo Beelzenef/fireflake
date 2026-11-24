@@ -1,8 +1,13 @@
+import 'dart:math';
+
 import 'scene.dart';
 import 'character.dart';
 import 'protagonist.dart';
 
 class Project {
+  static const int currentFormatVersion = 2;
+
+  String id;
   String title;
   String subtitle;
   int expectedWordCount;
@@ -25,6 +30,7 @@ class Project {
   Protagonist protagonist;
 
   Project({
+    String? id,
     required this.title,
     this.subtitle = '',
     required this.expectedWordCount,
@@ -42,9 +48,17 @@ class Project {
     this.scenes = const [],
     this.characters = const [],
     this.protagonist = const Protagonist(),
-  });
+  }) : id = id ?? createId();
+
+  static String createId() {
+    final random = Random.secure();
+    return List<int>.generate(16, (_) => random.nextInt(256))
+        .map((byte) => byte.toRadixString(16).padLeft(2, '0'))
+        .join();
+  }
 
   Project copyWith({
+    String? id,
     String? title,
     String? subtitle,
     int? expectedWordCount,
@@ -64,6 +78,7 @@ class Project {
     Protagonist? protagonist,
   }) {
     return Project(
+      id: id ?? this.id,
       title: title ?? this.title,
       subtitle: subtitle ?? this.subtitle,
       expectedWordCount: expectedWordCount ?? this.expectedWordCount,
@@ -84,7 +99,14 @@ class Project {
     );
   }
 
-  factory Project.fromJson(Map<String, dynamic> json) => Project(
+  factory Project.fromJson(Map<String, dynamic> json) {
+    final version = json['formatVersion'] as int? ?? 1;
+    if (version < 1 || version > currentFormatVersion) {
+      throw FormatException('Unsupported project format version: $version');
+    }
+
+    return Project(
+        id: json['id'] as String?,
         title: json['title'] as String,
         subtitle: json['subtitle'] as String? ?? '',
         expectedWordCount: json['expectedWordCount'] as int,
@@ -111,8 +133,11 @@ class Project {
             ? const Protagonist()
             : Protagonist.fromJson(json['protagonist'] as Map<String, dynamic>),
       );
+  }
 
   Map<String, dynamic> toJson() => {
+        'formatVersion': currentFormatVersion,
+        'id': id,
         'title': title,
         'subtitle': subtitle,
         'expectedWordCount': expectedWordCount,

@@ -40,16 +40,37 @@ class _ProjectsPageState extends State<ProjectsPage> {
               child: BlocBuilder<AppCubit, AppState>(
                 builder: (context, state) {
                   final projects = state.projects;
-                  if (projects.isEmpty) {
-                    return const Center(
-                      child: Text(
-                        'No projects yet.\nTap "New" to create one.',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.white70),
+                  return Column(
+                    children: [
+                      if (state.projectLoadIssues.isNotEmpty)
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8),
+                          child: Text(
+                            '${state.projectLoadIssues.length} project file(s) could not be loaded. '
+                            'The original files were left untouched.\n'
+                            '${state.projectLoadIssues.first.filename}: '
+                            '${state.projectLoadIssues.first.message}',
+                            maxLines: 4,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              color: Colors.amber,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
+                      Expanded(
+                        child: projects.isEmpty
+                            ? const Center(
+                                child: Text(
+                                  'No projects yet.\nTap "New" to create one.',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(color: Colors.white70),
+                                ),
+                              )
+                            : buildProjectList(projects),
                       ),
-                    );
-                  }
-                  return buildProjectList(projects);
+                    ],
+                  );
                 },
               )),
           Container(
@@ -197,7 +218,7 @@ class _ProjectsPageState extends State<ProjectsPage> {
     final navigator = Navigator.of(context);
 
     try {
-      await cubit.loadAndSelectProject(project.title);
+      await cubit.loadAndSelectProject(project.id);
     } catch (error, stackTrace) {
       debugPrint('Error opening project: $error\n$stackTrace');
       if (context.mounted) {
@@ -250,7 +271,7 @@ class _ProjectsPageState extends State<ProjectsPage> {
     if (result != true) return;
     if (!mounted) return;
 
-    await cubit.deleteProject(projectTitle);
+    await cubit.deleteProject(project.id);
     if (!mounted) return;
 
     setState(() {
@@ -266,27 +287,40 @@ class _ProjectsPageState extends State<ProjectsPage> {
     final wordsController = TextEditingController(text: '50000');
     final cubit = context.read<AppCubit>();
     final navigator = Navigator.of(context);
+    final formKey = GlobalKey<FormState>();
 
     final result = await showDialog<bool>(
       context: context,
       builder: (context) {
         return AlertDialog(
           title: const Text('Create project'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: titleController,
-                decoration: const InputDecoration(labelText: 'Title'),
-              ),
-              const SizedBox(height: 12),
-              TextField(
-                controller: wordsController,
-                keyboardType: TextInputType.number,
-                decoration:
-                    const InputDecoration(labelText: 'Expected word count'),
-              ),
-            ],
+          content: Form(
+            key: formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextFormField(
+                  controller: titleController,
+                  decoration: const InputDecoration(labelText: 'Title'),
+                  validator: (value) =>
+                      cubit.projectTitleValidationError(value ?? ''),
+                ),
+                const SizedBox(height: 12),
+                TextFormField(
+                  controller: wordsController,
+                  keyboardType: TextInputType.number,
+                  decoration:
+                      const InputDecoration(labelText: 'Expected word count'),
+                  validator: (value) {
+                    final count = int.tryParse(value?.trim() ?? '');
+                    if (count == null || count <= 0) {
+                      return 'Enter a positive whole number.';
+                    }
+                    return null;
+                  },
+                ),
+              ],
+            ),
           ),
           actions: [
             TextButton(
@@ -294,7 +328,11 @@ class _ProjectsPageState extends State<ProjectsPage> {
               child: const Text('Cancel'),
             ),
             ElevatedButton(
-              onPressed: () => Navigator.of(context).pop(true),
+              onPressed: () {
+                if (formKey.currentState!.validate()) {
+                  Navigator.of(context).pop(true);
+                }
+              },
               child: const Text('Create'),
             ),
           ],
@@ -304,12 +342,17 @@ class _ProjectsPageState extends State<ProjectsPage> {
 
     if (result != true) return;
     if (!mounted) return;
-    final title = titleController.text.trim().isEmpty
-        ? 'New project'
-        : titleController.text.trim();
-    final expected = int.tryParse(wordsController.text.trim()) ?? 50000;
-    cubit.saveProject(title: title, expectedWordCount: expected);
-    final created = cubit.state.projects.firstWhere((p) => p.title == title);
+    final title = titleController.text.trim();
+    final expected = int.parse(wordsController.text.trim());
+    try {
+      cubit.saveProject(title: title, expectedWordCount: expected);
+    } on StateError catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(error.message.toString())),
+      );
+      return;
+    }
+    final created = cubit.state.selectedProject!;
     cubit.selectProject(created);
     final saved = await saveProjectWithFeedback(
       context,

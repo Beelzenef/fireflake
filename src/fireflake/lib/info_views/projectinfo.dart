@@ -134,7 +134,14 @@ class _ProjectInfoPageState extends State<ProjectInfoPage> {
                                     if (value.trim().length < 3) {
                                       return 'Title must be at least 3 characters';
                                     }
-                                    return null;
+                                    final selected =
+                                        context.read<AppCubit>().state.selectedProject;
+                                    return context
+                                        .read<AppCubit>()
+                                        .projectTitleValidationError(
+                                          value,
+                                          excludingProjectId: selected?.id,
+                                        );
                                   },
                                 ),
                               ],

@@ -13,14 +13,14 @@ class AppState extends Equatable {
   final Project? selectedProject;
   final List<Scene> scenes;
   final List<Character> characters;
-  final String? currentProjectFilename;
+  final List<ProjectLoadIssue> projectLoadIssues;
 
   const AppState({
     this.projects = const [],
     this.selectedProject,
     this.scenes = const [],
     this.characters = const [],
-    this.currentProjectFilename,
+    this.projectLoadIssues = const [],
   });
 
   AppState copyWith({
@@ -28,20 +28,19 @@ class AppState extends Equatable {
     Project? selectedProject,
     List<Scene>? scenes,
     List<Character>? characters,
-    String? currentProjectFilename,
+    List<ProjectLoadIssue>? projectLoadIssues,
   }) =>
       AppState(
         projects: projects ?? this.projects,
         selectedProject: selectedProject ?? this.selectedProject,
         scenes: scenes ?? this.scenes,
         characters: characters ?? this.characters,
-        currentProjectFilename:
-            currentProjectFilename ?? this.currentProjectFilename,
+        projectLoadIssues: projectLoadIssues ?? this.projectLoadIssues,
       );
 
   @override
   List<Object?> get props =>
-      [projects, selectedProject, scenes, characters, currentProjectFilename];
+      [projects, selectedProject, scenes, characters, projectLoadIssues];
 }
 
 class AppCubit extends Cubit<AppState> {
@@ -50,8 +49,11 @@ class AppCubit extends Cubit<AppState> {
 
   Future<void> loadProjectsFromDisk() async {
     await _pendingSave;
-    final projects = await ProjectStorage.loadProjects();
-    emit(state.copyWith(projects: projects));
+    final result = await ProjectStorage.loadProjects();
+    emit(state.copyWith(
+      projects: result.projects,
+      projectLoadIssues: result.issues,
+    ));
   }
 
   void loadInitial(List<Project> projects) {
@@ -64,16 +66,14 @@ class AppCubit extends Cubit<AppState> {
       pendingScenes: scenes.map((scene) => scene.id).toList(),
       scenes: scenes,
     );
-    final filename = _generateFilename(project.title);
     final projects = state.projects
-        .map((item) => item.title == project.title ? synchronizedProject : item)
+        .map((item) => item.id == project.id ? synchronizedProject : item)
         .toList();
     emit(state.copyWith(
       projects: projects,
       selectedProject: synchronizedProject,
       scenes: scenes,
       characters: synchronizedProject.characters,
-      currentProjectFilename: filename,
     ));
   }
 
@@ -101,21 +101,32 @@ class AppCubit extends Cubit<AppState> {
     return mergedScenes;
   }
 
-  String _generateFilename(String title) {
-    final slug = title
-        .toLowerCase()
-        .replaceAll(RegExp(r'[^a-z0-9]+'), '-')
-        .replaceAll(RegExp(r'-+'), '-')
-        .trim();
-    final safe = slug.isEmpty ? 'project' : slug;
-    return '$safe.json';
+  String? projectTitleValidationError(
+    String title, {
+    String? excludingProjectId,
+  }) {
+    final normalizedTitle = title.trim().toLowerCase();
+    if (normalizedTitle.isEmpty) return 'Title is required.';
+    if (state.projects.any((project) =>
+        project.id != excludingProjectId &&
+        project.title.trim().toLowerCase() == normalizedTitle)) {
+      return 'A project with this title already exists.';
+    }
+    return null;
   }
 
-  Future<void> loadAndSelectProject(String title) async {
+  Future<void> loadAndSelectProject(String id) async {
     await _pendingSave;
-    final project = await ProjectStorage.loadProjectByTitle(title);
+    Project? project;
+    for (final candidate in state.projects) {
+      if (candidate.id == id) {
+        project = candidate;
+        break;
+      }
+    }
+    project ??= await ProjectStorage.loadProjectById(id);
     if (project == null) {
-      throw StateError('Project "$title" could not be found on disk.');
+      throw StateError('Project "$id" could not be found on disk.');
     }
     selectProject(project);
   }
@@ -129,14 +140,19 @@ class AppCubit extends Cubit<AppState> {
     if (selected == null) {
       throw StateError('Select a project before updating its information.');
     }
-    if (state.projects.any((project) =>
-        project.title != selected.title &&
-        _generateFilename(project.title) == _generateFilename(title))) {
-      throw StateError(
-          'Another project already uses the filename for "$title".');
+    final normalizedTitle = title.trim();
+    final titleError = projectTitleValidationError(
+      normalizedTitle,
+      excludingProjectId: selected.id,
+    );
+    if (titleError != null) {
+      throw StateError(titleError);
+    }
+    if (expectedWordCount <= 0) {
+      throw StateError('Expected word count must be greater than zero.');
     }
     final updated = selected.copyWith(
-      title: title,
+      title: normalizedTitle,
       subtitle: subtitle,
       expectedWordCount: expectedWordCount,
       scenes: state.scenes,
@@ -145,7 +161,7 @@ class AppCubit extends Cubit<AppState> {
     emit(state.copyWith(
       selectedProject: updated,
       projects: state.projects
-          .map((project) => project.title == selected.title ? updated : project)
+          .map((project) => project.id == selected.id ? updated : project)
           .toList(),
     ));
   }
@@ -162,34 +178,29 @@ class AppCubit extends Cubit<AppState> {
     List<Scene>? scenes,
     List<Character>? characters,
   }) {
+    final normalizedTitle = title.trim();
+    final titleError = projectTitleValidationError(normalizedTitle);
+    if (titleError != null) {
+      throw StateError(titleError);
+    }
+    if (expectedWordCount <= 0) {
+      throw StateError('Expected word count must be greater than zero.');
+    }
     final updated = List<Project>.from(state.projects);
-    final idx = updated.indexWhere((p) => p.title == title);
-    Project base = idx >= 0
-        ? updated[idx]
-        : Project(
-            title: title,
-            subtitle: subtitle,
-            expectedWordCount: expectedWordCount,
-          );
-
-    final project = base.copyWith(
-      title: title,
+    final project = Project(
+      title: normalizedTitle,
       subtitle: subtitle,
       expectedWordCount: expectedWordCount,
-      summary: summary,
-      act1: act1,
-      act2: act2,
-      act3: act3,
-      finale: finale,
-      scenes: scenes ?? state.scenes,
-      characters: characters ?? state.characters,
+      summary: summary ?? '',
+      act1: act1 ?? '',
+      act2: act2 ?? '',
+      act3: act3 ?? '',
+      finale: finale ?? '',
+      scenes: scenes ?? const [],
+      characters: characters ?? const [],
     );
 
-    if (idx >= 0) {
-      updated[idx] = project;
-    } else {
-      updated.add(project);
-    }
+    updated.add(project);
     emit(state.copyWith(projects: updated, selectedProject: project));
   }
 
@@ -214,7 +225,7 @@ class AppCubit extends Cubit<AppState> {
       characters: characters ?? state.characters,
     );
     final updatedProjects = state.projects
-        .map((p) => p.title == selected.title ? updatedProject : p)
+        .map((p) => p.id == selected.id ? updatedProject : p)
         .toList();
     emit(state.copyWith(
         projects: updatedProjects, selectedProject: updatedProject));
@@ -235,7 +246,7 @@ class AppCubit extends Cubit<AppState> {
       expandedFinale: expandedFinale ?? selected.expandedFinale,
     );
     final updatedProjects = state.projects
-        .map((p) => p.title == selected.title ? updatedProject : p)
+        .map((p) => p.id == selected.id ? updatedProject : p)
         .toList();
     emit(state.copyWith(
         projects: updatedProjects, selectedProject: updatedProject));
@@ -247,7 +258,7 @@ class AppCubit extends Cubit<AppState> {
     final updatedProject =
         selected.copyWith(extendedArgument: extendedArgument);
     final updatedProjects = state.projects
-        .map((p) => p.title == selected.title ? updatedProject : p)
+        .map((p) => p.id == selected.id ? updatedProject : p)
         .toList();
     emit(state.copyWith(
         projects: updatedProjects, selectedProject: updatedProject));
@@ -262,7 +273,7 @@ class AppCubit extends Cubit<AppState> {
       scenes: scenes,
     );
     final updatedProjects = state.projects
-        .map((p) => p.title == selected.title ? updatedProject : p)
+        .map((p) => p.id == selected.id ? updatedProject : p)
         .toList();
     emit(state.copyWith(
       projects: updatedProjects,
@@ -322,7 +333,7 @@ class AppCubit extends Cubit<AppState> {
     );
     final updatedProjects = state.projects
         .map((project) =>
-            project.title == selected.title ? updatedProject : project)
+            project.id == selected.id ? updatedProject : project)
         .toList();
     emit(state.copyWith(
       projects: updatedProjects,
@@ -385,7 +396,7 @@ class AppCubit extends Cubit<AppState> {
     final updatedProject = selected.copyWith(protagonist: protagonist);
     final updatedProjects = state.projects
         .map((project) =>
-            project.title == selected.title ? updatedProject : project)
+            project.id == selected.id ? updatedProject : project)
         .toList();
     emit(state.copyWith(
       projects: updatedProjects,
@@ -421,15 +432,12 @@ class AppCubit extends Cubit<AppState> {
       scenes: state.scenes,
       characters: state.characters,
     );
-    final previousFilename = state.currentProjectFilename;
-    final filename = _generateFilename(merged.title);
     final projects = state.projects
-        .map((p) => p.title == merged.title ? merged : p)
+        .map((p) => p.id == merged.id ? merged : p)
         .toList();
     emit(state.copyWith(
       projects: projects,
       selectedProject: merged,
-      currentProjectFilename: filename,
     ));
 
     final previousSave = _pendingSave;
@@ -437,20 +445,17 @@ class AppCubit extends Cubit<AppState> {
     _pendingSave = finished.future;
     try {
       await previousSave;
-      await ProjectStorage.saveProject(merged, filename);
-      if (previousFilename != null && previousFilename != filename) {
-        await ProjectStorage.deleteProjectFile(previousFilename);
-      }
+      await ProjectStorage.saveProject(merged);
     } finally {
       finished.complete();
     }
   }
 
-  Future<void> deleteProject(String title) async {
+  Future<void> deleteProject(String id) async {
     await _pendingSave;
-    await ProjectStorage.deleteProject(title);
-    final updated = state.projects.where((p) => p.title != title).toList();
-    emit(state.selectedProject?.title == title
+    await ProjectStorage.deleteProject(id);
+    final updated = state.projects.where((p) => p.id != id).toList();
+    emit(state.selectedProject?.id == id
         ? AppState(projects: updated)
         : state.copyWith(projects: updated));
   }
