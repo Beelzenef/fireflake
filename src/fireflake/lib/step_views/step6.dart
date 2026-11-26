@@ -41,6 +41,7 @@ class _StepSixPageState extends State<StepSixPage> {
     final cubit = context.read<AppCubit>();
     await saveProjectWithFeedback(
       context,
+      dirtySection: 'step6',
       update: () =>
           cubit.updateExtendedArgument(_argumentController.text.trim()),
       successMessage: 'Extended argument saved',
@@ -104,6 +105,9 @@ class _StepSixPageState extends State<StepSixPage> {
                             const SizedBox(height: 12),
                             TextFormField(
                               controller: _argumentController,
+                              onChanged: (_) => context
+                                  .read<AppCubit>()
+                                  .markProjectDirty('step6'),
                               maxLines: 15,
                               decoration: const InputDecoration(
                                 labelText: 'Full expanded argument',

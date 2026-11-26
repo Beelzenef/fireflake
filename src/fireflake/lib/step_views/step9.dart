@@ -314,6 +314,7 @@ class _StepNinePageState extends State<StepNinePage>
                 final navigator = Navigator.of(context);
                 final saved = await saveProjectWithFeedback(
                   context,
+                  dirtySection: 'step9',
                   update: () => cubit.removeSceneAt(index),
                   successMessage: 'Scene deleted',
                 );
@@ -331,6 +332,7 @@ class _StepNinePageState extends State<StepNinePage>
     final cubit = context.read<AppCubit>();
     await saveProjectWithFeedback(
       context,
+      dirtySection: 'step9',
       update: () => cubit.moveSceneUp(index),
       successMessage: 'Scene order saved',
     );
@@ -340,6 +342,7 @@ class _StepNinePageState extends State<StepNinePage>
     final cubit = context.read<AppCubit>();
     await saveProjectWithFeedback(
       context,
+      dirtySection: 'step9',
       update: () => cubit.moveSceneDown(index),
       successMessage: 'Scene order saved',
     );
@@ -363,6 +366,7 @@ class _StepNinePageState extends State<StepNinePage>
   }
 
   void _closeSidePanel() {
+    context.read<AppCubit>().discardProjectDraft('step9');
     _animationController.reverse().then((_) {
       if (!mounted) return;
       setState(() {
@@ -384,6 +388,7 @@ class _StepNinePageState extends State<StepNinePage>
       final editingIndex = _editingIndex;
       final saved = await saveProjectWithFeedback(
         context,
+        dirtySection: 'step9',
         update: () {
           if (editingIndex != null) {
             cubit.updateScene(editingIndex, newScene);
@@ -439,6 +444,8 @@ class _StepNinePageState extends State<StepNinePage>
                 children: [
                   TextFormField(
                     controller: _idController,
+                    onChanged: (_) =>
+                        context.read<AppCubit>().markProjectDirty('step9'),
                     decoration: const InputDecoration(
                       labelText: 'Scene name',
                       border: OutlineInputBorder(),
@@ -453,6 +460,8 @@ class _StepNinePageState extends State<StepNinePage>
                   const SizedBox(height: 16),
                   TextFormField(
                     controller: _chapterController,
+                    onChanged: (_) =>
+                        context.read<AppCubit>().markProjectDirty('step9'),
                     decoration: const InputDecoration(
                       labelText: 'Chapter',
                       border: OutlineInputBorder(),
@@ -468,6 +477,8 @@ class _StepNinePageState extends State<StepNinePage>
                   Expanded(
                     child: TextFormField(
                       controller: _summaryController,
+                      onChanged: (_) =>
+                          context.read<AppCubit>().markProjectDirty('step9'),
                       decoration: const InputDecoration(
                         labelText: 'Scene summary',
                         border: OutlineInputBorder(),

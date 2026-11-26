@@ -62,6 +62,7 @@ class _StepEightPageState extends State<StepEightPage> {
 
   void _removeSceneField(int index) {
     if (_sceneControllers.length > 1) {
+      context.read<AppCubit>().markProjectDirty('step8');
       setState(() {
         _sceneControllers[index].dispose();
         _sceneControllers.removeAt(index);
@@ -80,6 +81,7 @@ class _StepEightPageState extends State<StepEightPage> {
 
     await saveProjectWithFeedback(
       context,
+      dirtySection: 'step8',
       update: () => cubit.updatePendingScenes(scenes),
       successMessage: 'Scene list saved',
     );
@@ -163,6 +165,9 @@ class _StepEightPageState extends State<StepEightPage> {
                                 Expanded(
                                   child: TextFormField(
                                     controller: controller,
+                                    onChanged: (_) => context
+                                        .read<AppCubit>()
+                                        .markProjectDirty('step8'),
                                     decoration: InputDecoration(
                                       labelText: 'Scene ${index + 1}',
                                       hintText: 'Briefly describe the scene...',
@@ -191,7 +196,10 @@ class _StepEightPageState extends State<StepEightPage> {
                     }),
                     const SizedBox(height: 8),
                     OutlinedButton.icon(
-                      onPressed: _addSceneField,
+                      onPressed: () {
+                        context.read<AppCubit>().markProjectDirty('step8');
+                        _addSceneField();
+                      },
                       icon: const Icon(Icons.add),
                       label: const Text('Add scene'),
                     ),

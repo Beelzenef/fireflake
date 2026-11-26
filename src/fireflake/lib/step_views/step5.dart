@@ -69,6 +69,7 @@ class _StepFivePageState extends State<StepFivePage> {
 
   void _removeCharacterField(int index) {
     if (_characterControllers.length > 1) {
+      context.read<AppCubit>().markProjectDirty('step5');
       setState(() {
         _characterControllers[index]['name']?.dispose();
         _characterControllers[index]['description']?.dispose();
@@ -92,6 +93,7 @@ class _StepFivePageState extends State<StepFivePage> {
 
     await saveProjectWithFeedback(
       context,
+      dirtySection: 'step5',
       update: () => cubit.setCharacters(currentCharacters),
       successMessage: 'Main characters saved',
     );
@@ -156,6 +158,9 @@ class _StepFivePageState extends State<StepFivePage> {
                             const SizedBox(height: 12),
                             TextFormField(
                               controller: controllers['name'],
+                              onChanged: (_) => context
+                                  .read<AppCubit>()
+                                  .markProjectDirty('step5'),
                               decoration: const InputDecoration(
                                 labelText: 'Character name',
                                 hintText: 'E.g. Aragorn',
@@ -170,6 +175,9 @@ class _StepFivePageState extends State<StepFivePage> {
                             const SizedBox(height: 12),
                             TextFormField(
                               controller: controllers['description'],
+                              onChanged: (_) => context
+                                  .read<AppCubit>()
+                                  .markProjectDirty('step5'),
                               maxLines: 4,
                               decoration: const InputDecoration(
                                 labelText: 'Character description',
@@ -191,7 +199,10 @@ class _StepFivePageState extends State<StepFivePage> {
                 }),
                 if (_characterControllers.length < _maxCharacters)
                   OutlinedButton.icon(
-                    onPressed: _addCharacterField,
+                    onPressed: () {
+                      context.read<AppCubit>().markProjectDirty('step5');
+                      _addCharacterField();
+                    },
                     icon: const Icon(Icons.add),
                     label: const Text('Add character'),
                   ),

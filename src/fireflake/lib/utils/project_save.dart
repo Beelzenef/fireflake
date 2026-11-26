@@ -6,13 +6,14 @@ import '../state/app_cubit.dart';
 Future<bool> saveProjectWithFeedback(
   BuildContext context, {
   VoidCallback? update,
+  String? dirtySection,
   required String successMessage,
 }) async {
   final cubit = context.read<AppCubit>();
   final messenger = ScaffoldMessenger.of(context);
   try {
     update?.call();
-    await cubit.saveCurrentProjectToDisk();
+    await cubit.saveCurrentProjectToDisk(dirtySection: dirtySection);
   } catch (error, stackTrace) {
     debugPrint('Error saving project: $error\n$stackTrace');
     if (context.mounted) {

@@ -52,6 +52,7 @@ class _StepTwoPageState extends State<StepTwoPage> {
     if (_formKey.currentState?.validate() != true) return;
     final saved = await saveProjectWithFeedback(
       context,
+      dirtySection: 'step2',
       update: () => context.read<AppCubit>().updateProjectSummary(
             summary: _summaryController.text.trim() == _loadedSummary
                 ? null
@@ -95,6 +96,8 @@ class _StepTwoPageState extends State<StepTwoPage> {
                   title: 'Overall summary',
                   child: TextFormField(
                     controller: _summaryController,
+                    onChanged: (_) =>
+                        context.read<AppCubit>().markProjectDirty('step2'),
                     maxLines: 4,
                     decoration: const InputDecoration(
                       labelText: 'Overall project summary',
@@ -112,6 +115,8 @@ class _StepTwoPageState extends State<StepTwoPage> {
                   title: 'Act I',
                   child: TextFormField(
                     controller: _act1Controller,
+                    onChanged: (_) =>
+                        context.read<AppCubit>().markProjectDirty('step2'),
                     maxLines: 3,
                     decoration: const InputDecoration(
                       labelText: 'Setup / Act I',
@@ -129,6 +134,8 @@ class _StepTwoPageState extends State<StepTwoPage> {
                   title: 'Act II',
                   child: TextFormField(
                     controller: _act2Controller,
+                    onChanged: (_) =>
+                        context.read<AppCubit>().markProjectDirty('step2'),
                     maxLines: 3,
                     decoration: const InputDecoration(
                       labelText: 'Confrontation / Act II',
@@ -146,6 +153,8 @@ class _StepTwoPageState extends State<StepTwoPage> {
                   title: 'Act III',
                   child: TextFormField(
                     controller: _act3Controller,
+                    onChanged: (_) =>
+                        context.read<AppCubit>().markProjectDirty('step2'),
                     maxLines: 3,
                     decoration: const InputDecoration(
                       labelText: 'Climax / Act III',
@@ -163,6 +172,8 @@ class _StepTwoPageState extends State<StepTwoPage> {
                   title: 'Finale',
                   child: TextFormField(
                     controller: _finaleController,
+                    onChanged: (_) =>
+                        context.read<AppCubit>().markProjectDirty('step2'),
                     maxLines: 3,
                     decoration: const InputDecoration(
                       labelText: 'Resolution / Finale',

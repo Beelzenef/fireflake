@@ -56,6 +56,7 @@ class _StepFourPageState extends State<StepFourPage> {
     final cubit = context.read<AppCubit>();
     await saveProjectWithFeedback(
       context,
+      dirtySection: 'step4',
       update: () => cubit.updateExpandedParagraphs(
         expandedAct1: _controllers['act1']!.text.trim(),
         expandedAct2: _controllers['act2']!.text.trim(),
@@ -170,6 +171,8 @@ class _StepFourPageState extends State<StepFourPage> {
             const SizedBox(height: 12),
             TextFormField(
               controller: _controllers[key],
+              onChanged: (_) =>
+                  context.read<AppCubit>().markProjectDirty('step4'),
               maxLines: ResponsiveHelper.isMobile(context) ? 4 : 6,
               decoration: InputDecoration(
                 labelText: 'Full paragraph for $title',

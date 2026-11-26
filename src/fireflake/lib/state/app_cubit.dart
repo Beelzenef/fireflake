@@ -8,12 +8,16 @@ import '../models/scene.dart';
 import '../models/character.dart';
 import '../models/protagonist.dart';
 
+enum ProjectSaveStatus { saved, unsaved, saving, error }
+
 class AppState extends Equatable {
   final List<Project> projects;
   final Project? selectedProject;
   final List<Scene> scenes;
   final List<Character> characters;
   final List<ProjectLoadIssue> projectLoadIssues;
+  final Set<String> dirtySections;
+  final ProjectSaveStatus saveStatus;
 
   const AppState({
     this.projects = const [],
@@ -21,6 +25,8 @@ class AppState extends Equatable {
     this.scenes = const [],
     this.characters = const [],
     this.projectLoadIssues = const [],
+    this.dirtySections = const {},
+    this.saveStatus = ProjectSaveStatus.saved,
   });
 
   AppState copyWith({
@@ -29,6 +35,8 @@ class AppState extends Equatable {
     List<Scene>? scenes,
     List<Character>? characters,
     List<ProjectLoadIssue>? projectLoadIssues,
+    Set<String>? dirtySections,
+    ProjectSaveStatus? saveStatus,
   }) =>
       AppState(
         projects: projects ?? this.projects,
@@ -36,16 +44,27 @@ class AppState extends Equatable {
         scenes: scenes ?? this.scenes,
         characters: characters ?? this.characters,
         projectLoadIssues: projectLoadIssues ?? this.projectLoadIssues,
+        dirtySections: dirtySections ?? this.dirtySections,
+        saveStatus: saveStatus ?? this.saveStatus,
       );
 
   @override
-  List<Object?> get props =>
-      [projects, selectedProject, scenes, characters, projectLoadIssues];
+  List<Object?> get props => [
+        projects,
+        selectedProject,
+        scenes,
+        characters,
+        projectLoadIssues,
+        dirtySections,
+        saveStatus,
+      ];
 }
 
 class AppCubit extends Cubit<AppState> {
   AppCubit() : super(const AppState());
   Future<void> _pendingSave = Future<void>.value();
+  final Map<String, int> _dirtySectionRevisions = {};
+  int _saveOperation = 0;
 
   Future<void> loadProjectsFromDisk() async {
     await _pendingSave;
@@ -74,6 +93,36 @@ class AppCubit extends Cubit<AppState> {
       selectedProject: synchronizedProject,
       scenes: scenes,
       characters: synchronizedProject.characters,
+      dirtySections: const {},
+      saveStatus: ProjectSaveStatus.saved,
+    ));
+    _dirtySectionRevisions.clear();
+    _saveOperation++;
+  }
+
+  void markProjectDirty(String section) {
+    if (state.selectedProject == null) return;
+    _dirtySectionRevisions[section] =
+        (_dirtySectionRevisions[section] ?? 0) + 1;
+    _saveOperation++;
+    emit(state.copyWith(
+      dirtySections: {...state.dirtySections, section},
+      saveStatus: ProjectSaveStatus.unsaved,
+    ));
+  }
+
+  void discardProjectDraft(String section) {
+    if (!state.dirtySections.contains(section)) return;
+    _dirtySectionRevisions[section] =
+        (_dirtySectionRevisions[section] ?? 0) + 1;
+    _saveOperation++;
+    final dirtySections = Set<String>.from(state.dirtySections)
+      ..remove(section);
+    emit(state.copyWith(
+      dirtySections: dirtySections,
+      saveStatus: dirtySections.isEmpty
+          ? ProjectSaveStatus.saved
+          : ProjectSaveStatus.unsaved,
     ));
   }
 
@@ -332,8 +381,7 @@ class AppCubit extends Cubit<AppState> {
       pendingScenes: scenes.map((scene) => scene.id).toList(),
     );
     final updatedProjects = state.projects
-        .map((project) =>
-            project.id == selected.id ? updatedProject : project)
+        .map((project) => project.id == selected.id ? updatedProject : project)
         .toList();
     emit(state.copyWith(
       projects: updatedProjects,
@@ -395,8 +443,7 @@ class AppCubit extends Cubit<AppState> {
     if (selected == null) return;
     final updatedProject = selected.copyWith(protagonist: protagonist);
     final updatedProjects = state.projects
-        .map((project) =>
-            project.id == selected.id ? updatedProject : project)
+        .map((project) => project.id == selected.id ? updatedProject : project)
         .toList();
     emit(state.copyWith(
       projects: updatedProjects,
@@ -409,11 +456,14 @@ class AppCubit extends Cubit<AppState> {
     emit(state.copyWith(characters: updated));
   }
 
-  Future<void> saveCurrentProjectToDisk() async {
+  Future<void> saveCurrentProjectToDisk({String? dirtySection}) async {
     final project = state.selectedProject;
     if (project == null) {
       throw StateError('Select a project before saving.');
     }
+    final operation = ++_saveOperation;
+    final sectionRevision =
+        dirtySection == null ? null : _dirtySectionRevisions[dirtySection] ?? 0;
     final merged = project.copyWith(
       title: project.title,
       subtitle: project.subtitle,
@@ -432,9 +482,8 @@ class AppCubit extends Cubit<AppState> {
       scenes: state.scenes,
       characters: state.characters,
     );
-    final projects = state.projects
-        .map((p) => p.id == merged.id ? merged : p)
-        .toList();
+    final projects =
+        state.projects.map((p) => p.id == merged.id ? merged : p).toList();
     emit(state.copyWith(
       projects: projects,
       selectedProject: merged,
@@ -443,9 +492,36 @@ class AppCubit extends Cubit<AppState> {
     final previousSave = _pendingSave;
     final finished = Completer<void>();
     _pendingSave = finished.future;
+    emit(state.copyWith(saveStatus: ProjectSaveStatus.saving));
     try {
       await previousSave;
       await ProjectStorage.saveProject(merged);
+      if (dirtySection != null &&
+          _dirtySectionRevisions[dirtySection] == sectionRevision) {
+        final dirtySections = Set<String>.from(state.dirtySections)
+          ..remove(dirtySection);
+        if (operation == _saveOperation) {
+          emit(state.copyWith(
+            dirtySections: dirtySections,
+            saveStatus: dirtySections.isEmpty
+                ? ProjectSaveStatus.saved
+                : ProjectSaveStatus.unsaved,
+          ));
+        } else if (dirtySections.length != state.dirtySections.length) {
+          emit(state.copyWith(dirtySections: dirtySections));
+        }
+      } else if (operation == _saveOperation) {
+        emit(state.copyWith(
+          saveStatus: state.dirtySections.isEmpty
+              ? ProjectSaveStatus.saved
+              : ProjectSaveStatus.unsaved,
+        ));
+      }
+    } catch (_) {
+      if (operation == _saveOperation) {
+        emit(state.copyWith(saveStatus: ProjectSaveStatus.error));
+      }
+      rethrow;
     } finally {
       finished.complete();
     }

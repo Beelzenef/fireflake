@@ -40,6 +40,7 @@ class _StepOnePageState extends State<StepOnePage> {
     if (_formKey.currentState?.validate() != true) return;
     final saved = await saveProjectWithFeedback(
       context,
+      dirtySection: 'step1',
       update: () => context.read<AppCubit>().updateProjectSummary(
             summary: _summaryController.text.trim() == _loadedSummary
                 ? null
@@ -91,6 +92,9 @@ class _StepOnePageState extends State<StepOnePage> {
                         const SizedBox(height: 12),
                         TextFormField(
                           controller: _summaryController,
+                          onChanged: (_) => context
+                              .read<AppCubit>()
+                              .markProjectDirty('step1'),
                           maxLines: 3,
                           decoration: const InputDecoration(
                             labelText: 'Your story in one sentence',

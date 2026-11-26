@@ -33,6 +33,7 @@ class _ProjectInfoPageState extends State<ProjectInfoPage> {
       final wordCount = int.parse(_wordCountController.text);
       await saveProjectWithFeedback(
         context,
+        dirtySection: 'info',
         update: () => cubit.updateProjectInfo(
           title: _titleController.text.trim(),
           subtitle: _subtitleController.text.trim(),
@@ -121,6 +122,9 @@ class _ProjectInfoPageState extends State<ProjectInfoPage> {
                                 const SizedBox(height: 12),
                                 TextFormField(
                                   controller: _titleController,
+                                  onChanged: (_) => context
+                                      .read<AppCubit>()
+                                      .markProjectDirty('info'),
                                   decoration: const InputDecoration(
                                     labelText: 'Title',
                                     hintText: 'E.g. The Shadow Kingdom',
@@ -134,8 +138,10 @@ class _ProjectInfoPageState extends State<ProjectInfoPage> {
                                     if (value.trim().length < 3) {
                                       return 'Title must be at least 3 characters';
                                     }
-                                    final selected =
-                                        context.read<AppCubit>().state.selectedProject;
+                                    final selected = context
+                                        .read<AppCubit>()
+                                        .state
+                                        .selectedProject;
                                     return context
                                         .read<AppCubit>()
                                         .projectTitleValidationError(
@@ -178,6 +184,9 @@ class _ProjectInfoPageState extends State<ProjectInfoPage> {
                                 const SizedBox(height: 12),
                                 TextFormField(
                                   controller: _subtitleController,
+                                  onChanged: (_) => context
+                                      .read<AppCubit>()
+                                      .markProjectDirty('info'),
                                   decoration: const InputDecoration(
                                     labelText: 'Subtitle',
                                     hintText: 'E.g. An epic fantasy adventure',
@@ -228,6 +237,9 @@ class _ProjectInfoPageState extends State<ProjectInfoPage> {
                                 const SizedBox(height: 12),
                                 TextFormField(
                                   controller: _wordCountController,
+                                  onChanged: (_) => context
+                                      .read<AppCubit>()
+                                      .markProjectDirty('info'),
                                   decoration: const InputDecoration(
                                     labelText: 'Word count',
                                     hintText: 'E.g. 80000',

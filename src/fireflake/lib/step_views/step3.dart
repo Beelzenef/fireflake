@@ -39,6 +39,7 @@ class _StepThreePageState extends State<StepThreePage> {
   }
 
   void _addHistoryField() {
+    context.read<AppCubit>().markProjectDirty('step3');
     setState(() {
       _historyControllers.add(TextEditingController());
     });
@@ -46,6 +47,7 @@ class _StepThreePageState extends State<StepThreePage> {
 
   void _removeHistoryField(int index) {
     if (_historyControllers.length > 1) {
+      context.read<AppCubit>().markProjectDirty('step3');
       setState(() {
         _historyControllers[index].dispose();
         _historyControllers.removeAt(index);
@@ -54,6 +56,7 @@ class _StepThreePageState extends State<StepThreePage> {
   }
 
   void _addFinalHistoryField() {
+    context.read<AppCubit>().markProjectDirty('step3');
     setState(() {
       _finalHistoryControllers.add(TextEditingController());
     });
@@ -61,6 +64,7 @@ class _StepThreePageState extends State<StepThreePage> {
 
   void _removeFinalHistoryField(int index) {
     if (_finalHistoryControllers.length > 1) {
+      context.read<AppCubit>().markProjectDirty('step3');
       setState(() {
         _finalHistoryControllers[index].dispose();
         _finalHistoryControllers.removeAt(index);
@@ -101,6 +105,7 @@ class _StepThreePageState extends State<StepThreePage> {
     final cubit = context.read<AppCubit>();
     await saveProjectWithFeedback(
       context,
+      dirtySection: 'step3',
       update: () => cubit.updateProtagonist(Protagonist(
         storyElements: _historyControllers
             .map((controller) => controller.text.trim())
@@ -148,6 +153,9 @@ class _StepThreePageState extends State<StepThreePage> {
                         Expanded(
                           child: TextFormField(
                             controller: controller,
+                            onChanged: (_) => context
+                                .read<AppCubit>()
+                                .markProjectDirty('step3'),
                             decoration: InputDecoration(
                               labelText: 'Story element ${index + 1}',
                               border: const OutlineInputBorder(),
@@ -176,6 +184,8 @@ class _StepThreePageState extends State<StepThreePage> {
                 const SizedBox(height: 20),
                 TextFormField(
                   controller: _motivationsController,
+                  onChanged: (_) =>
+                      context.read<AppCubit>().markProjectDirty('step3'),
                   decoration: const InputDecoration(
                     labelText: 'Motivations',
                     border: OutlineInputBorder(),
@@ -191,6 +201,8 @@ class _StepThreePageState extends State<StepThreePage> {
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _objectiveController,
+                  onChanged: (_) =>
+                      context.read<AppCubit>().markProjectDirty('step3'),
                   decoration: const InputDecoration(
                     labelText: 'Goal',
                     border: OutlineInputBorder(),
@@ -206,6 +218,8 @@ class _StepThreePageState extends State<StepThreePage> {
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _conflictController,
+                  onChanged: (_) =>
+                      context.read<AppCubit>().markProjectDirty('step3'),
                   decoration: const InputDecoration(
                     labelText: 'Conflict',
                     border: OutlineInputBorder(),
@@ -221,6 +235,8 @@ class _StepThreePageState extends State<StepThreePage> {
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _epiphanyController,
+                  onChanged: (_) =>
+                      context.read<AppCubit>().markProjectDirty('step3'),
                   decoration: const InputDecoration(
                     labelText: 'Epiphany',
                     border: OutlineInputBorder(),
@@ -249,6 +265,9 @@ class _StepThreePageState extends State<StepThreePage> {
                         Expanded(
                           child: TextFormField(
                             controller: controller,
+                            onChanged: (_) => context
+                                .read<AppCubit>()
+                                .markProjectDirty('step3'),
                             decoration: InputDecoration(
                               labelText: 'Final story element ${index + 1}',
                               border: const OutlineInputBorder(),
