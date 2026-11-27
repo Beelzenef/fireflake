@@ -4,6 +4,52 @@ import 'package:fireflake/state/app_cubit.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  group('AppCubit project validation', () {
+    test('rejects duplicate titles and non-positive word counts', () async {
+      final cubit = AppCubit();
+      cubit.saveProject(title: '  My Novel ', expectedWordCount: 50000);
+
+      expect(
+        () => cubit.saveProject(title: 'my novel', expectedWordCount: 50000),
+        throwsStateError,
+      );
+      expect(
+        () => cubit.saveProject(title: 'Other Novel', expectedWordCount: 0),
+        throwsStateError,
+      );
+      expect(cubit.state.projects, hasLength(1));
+
+      await cubit.close();
+    });
+
+    test('rejects duplicate titles and invalid word counts on rename', () async {
+      final first = Project(title: 'First', expectedWordCount: 50000);
+      final second = Project(title: 'Second', expectedWordCount: 60000);
+      final cubit = AppCubit()..loadInitial([first, second]);
+      cubit.selectProject(second);
+
+      expect(
+        () => cubit.updateProjectInfo(
+          title: ' first ',
+          subtitle: '',
+          expectedWordCount: 60000,
+        ),
+        throwsStateError,
+      );
+      expect(
+        () => cubit.updateProjectInfo(
+          title: 'Renamed',
+          subtitle: '',
+          expectedWordCount: -1,
+        ),
+        throwsStateError,
+      );
+      expect(cubit.state.selectedProject!.title, 'Second');
+
+      await cubit.close();
+    });
+  });
+
   group('AppCubit protagonist worksheet', () {
     test('updates the selected project without changing the cast', () async {
       final project = Project(

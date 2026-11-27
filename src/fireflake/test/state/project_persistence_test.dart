@@ -78,10 +78,11 @@ void main() {
     await Future.wait([firstSave, secondSave, thirdSave]);
 
     expect(cubit.state.selectedProject!.toJson(), expected);
+    final projectId = cubit.state.selectedProject!.id;
     final reopened = AppCubit();
     addTearDown(reopened.close);
     await reopened.loadProjectsFromDisk();
-    await reopened.loadAndSelectProject('Novel');
+    await reopened.loadAndSelectProject(projectId);
     expect(reopened.state.selectedProject!.toJson(), expected);
     expect(reopened.state.characters.single.name, 'Hero');
     expect(reopened.state.scenes.single.summary, 'Narrative summary');
@@ -89,7 +90,7 @@ void main() {
     reopened.moveSceneUp(0);
     reopened.removeSceneAt(0);
     await reopened.saveCurrentProjectToDisk();
-    await reopened.loadAndSelectProject('Novel');
+    await reopened.loadAndSelectProject(projectId);
     expect(reopened.state.scenes, isEmpty);
     expect(reopened.state.selectedProject!.pendingScenes, isEmpty);
     expect(reopened.state.selectedProject!.act1, 'Act one');
@@ -133,7 +134,7 @@ void main() {
     final reopened = AppCubit();
     addTearDown(reopened.close);
     await reopened.loadProjectsFromDisk();
-    await reopened.loadAndSelectProject('Novel');
+    await reopened.loadAndSelectProject(project.id);
     expect(reopened.state.selectedProject!.pendingScenes, ['Updated opening']);
     expect(reopened.state.scenes.single.id, 'Updated opening');
     expect(reopened.state.scenes.single.chapter, 'Chapter 4');
@@ -187,7 +188,7 @@ void main() {
     expect(cubit.state.selectedProject!.pendingScenes,
         ['Detailed-only scene', 'Added in Step 9']);
     await cubit.saveCurrentProjectToDisk();
-    await cubit.loadAndSelectProject('Legacy');
+    await cubit.loadAndSelectProject(project.id);
     expect(cubit.state.scenes.map((scene) => scene.id),
         ['Detailed-only scene', 'Added in Step 9']);
     expect(cubit.state.selectedProject!.pendingScenes,
@@ -209,7 +210,7 @@ void main() {
     addTearDown(reopened.close);
     await reopened.loadProjectsFromDisk();
     expect(reopened.state.projects, hasLength(1));
-    await reopened.loadAndSelectProject('Renamed novel');
+    await reopened.loadAndSelectProject(reopened.state.projects.single.id);
     expect(reopened.state.selectedProject!.summary, 'Summary');
     expect(reopened.state.selectedProject!.act1, 'Act');
     expect(reopened.state.selectedProject!.finale, 'Ending');
@@ -223,11 +224,25 @@ void main() {
     await expectLater(empty.saveCurrentProjectToDisk(), throwsStateError);
   });
 
+  test('saving one section leaves other unsaved drafts marked', () async {
+    cubit
+      ..markProjectDirty('step1')
+      ..markProjectDirty('step2');
+
+    await cubit.saveCurrentProjectToDisk(dirtySection: 'step1');
+    expect(cubit.state.dirtySections, {'step2'});
+    expect(cubit.state.saveStatus, ProjectSaveStatus.unsaved);
+
+    await cubit.saveCurrentProjectToDisk(dirtySection: 'step2');
+    expect(cubit.state.dirtySections, isEmpty);
+    expect(cubit.state.saveStatus, ProjectSaveStatus.saved);
+  });
+
   test('deleting waits for pending writes and clears the selected project',
       () async {
     cubit.updateProjectSummary(summary: 'Summary');
     final save = cubit.saveCurrentProjectToDisk();
-    await cubit.deleteProject('Novel');
+    await cubit.deleteProject(cubit.state.selectedProject!.id);
     await save;
     expect(cubit.state.selectedProject, isNull);
     await expectLater(cubit.saveCurrentProjectToDisk(), throwsStateError);

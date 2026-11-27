@@ -4,6 +4,26 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('Project protagonist serialization', () {
+    test('serializes stable identity and format version', () {
+      final project = Project(title: 'Test Project', expectedWordCount: 50000);
+
+      final restored = Project.fromJson(project.toJson());
+
+      expect(restored.id, project.id);
+      expect(project.toJson()['formatVersion'], Project.currentFormatVersion);
+    });
+
+    test('rejects project files from a newer unsupported format', () {
+      expect(
+        () => Project.fromJson({
+          'formatVersion': Project.currentFormatVersion + 1,
+          'title': 'Future Project',
+          'expectedWordCount': 50000,
+        }),
+        throwsFormatException,
+      );
+    });
+
     test('round-trips the complete protagonist worksheet', () {
       final project = Project(
         title: 'Test Project',

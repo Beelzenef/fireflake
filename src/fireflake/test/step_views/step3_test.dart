@@ -65,7 +65,7 @@ void main() {
     await tester.pump();
 
     final file = File(
-        '${documents.path}${Platform.pathSeparator}fireflake${Platform.pathSeparator}projects${Platform.pathSeparator}atp.json');
+        '${documents.path}${Platform.pathSeparator}fireflake${Platform.pathSeparator}projects${Platform.pathSeparator}project-${project.id}.json');
     final json = await tester.runAsync(() async =>
         jsonDecode(await file.readAsString()) as Map<String, dynamic>);
     expect((json!['protagonist'] as Map<String, dynamic>)['goal'], 'Goal');
@@ -73,7 +73,7 @@ void main() {
     await tester.pumpWidget(const SizedBox());
     final reopened = AppCubit();
     addTearDown(reopened.close);
-    await tester.runAsync(() => reopened.loadAndSelectProject('atp'));
+    await tester.runAsync(() => reopened.loadAndSelectProject(project.id));
     await tester.pumpWidget(
       BlocProvider.value(
         value: reopened,

@@ -4,6 +4,7 @@ import 'package:fireflake/models/character.dart';
 import 'package:fireflake/models/project.dart';
 import 'package:fireflake/models/protagonist.dart';
 import 'package:fireflake/models/scene.dart';
+import 'package:fireflake/projectwrapper.dart';
 import 'package:fireflake/state/app_cubit.dart';
 import 'package:fireflake/widgets/save_project_button.dart';
 import 'package:fireflake/step_views/step1.dart';
@@ -54,7 +55,7 @@ Project savedProject() => Project.fromJson(Project(
 
 class FailingSaveCubit extends AppCubit {
   @override
-  Future<void> saveCurrentProjectToDisk() async {
+  Future<void> saveCurrentProjectToDisk({String? dirtySection}) async {
     throw const FileSystemException('Disk write failed');
   }
 }
@@ -226,6 +227,61 @@ void main() {
       find.textContaining('Could not save project:'),
       findsOneWidget,
     );
+  });
+
+  testWidgets('prompts before leaving a project with unsaved edits',
+      (tester) async {
+    final project = savedProject();
+    final cubit = AppCubit()..selectProject(project);
+    addTearDown(cubit.close);
+    await tester.pumpWidget(BlocProvider.value(
+      value: cubit,
+      child: MaterialApp(
+        home: Builder(
+          builder: (context) => Scaffold(
+            body: TextButton(
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                  builder: (_) => const ProjectWrapper(),
+                ),
+              ),
+              child: const Text('Open project'),
+            ),
+          ),
+        ),
+      ),
+    ));
+    await tester.tap(find.text('Open project'));
+    await tester.pumpAndSettle();
+    expect(find.byType(ProjectWrapper), findsOneWidget);
+    expect(
+      BlocProvider.of<AppCubit>(tester.element(find.byType(ProjectWrapper))),
+      same(cubit),
+    );
+    cubit.markProjectDirty('step1');
+    await tester.pumpAndSettle();
+    expect(cubit.state.dirtySections, {'step1'});
+    expect(cubit.state.saveStatus, ProjectSaveStatus.unsaved);
+    expect(
+      tester.widgetList<Text>(find.byType(Text)).map((widget) => widget.data),
+      contains('Unsaved changes'),
+    );
+
+    await tester.tap(find.byTooltip('Back'));
+    await tester.pumpAndSettle();
+    expect(find.byType(ProjectWrapper), findsOneWidget);
+    expect(find.text('Unsaved changes'), findsNWidgets(2));
+
+    await tester.tap(find.text('Keep editing'));
+    await tester.pumpAndSettle();
+    expect(find.byType(ProjectWrapper), findsOneWidget);
+
+    await tester.tap(find.byTooltip('Back'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Discard and leave'));
+    await tester.pumpAndSettle();
+    expect(find.byType(ProjectWrapper), findsNothing);
+    expect(find.text('Open project'), findsOneWidget);
   });
 
   testWidgets('Step 4 restores paragraphs even if earlier acts are empty',
